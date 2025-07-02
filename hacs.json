@@ -1,0 +1,10 @@
+{
+  "name": "Frosted Glass Themes",
+  "render_readme": true,
+  "hide_default_branch": true,
+  "persistent_url": "https://github.com/wessamlauf/homeassistant-frosted-glass-themes",
+  "category": "theme",
+  "homeassistant": "2025.6.3",
+  "domains": ["frontend"],
+  "country": ["SK"]
+}
