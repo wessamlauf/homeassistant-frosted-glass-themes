@@ -1,4 +1,4 @@
-# Frosted Glass Theme for Home Assistant (this theme is still work in progress)
+# Frosted Glass Theme for Home Assistant ❄️ (this theme is still work in progress)
 
 ### Immerse yourself in a sleek, modern, and visually captivating Home Assistant experience with the Frosted Glass Theme\!
 
