@@ -6,7 +6,7 @@ This theme brings a sophisticated "frosted glass" aesthetic to your dashboard, c
 
 **Key Features:**
 
-  * **Distinct Glassy Effect:** Enjoy beautifully rendered transparent and blurred elements that give your cards and header a dynamic, layered appearance.
+  * **Distinct Glassy Effect:** Enjoy beautifully rendered transparent and blurred elements that give your cards a dynamic, layered appearance.
   * **Light & Dark Modes:** Seamlessly switch between two meticulously crafted versions to suit your preference or time of day:
       * **Light Version:** A bright and airy design, perfect for a clean, open feel.
       * **Dark Version:** A deep, rich, and comfortable aesthetic that reduces eye strain in low-light conditions.
