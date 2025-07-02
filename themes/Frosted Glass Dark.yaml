@@ -208,7 +208,8 @@ Frosted Glass Dark:
   success-color: 'var(--token-color-feedback-success)'
   warning-color: 'var(--token-color-feedback-warning)'
   error-color: 'var(--token-color-feedback-error)'
-  lovelace-background: 'center / cover no-repeat url("/local/frosted-glass/frosted-glass-gradient-dark.jpg") fixed'
+  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-gradient-dark.jpg')"
+  lovelace-background: var(--background-image)
   primary-background-color: 'rgba(18, 20, 24, 0.6)'
   secondary-background-color: 'rgba(30, 32, 40, 0.5)'
   clear-background-color: 'rgba(50, 52, 60, 0.7)'
