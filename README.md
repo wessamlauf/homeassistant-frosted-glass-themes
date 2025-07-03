@@ -1,4 +1,4 @@
-# Frosted Glass Theme for Home Assistant ❄️ 
+# Frosted Glass Theme for Home Assistant 
 ![combination](https://github.com/user-attachments/assets/80d402d2-708c-40cb-887f-4c4d12cc729c)
 
 
