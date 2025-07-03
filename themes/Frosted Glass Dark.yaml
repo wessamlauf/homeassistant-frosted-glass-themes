@@ -57,7 +57,7 @@ Frosted Glass Dark:
       -webkit-backdrop-filter: blur(15px) saturate(1.1);
       border: 1px solid rgba(80, 80, 90, 0.5);
     }
-  token-rgb-primary: '199, 0, 57'
+  token-rgb-primary: '0, 128, 100' # Changed from '199, 0, 57'
   token-rgb-black: '0, 0, 0'
   token-rgb-white: '240, 243, 255'
   token-rgb-purple: '189, 157, 255'
@@ -82,8 +82,8 @@ Frosted Glass Dark:
   token-rgb-disabled: '61, 65, 85'
   token-rgb-state-inactive: '123, 126, 139'
   token-color-primary: 'rgb(var(--token-rgb-primary))'
-  token-color-primary-light: 'rgb(220, 30, 80)'
-  token-color-accent: 'rgb(var(--token-rgb-primary))'
+  token-color-primary-light: 'rgb(0, 150, 120)' # Adjusted based on new primary color
+  token-color-accent: 'rgb(var(--token-rgb-primary))' # This was already set to primary, so it will now be the new color
   token-color-disabled: 'rgb(0, 0, 0)'
   token-color-feedback-info: 'rgb(39, 209, 246)'
   token-color-feedback-warning: 'rgb(255, 219, 117)'
