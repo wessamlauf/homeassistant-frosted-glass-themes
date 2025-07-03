@@ -208,7 +208,7 @@ Frosted Glass Light:
   success-color: 'var(--token-color-feedback-success)'
   warning-color: 'var(--token-color-feedback-warning)'
   error-color: 'var(--token-color-feedback-error)'
-  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-gradient-light.jpg')"
+  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-light.jpg')"
   lovelace-background: var(--background-image)
   primary-background-color: 'rgba(234, 235, 238, 0.6)'
   secondary-background-color: 'rgba(245, 245, 245, 0.5)'
