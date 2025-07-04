@@ -19,6 +19,16 @@ This theme brings a sophisticated "frosted glass" aesthetic to your dashboard, c
 
   * **Requires `card-mod`:** This theme heavily utilizes the power of `card-mod` to achieve its distinctive glassy effects. Please ensure you have `card-mod` installed via HACS for the theme to render correctly.
 
+
+## Installation
+
+1.  Add this repository to HACS as a custom repository (Type: Theme).
+   ![image](https://github.com/user-attachments/assets/1320b37c-1335-4d3e-9364-80bd09a458e8)
+
+2.  Once added, you can find "Frosted Glass Light" and "Frosted Glass Dark" in the HACS Frontend section.
+3.  Install the themes.
+4.  Enable the theme in your Home Assistant user profile.
+
 -----
 
 **Screenshots:**
