@@ -96,17 +96,16 @@ Frosted Glass Dark:
   token-color-feedback-warning: 'rgb(255, 219, 117)'
   token-color-feedback-error: 'rgb(234, 114, 135)'
   token-color-feedback-success: 'rgb(118, 214, 152)'
-  # Adjusted text and icon colors to be slightly lighter
-  token-color-icon-primary: 'rgb(210, 210, 215)' # Was 200, 200, 205
-  token-color-icon-secondary: 'rgb(120, 122, 135)' # Was 110, 112, 125
-  token-color-icon-sidebar: 'rgb(127, 129, 139)' # Was 117, 119, 129
-  token-color-icon-sidebar-selected: 'rgb(194, 195, 199)' # Was 184, 185, 189
-  token-color-text-primary: 'rgb(210, 210, 215)' # Was 200, 200, 205
-  token-color-text-secondary: 'rgb(120, 122, 135)' # Was 110, 112, 125
-  token-color-text-disabled: 'rgba(210, 210, 215, 0.5)' # Keep transparency, base on new primary text
+  token-color-icon-primary: 'rgb(210, 210, 215)'
+  token-color-icon-secondary: 'rgb(120, 122, 135)'
+  token-color-icon-sidebar: 'rgb(127, 129, 139)'
+  token-color-icon-sidebar-selected: 'rgb(194, 195, 199)'
+  token-color-text-primary: 'rgb(210, 210, 215)'
+  token-color-text-secondary: 'rgb(120, 122, 135)'
+  token-color-text-disabled: 'rgba(210, 210, 215, 0.5)'
   token-color-text-sidebar-selected: 'rgb(194, 195, 199)'
   token-color-text-sidebar: 'var(--token-color-text-secondary)'
-  token-color-text-label-badge: 'rgba(210, 210, 215, 0.95)' # Adjusted
+  token-color-text-label-badge: 'rgba(210, 210, 215, 0.95)'
   token-color-text-chip: 'var(--token-color-white)'
   token-color-background-base: 'rgba(18, 20, 24, 0.6)'
   token-color-background-secondary: 'rgba(30, 32, 40, 0.5)'
@@ -202,7 +201,7 @@ Frosted Glass Dark:
   text-primary-color: 'var(--token-color-text-primary)'
   disabled-text-color: 'var(--token-color-text-disabled)'
   app-header-edit-text-color: 'var(--token-color-text-primary)'
-  text-light-primary-color: 'rgb(210, 210, 215)' # Adjusted based on new primary text color
+  text-light-primary-color: 'rgb(210, 210, 215)'
   paper-item-icon-color: 'var(--token-color-text-primary)'
   state-inactive-color: 'var(--token-color-text-secondary)'
   primary-color: 'var(--token-color-primary)'
@@ -216,7 +215,7 @@ Frosted Glass Dark:
   success-color: 'rgb(118, 214, 152)'
   warning-color: 'rgb(255, 219, 117)'
   error-color: 'rgb(234, 114, 135)'
-  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-dark-background.jpg')" # Updated background URL
+  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-dark-background.jpg')"
   lovelace-background: var(--background-image)
   primary-background-color: 'rgba(18, 20, 24, 0.6)'
   secondary-background-color: 'rgba(30, 32, 40, 0.5)'
@@ -249,7 +248,7 @@ Frosted Glass Dark:
   label-badge-green: 'var(--token-color-background-label-badge-green)'
   label-badge-yellow: 'var(--token-color-feedback-warning)'
   label-badge-grey: 'rgb(83, 90, 103)'
-  ha-chip-text-color: 'var(--token-color-text-chip)'
+  ha-chip-text-color: 'var(--token-color-white)'
   mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.7)'
   paper-slider-knob-color: 'var(--token-color-primary)'
   paper-slider-knob-start-color: 'var(--paper-slider-knob-color)'
@@ -289,6 +288,8 @@ Frosted Glass Dark:
   codemirror-number: 'rgb(255, 91, 29)'
   mcg-title-font-weight: '400'
   mush-title-font-weight: 'var(--title-font-weight)'
-  mush-title-font-size: 'var(--title-font-size)'
+  # --- START CHANGE for Mushroom Title Card ---
+  mush-title-font-size: 'var(--token-size-font-2xl)' # Previously 'var(--title-font-size)' which was too small
+  # --- END CHANGE for Mushroom Title Card ---
   light-grey-color: 'rgb(var(--token-rgb-grey))'
   mush-rgb-grey: 'var(--token-rgb-grey)'
