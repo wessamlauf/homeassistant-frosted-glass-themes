@@ -1,8 +1,13 @@
+# themes/Frosted Glass.yaml
+# ver. 1.0.2
+
 Frosted Glass Dark:
   card-mod-theme: "Frosted Glass Dark"
   card-mod-card: |
     ha-card {
       background: none !important;
+      backdrop-filter: blur(8px) saturate(1.2);
+      -webkit-backdrop-filter: blur(8px) saturate(1.2);
     }
   card-mod-root: |
     :host {
@@ -12,8 +17,6 @@ Frosted Glass Dark:
       --ha-card-border-color: rgba(90, 90, 100, 0.4);
     }
     ha-card {
-      backdrop-filter: blur(8px) saturate(1.2);
-      -webkit-backdrop-filter: blur(8px) saturate(1.2);
       border-radius: var(--token-size-radius-large);
     }
     app-header, app-toolbar {
@@ -45,6 +48,10 @@ Frosted Glass Dark:
       border-radius: var(--token-size-radius-small);
       border: none !important;
       box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    /* Bubble Card transparency */
+    .bubble-button-card-container {
+      background: rgba(0,0,0,0.1);
     }
   card-mod-dialog: |
     ha-dialog {
@@ -89,17 +96,18 @@ Frosted Glass Dark:
   token-color-feedback-warning: 'rgb(255, 219, 117)'
   token-color-feedback-error: 'rgb(234, 114, 135)'
   token-color-feedback-success: 'rgb(118, 214, 152)'
-  token-color-icon-primary: 'rgb(200, 200, 205)' # Slightly darker primary icon color
-  token-color-icon-secondary: 'rgb(110, 112, 125)' # Slightly darker secondary icon color
-  token-color-icon-sidebar: 'rgb(117, 119, 129)' # Slightly darker sidebar icon color
-  token-color-icon-sidebar-selected: 'rgb(184, 185, 189)' # Slightly darker sidebar selected icon color
-  token-color-text-primary: 'rgb(200, 200, 205)' # Darker for better contrast
-  token-color-text-secondary: 'rgb(110, 112, 125)' # Darker for better contrast
-  token-color-text-disabled: 'rgba(200, 200, 200, 0.5)' # Keep transparency, but base on new primary text
-  token-color-text-sidebar-selected: 'rgb(184, 185, 189)'
+  # Adjusted text and icon colors to be slightly lighter
+  token-color-icon-primary: 'rgb(210, 210, 215)' # Was 200, 200, 205
+  token-color-icon-secondary: 'rgb(120, 122, 135)' # Was 110, 112, 125
+  token-color-icon-sidebar: 'rgb(127, 129, 139)' # Was 117, 119, 129
+  token-color-icon-sidebar-selected: 'rgb(194, 195, 199)' # Was 184, 185, 189
+  token-color-text-primary: 'rgb(210, 210, 215)' # Was 200, 200, 205
+  token-color-text-secondary: 'rgb(120, 122, 135)' # Was 110, 112, 125
+  token-color-text-disabled: 'rgba(210, 210, 215, 0.5)' # Keep transparency, base on new primary text
+  token-color-text-sidebar-selected: 'rgb(194, 195, 199)'
   token-color-text-sidebar: 'var(--token-color-text-secondary)'
-  token-color-text-label-badge: 'rgba(200, 200, 205, 0.95)' # Adjusted
-  token-color-text-chip: 'var(--token-color-white)' # Keep chips white as they often have darker backgrounds
+  token-color-text-label-badge: 'rgba(210, 210, 215, 0.95)' # Adjusted
+  token-color-text-chip: 'var(--token-color-white)'
   token-color-background-base: 'rgba(18, 20, 24, 0.6)'
   token-color-background-secondary: 'rgba(30, 32, 40, 0.5)'
   token-color-background-sidebar: 'var(--token-color-background-base)'
@@ -194,7 +202,7 @@ Frosted Glass Dark:
   text-primary-color: 'var(--token-color-text-primary)'
   disabled-text-color: 'var(--token-color-text-disabled)'
   app-header-edit-text-color: 'var(--token-color-text-primary)'
-  text-light-primary-color: 'rgb(200, 200, 205)' # Adjusted based on new primary text color
+  text-light-primary-color: 'rgb(210, 210, 215)' # Adjusted based on new primary text color
   paper-item-icon-color: 'var(--token-color-text-primary)'
   state-inactive-color: 'var(--token-color-text-secondary)'
   primary-color: 'var(--token-color-primary)'
