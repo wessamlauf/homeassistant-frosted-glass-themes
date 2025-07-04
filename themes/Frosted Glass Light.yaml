@@ -1,10 +1,14 @@
 # themes/Frosted Glass.yaml
+# ver. 1.0.2
 
 Frosted Glass Light:
   card-mod-theme: "Frosted Glass Light"
   card-mod-card: |
     ha-card {
       background: none !important;
+      # ADDED: Backdrop filter here for ha-card
+      backdrop-filter: blur(8px) saturate(1.2);
+      -webkit-backdrop-filter: blur(8px) saturate(1.2);
     }
   card-mod-root: |
     :host {
@@ -14,8 +18,9 @@ Frosted Glass Light:
       --ha-card-border-color: rgba(255, 255, 255, 0.3);
     }
     ha-card {
-      backdrop-filter: blur(8px) saturate(1.2);
-      -webkit-backdrop-filter: blur(8px) saturate(1.2);
+      # MOVED: Backdrop filter definition from here to card-mod-card section
+      # backdrop-filter: blur(8px) saturate(1.2);
+      # -webkit-backdrop-filter: blur(8px) saturate(1.2);
       border-radius: var(--token-size-radius-large);
     }
     app-header, app-toolbar {
@@ -47,6 +52,10 @@ Frosted Glass Light:
       border-radius: var(--token-size-radius-small);
       border: none !important;
       box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    /* ADDED: Bubble Card transparency for Light theme */
+    .bubble-button-card-container {
+      background: rgba(255,255,255,0.2); # Using a slightly more transparent white for light theme
     }
   card-mod-dialog: |
     ha-dialog {
@@ -200,10 +209,10 @@ Frosted Glass Light:
   primary-color: 'var(--token-color-primary)'
   dark-primary-color: 'var(--primary-color)'
   light-primary-color: 'var(--token-color-primary-light)'
-  accent-color: 'var(--token-color-accent)'
+  accent-color: 'rgb(var(--token-rgb-teal))'
   divider-color: 'var(--token-color-background-divider)'
   scrollbar-thumb-color: 'var(--token-color-background-scrollbar-thumb)'
-  disabled-color: 'var(--token-color-disabled)'
+  disabled-color: 'rgb(173 176 184)'
   info-color: 'var(--token-color-feedback-info)'
   success-color: 'var(--token-color-feedback-success)'
   warning-color: 'var(--token-color-feedback-warning)'
