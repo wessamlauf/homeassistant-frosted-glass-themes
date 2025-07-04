@@ -6,7 +6,6 @@ Frosted Glass Light:
   card-mod-card: |
     ha-card {
       background: none !important;
-      # ADDED: Backdrop filter here for ha-card
       backdrop-filter: blur(8px) saturate(1.2);
       -webkit-backdrop-filter: blur(8px) saturate(1.2);
     }
@@ -18,9 +17,6 @@ Frosted Glass Light:
       --ha-card-border-color: rgba(255, 255, 255, 0.3);
     }
     ha-card {
-      # MOVED: Backdrop filter definition from here to card-mod-card section
-      # backdrop-filter: blur(8px) saturate(1.2);
-      # -webkit-backdrop-filter: blur(8px) saturate(1.2);
       border-radius: var(--token-size-radius-large);
     }
     app-header, app-toolbar {
@@ -190,10 +186,10 @@ Frosted Glass Light:
   ha-font-size-m: 'var(--token-size-font-m)'
   ha-font-size-l: 'var(--token-size-font-l)'
   ha-font-size-xl: 'var(--token-size-font-xl)'
-  ha-font-size-2xl: 'calc(25px * var(--ha-font-size-scale))'
-  ha-font-size-3xl: 'calc(29px * var(--ha-font-size-scale))'
-  ha-font-size-4xl: 'calc(33px * var(--ha-font-size-scale))'
-  ha-font-size-5xl: 'calc(42px * var(--ha-font-size-scale))'
+  ha-font-size-2xl: 'calc(24px * var(--ha-font-size-scale))'
+  ha-font-size-3xl: 'calc(28px * var(--ha-font-size-scale))'
+  ha-font-size-4xl: 'calc(32px * var(--ha-font-size-scale))'
+  ha-font-size-5xl: 'calc(40px * var(--ha-font-size-scale))'
   title-font-size: 'var(--token-size-font-title)'
   ha-heading-card-title-font-size: 'var(--token-size-font-title-card)'
   ha-heading-card-title-font-weight: 'var(--token-weight-font-title-card)'
@@ -211,7 +207,7 @@ Frosted Glass Light:
   light-primary-color: 'var(--token-color-primary-light)'
   accent-color: 'rgb(var(--token-rgb-teal))'
   divider-color: 'var(--token-color-background-divider)'
-  scrollbar-thumb-color: 'var(--token-color-background-scrollbar-thumb)'
+  scrollbar-thumb-color: 'rgb(180, 180, 180)'
   disabled-color: 'rgb(173 176 184)'
   info-color: 'var(--token-color-feedback-info)'
   success-color: 'var(--token-color-feedback-success)'
@@ -290,6 +286,8 @@ Frosted Glass Light:
   codemirror-number: 'rgb(204, 85, 0)'
   mcg-title-font-weight: '400'
   mush-title-font-weight: 'var(--title-font-weight)'
-  mush-title-font-size: 'var(--title-size-font-title)'
+  # --- START CHANGE for Mushroom Title Card ---
+  mush-title-font-size: 'var(--token-size-font-2xl)' # Previously 'var(--title-size-font-title)' which was too small
+  # --- END CHANGE for Mushroom Title Card ---
   light-grey-color: 'rgb(var(--token-rgb-grey))'
   mush-rgb-grey: 'var(--token-rgb-grey)'
