@@ -29,6 +29,11 @@ This theme brings a sophisticated "frosted glass" aesthetic to your dashboard, c
 3.  Install the themes.
 4.  Enable the theme in your Home Assistant user profile.
 
+
+## Support:
+<a href="https://www.buymeacoffee.com/wessamlauf" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+If you feel like supporting this fun little project feel free to click the button ❤
+
 -----
 
 **Screenshots:**
@@ -39,5 +44,6 @@ This theme brings a sophisticated "frosted glass" aesthetic to your dashboard, c
 
 ### Dark Version:
 ![dark_only](https://github.com/user-attachments/assets/e4686ecb-4ff8-476c-ab03-f90330ba2f74)
+
 
 
