@@ -22,17 +22,25 @@ This theme brings a sophisticated "frosted glass" aesthetic to your dashboard, c
 
 ## Installation
 
-1.  Add this repository to HACS as a custom repository (Type: Theme).
-   ![image](https://github.com/user-attachments/assets/1320b37c-1335-4d3e-9364-80bd09a458e8)
+**Step 1: Install HACS**
+If you haven't already, install HACS by following the official guide.
 
-2.  Once added, you can find "Frosted Glass Light" and "Frosted Glass Dark" in the HACS Frontend section.
-3.  Install the themes.
-4.  Enable the theme in your Home Assistant user profile.
+**Step 2: Install Frosted Glass Theme:**
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=WessamLauf&repository=homeassistant-frosted-glass-themes)
+
+
+**Step 3: Restart Home Assistant.**
+
+![image](https://github.com/user-attachments/assets/b89d98d7-abac-49a5-bd35-30ed5ff4e924)
+
+**Step 4: Choose the Frosted Glass (Light, Dark or Auto) from your profile.**
+
+![image](https://github.com/user-attachments/assets/75f83d19-ac39-4b85-ae42-9ca3bc94c5ef)
 
 -----
 
-**Screenshots:**
+## **Screenshots:**
 
 ### Light Version:
 ![light_only](https://github.com/user-attachments/assets/f4255065-c137-4a90-a7d1-f49ebd33870c)
