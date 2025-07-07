@@ -1,5 +1,5 @@
 # themes/Frosted Glass.yaml
-# ver. 1.1
+# ver. 1.1.3
 
 Frosted Glass Dark:
   card-mod-theme: "Frosted Glass Dark"
@@ -115,6 +115,27 @@ Frosted Glass Dark:
       --token-opacity-ripple-hover: 0.1;
       --token-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       --token-weight-font-title-card: 500;
+
+      # Additional color variables
+      --token-color-red: rgb(var(--token-rgb-red));
+      --token-color-green: rgb(var(--token-rgb-green));
+      --token-color-blue: rgb(var(--token-rgb-blue));
+      --token-color-yellow: rgb(var(--token-rgb-yellow));
+      --token-color-orange: rgb(var(--token-rgb-orange));
+      --token-color-purple: rgb(var(--token-rgb-purple));
+      --token-color-pink: rgb(var(--token-rgb-pink));
+      --token-color-amber: rgb(var(--token-rgb-amber));
+      --token-color-cyan: rgb(var(--token-rgb-cyan));
+      --token-color-teal: rgb(var(--token-rgb-teal));
+      --token-color-lime: rgb(var(--token-rgb-lime));
+      --token-color-light-green: rgb(var(--token-rgb-light-green));
+      --token-color-deep-orange: rgb(var(--token-rgb-deep-orange));
+      --token-color-brown: rgb(var(--token-rgb-brown));
+      --token-color-grey: rgb(var(--token-rgb-grey));
+      --token-color-blue-grey: rgb(var(--token-rgb-blue-grey));
+      --token-color-indigo: rgb(var(--token-rgb-indigo));
+      --token-color-deep-purple: rgb(var(--token-rgb-deep-purple));
+      --token-color-light-blue: rgb(var(--token-rgb-light-blue));
     }
 
     ha-card {
@@ -123,7 +144,7 @@ Frosted Glass Dark:
     
     ha-card ha-card { # Inner cards should not have borders
       --ha-card-border-width: 0px;
-    
+    }
     app-header, app-toolbar {
       background: rgba(25, 25, 25, 0.8) !important;
       backdrop-filter: blur(10px) saturate(1.2);
