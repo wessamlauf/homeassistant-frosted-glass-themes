@@ -1,7 +1,4 @@
 {
-  "name": "Frosted Glass Theme",
-  "description": "A frosted glass effect theme for Home Assistant.",
-  "render_readme": true,
-  "homeassistant": "2025.6.3",
-  "type": "theme"
+    "name": "Frosted Glass Theme",
+    "render_readme": true
 }
