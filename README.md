@@ -20,16 +20,21 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
   * **Requires `card-mod`:** This theme heavily utilizes the power of `card-mod` to achieve its distinctive glassy effects. Please ensure you have `card-mod` installed via HACS for the theme to render correctly. 🛠️
 
 
-## Installation
+## 🚀 Installation
 
 **Step 1: Install HACS**
 If you haven't already, install HACS by following the official guide.
 
-**Step 2: Install Frosted Glass Theme:** 
+**Step 2: Open in HACS (recommended)** 
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=WessamLauf&repository=homeassistant-frosted-glass-themes&category=theme) 
 
-**OR manually - Step 2: Install Frosted Glass Theme as custom repository: (skip this step if step above works)** copy and paste this link: https://github.com/wessamlauf/homeassistant-frosted-glass-themes
+**HACS manual configuration:** 
+1. Go to HACS in Home Assistant.
+2. On the top right, click "Custom repositories".
+3. Enter the repository URL: [https://github.com/joseluis9595/lovelace-navbar-card.git](https://github.com/wessamlauf/homeassistant-frosted-glass-themes)
+4. Type: Theme".
+5. Click Add!
 
 ![image](https://github.com/user-attachments/assets/47fe5623-66fc-4a6d-9d18-7522b3b9136d)
 
