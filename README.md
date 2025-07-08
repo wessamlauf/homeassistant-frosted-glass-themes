@@ -25,11 +25,11 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 **Step 1: Install HACS**
 If you haven't already, install HACS by following the official guide.
 
-**Step 2: Install Frosted Glass Theme:** **(currently there is an issue where this button does not work - therefore please add the theme as custom repository)**
+**Step 2: Install Frosted Glass Theme:** 
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=WessamLauf&repository=homeassistant-frosted-glass-themes) **(currently there is an issue where this button does not work - therefore please add the theme as custom repository)**
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=WessamLauf&repository=homeassistant-frosted-glass-themes&category=theme) 
 
-**Step 2: Install Frosted Glass Theme as custom repository:** copy and paste this link: https://github.com/wessamlauf/homeassistant-frosted-glass-themes
+**OR manually - Step 2: Install Frosted Glass Theme as custom repository: (skip this step if step above works)** copy and paste this link: https://github.com/wessamlauf/homeassistant-frosted-glass-themes
 
 ![image](https://github.com/user-attachments/assets/47fe5623-66fc-4a6d-9d18-7522b3b9136d)
 
