@@ -1,5 +1,5 @@
 # themes/Frosted Glass.yaml
-# ver. 1.1.3
+# ver. 1.1.4 
 
 Frosted Glass Light:
   card-mod-theme: "Frosted Glass Light"
@@ -378,8 +378,8 @@ Frosted Glass Light:
   success-color: 'rgb(118, 214, 152)'
   warning-color: 'rgb(255, 219, 117)'
   error-color: 'rgb(234, 114, 135)'
-  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-light.jpg')"
-  lovelace-background: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/www/frosted-glass/frosted-glass-light.jpg')"
+  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-light-background.jpg')"
+  lovelace-background: var(--background-image)
   primary-background-color: 'rgba(234, 235, 238, 0.6)'
   secondary-background-color: 'rgba(245, 245, 245, 0.5)'
   clear-background-color: 'rgba(255, 255, 255, 0.7)'
