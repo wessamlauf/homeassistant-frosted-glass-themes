@@ -1,0 +1,904 @@
+# themes/Frosted Glass Auto.yaml
+# ver. 1.1.5
+
+Frosted Glass:
+  modes:
+    light:
+      card-mod-theme: "Frosted Glass Light"
+      # Styles applied directly to ha-card elements (usually within individual cards)
+      card-mod-card: |
+        ha-card {
+          background: none !important; # Ensures the main card background is transparent
+          backdrop-filter: blur(8px) saturate(1.2); # <-- MOVED HERE for Frosted Glass effect
+          -webkit-backdrop-filter: blur(8px) saturate(1.2); # <-- MOVED HERE for Frosted Glass effect
+        }
+        /* Bubble Card transparency for Light theme */
+        .bubble-button-card-container {
+          background: rgba(255,255,255,0.2); # Semi-transparent white for light theme
+        }
+
+      # Global CSS variables and styles injected into the :host (root) element
+      card-mod-root: |
+        :host {
+          --ha-card-background: rgba(242, 245, 255, 0.85);
+          --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+          --ha-card-border-width: 0.5px;
+          --ha-card-border-color: rgba(255, 255, 255, 0.3);
+
+          /* Define your 'token' variables as CSS variables here for global use by card-mod */
+          --token-rgb-primary: 106, 116, 211;
+          --token-rgb-black: 0, 0, 0;
+          --token-rgb-white: 240, 243, 255;
+          --token-rgb-purple: 129, 45, 250;
+          --token-rgb-pink: 204, 0, 136;
+          --token-rgb-red: 204, 0, 51;
+          --token-rgb-deep-purple: 98, 0, 234;
+          --token-rgb-indigo: 48, 63, 159;
+          --token-rgb-blue: 33, 150, 243;
+          --token-rgb-light-blue: 3, 169, 244;
+          --token-rgb-cyan: 106, 116, 211;
+          --token-rgb-teal: 106, 116, 211;
+          --token-rgb-green: 56, 142, 60;
+          --token-rgb-light-green: 139, 195, 74;
+          --token-rgb-lime: 205, 220, 57;
+          --token-rgb-yellow: 250, 183, 0;
+          --token-rgb-amber: 255, 193, 7;
+          --token-rgb-orange: 255, 158, 0;
+          --token-rgb-deep-orange: 255, 87, 34;
+          --token-rgb-brown: 121, 85, 72;
+          --token-rgb-grey: 103, 104, 119;
+          --token-rgb-blue-grey: 96, 125, 139;
+          --token-rgb-disabled: 189, 189, 189;
+          --token-rgb-state-inactive: 176, 190, 197;
+
+          --token-color-primary: rgb(var(--token-rgb-primary));
+          --token-color-primary-light: rgb(167 182 199);
+          --token-color-accent: rgb(var(--token-rgb-teal));
+          --token-color-disabled: rgb(173 176 184);
+          --token-color-feedback-info: rgb(106, 116, 211);
+          --token-color-feedback-warning: rgb(255, 219, 117);
+          --token-color-feedback-error: rgb(234, 114, 135);
+          --token-color-feedback-success: rgb(118, 214, 152);
+          --token-color-icon-primary: rgba(19, 21, 54, 0.95);
+          --token-color-icon-secondary: rgba(19, 21, 54, 0.75);
+          --token-color-icon-sidebar: rgba(19, 21, 54, 0.6);
+          --token-color-icon-sidebar-selected: var(--token-color-icon-primary);
+          --token-color-text-primary: rgba(19, 21, 54, 0.98);
+          --token-color-text-secondary: rgba(19, 21, 54, 0.8);
+          --token-color-text-disabled: rgba(19, 21, 54, 0.45);
+          --token-color-text-sidebar-selected: var(--token-color-text-primary);
+          --token-color-text-sidebar: var(--token-color-text-secondary);
+          --token-color-text-label-badge: rgba(19, 21, 54, 0.85);
+          --token-color-text-chip: rgb(var(--token-rgb-black)); # Use rgb(var(--token-rgb-black)) if you want the rgb() function applied
+          --token-color-background-base: rgba(234, 235, 238, 0.6);
+          --token-color-background-secondary: rgba(245, 245, 245, 0.5);
+          --token-color-background-sidebar: var(--token-color-background-base);
+          --token-color-background-input-base: rgba(255, 255, 255, 0.7);
+          --token-color-background-input-disabled: rgba(245, 245, 245, 0.6);
+          --token-color-background-label-badge: rgb(230, 230, 230);
+          --token-color-background-card: rgba(255, 255, 255, 0.85);
+          --token-color-background-skrim: rgba(0, 0, 0, 0.6);
+          --token-color-background-divider: rgba(224, 224, 224, 0.3);
+          --token-color-background-scrollbar-thumb: rgb(180, 180, 180);
+          --token-color-background-label-badge-red: var(--token-color-feedback-error);
+          --token-color-background-label-badge-blue: var(--token-color-feedback-info);
+          --token-color-background-label-badge-green: rgb(78, 183, 128);
+          --token-color-background-label-badge-yellow: var(--token-color-feedback-warning);
+          --token-color-background-label-badge-grey: rgb(83, 90, 103);
+          --token-color-background-popup-scrim: rgba(0, 0, 0, 1);
+          --token-color-border-card: rgba(255, 255, 255, 0.3);
+          --token-color-switch-button-unchecked: rgba(0, 0, 0, 0.6);
+          --token-color-switch-track-unchecked: rgba(0, 0, 0, 0.3);
+          --token-color-codemirror-string: rgb(0, 77, 153);
+          --token-color-codemirror-keyword: rgb(70, 112, 216);
+          --token-color-codemirror-number: rgb(204, 85, 0);
+          --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.15);
+          --token-size-radius-small: 10px;
+          --token-size-radius-medium: 14px;
+          --token-size-radius-large: 18px;
+          --token-size-radius-card: var(--token-size-radius-large); # Valid CSS variable reference
+          --token-size-width-border-card: 0.5px;
+          --token-size-height-slider: 5px;
+          --token-size-height-navbar: 60px;
+          --token-size-font-xs: calc(10px * var(--ha-font-size-scale));
+          --token-size-font-s: calc(12px * var(--ha-font-size-scale));
+          --token-size-font-m: calc(14px * var(--ha-font-size-scale));
+          --token-size-font-l: calc(15px * var(--ha-font-size-scale));
+          --token-size-font-xl: calc(20px * var(--ha-font-size-scale));
+          --token-size-font-2xl: calc(25px * var(--ha-font-size-scale)); # Using 25px as per changelog implies a larger size
+          --token-size-font-3xl: calc(29px * var(--ha-font-size-scale));
+          --token-size-font-4xl: calc(33px * var(--ha-font-size-scale));
+          --token-size-font-5xl: calc(42px * var(--ha-font-size-scale));
+          --token-size-spacing-medium: 17px;
+          --token-size-section-min-width: 320px;
+          --token-color-transparent: rgba(0, 0, 0, 0);
+          --token-color-black: rgb(0, 0, 0);
+          --token-color-white: rgb(255, 255, 255);
+          --token-opacity-ripple-hover: 0.1;
+          --token-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+          --token-weight-font-title-card: 500;
+
+          # Additional color variables
+          --token-color-red: rgb(var(--token-rgb-red));
+          --token-color-green: rgb(var(--token-rgb-green));
+          --token-color-blue: rgb(var(--token-rgb-blue));
+          --token-color-yellow: rgb(var(--token-rgb-yellow));
+          --token-color-orange: rgb(var(--token-rgb-orange));
+          --token-color-purple: rgb(var(--token-rgb-purple));
+          --token-color-pink: rgb(var(--token-rgb-pink));
+          --token-color-amber: rgb(var(--token-rgb-amber));
+          --token-color-cyan: rgb(var(--token-rgb-cyan));
+          --token-color-teal: rgb(var(--token-rgb-teal));
+          --token-color-lime: rgb(var(--token-rgb-lime));
+          --token-color-light-green: rgb(var(--token-rgb-light-green));
+          --token-color-deep-orange: rgb(var(--token-rgb-deep-orange));
+          --token-color-brown: rgb(var(--token-rgb-brown));
+          --token-color-grey: rgb(var(--token-rgb-grey));
+          --token-color-blue-grey: rgb(var(--token-rgb-blue-grey));
+          --token-color-indigo: rgb(var(--token-rgb-indigo));
+          --token-color-deep-purple: rgb(var(--token-rgb-deep-purple));
+          --token-color-light-blue: rgb(var(--token-rgb-light-blue));
+
+          # Text Dividers from text-divier-row card
+          --text-divider-color: rgb(19, 21, 54); # Set directly for clarity
+          --text-divider-font-size: "16px"; # Adjusted for better visibility
+          --text-divider-line-size: "1px";
+        }
+
+        ha-card {
+          border-radius: var(--token-size-radius-large);
+        }
+        ha-card ha-card { # Inner cards should not have borders
+          --ha-card-border-width: 0px;
+        }
+        app-header, app-toolbar {
+          background: var(--token-color-background-base) !important; # Harmonized with primary-background-color
+          backdrop-filter: blur(10px) saturate(1.2);
+          -webkit-backdrop-filter: blur(10px) saturate(1.2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        ha-drawer {
+          --mdc-drawer-scrim-color: var(--token-color-background-skrim) !important;
+        }
+        .mdc-drawer .mdc-drawer__content {
+          background: var(--token-color-background-sidebar) !important; # Harmonized with primary-background-color
+          backdrop-filter: blur(30px) saturate(1.3);
+          -webkit-backdrop-filter: blur(30px) saturate(30px) !important;
+        }
+        ha-label-badge {
+          --label-badge-background-color: rgba(230, 230, 230, 0.2) !important;
+          backdrop-filter: blur(12px) saturate(1.1);
+          -webkit-backdrop-filter: blur(12px) saturate(1.1);
+          --label-badge-text-color: var(--token-color-text-primary) !important;
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+          border: 0.5px solid var(--token-color-border-card);
+        }
+        input, ha-textfield, ha-select {
+          background: var(--token-color-background-input-base) !important;
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          border-radius: var(--token-size-radius-small);
+          border: none !important;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- FINAL FIX FOR DROPDOWN MENUS (Mushroom and Stock) --- */
+        /* Target the mwc-menu host element */
+        mwc-menu {
+          z-index: 9999 !important;
+          overflow: visible !important;
+          transform: none !important;
+        }
+
+        /* Target the actual menu surface within the mwc-menu's shadow DOM */
+        mwc-menu-surface.mdc-menu-surface {
+          z-index: 9999 !important;
+          left: 0px !important;
+          position: fixed !important;
+          transform: none !important;
+          background: var(--token-color-background-input-base) !important;
+          backdrop-filter: blur(8px) saturate(1.2) !important;
+          -webkit-backdrop-filter: blur(8px) saturate(1.2) !important;
+          overflow: visible !important;
+          max-width: unset !important;
+          min-width: unset !important;
+          width: auto !important;
+        }
+
+        /* If the actual list items within the menu are affected, target them too */
+        .mdc-list-item {
+          background: transparent !important;
+        }
+        /* --- END FINAL FIX FOR DROPDOWN MENUS --- */
+
+      card-mod-dialog: |
+        ha-dialog {
+          --mdc-dialog-box-shadow: 0px 15px 30px rgba(0,0,0,0.2);
+          --ha-dialog-border-radius: var(--token-size-radius-large);
+        }
+        ha-dialog .mdc-dialog__surface {
+          background: rgba(242, 245, 255, 0.98) !important;
+          backdrop-filter: blur(15px) saturate(1.1);
+          -webkit-backdrop-filter: blur(15px) saturate(1.1);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+      token-rgb-primary: '106, 116, 211'
+      token-rgb-black: '0, 0, 0'
+      token-rgb-white: '240, 243, 255'
+      token-rgb-purple: '129, 45, 250'
+      token-rgb-pink: '204, 0, 136'
+      token-rgb-red: '204, 0, 51'
+      token-rgb-deep-purple: '98, 0, 234'
+      token-rgb-indigo: '48, 63, 159'
+      token-rgb-blue: '33, 150, 243'
+      token-rgb-light-blue: '3, 169, 244'
+      token-rgb-cyan: '106, 116, 211'
+      token-rgb-teal: '106, 116, 211'
+      token-rgb-green: '56, 142, 60'
+      token-rgb-light-green: '139, 195, 74'
+      token-rgb-lime: '205, 220, 57'
+      token-rgb-yellow: '250, 183, 0'
+      token-rgb-amber: '255, 193, 7'
+      token-rgb-orange: '255, 158, 0'
+      token-rgb-deep-orange: '255, 87, 34'
+      token-rgb-brown: '121, 85, 72'
+      token-rgb-grey: '103, 104, 119'
+      token-rgb-blue-grey: '96, 125, 139'
+      token-rgb-disabled: '189, 189, 189'
+      token-rgb-state-inactive: '176, 190, 197'
+      token-color-primary: 'rgb(106, 116, 211)'
+      token-color-primary-light: 'rgb(167, 182, 199)'
+      token-color-accent: 'rgb(106, 116, 211)'
+      token-color-disabled: 'rgb(173, 176, 184)'
+      token-color-feedback-info: 'rgb(106, 116, 211)'
+      token-color-feedback-warning: 'rgb(255, 219, 117)'
+      token-color-feedback-error: 'rgb(234, 114, 135)'
+      token-color-feedback-success: 'rgb(118, 214, 152)'
+      token-color-icon-primary: 'rgba(19, 21, 54, 0.95)'
+      token-color-icon-secondary: 'rgba(19, 21, 54, 0.75)'
+      token-color-icon-sidebar: 'rgba(19, 21, 54, 0.6)'
+      token-color-icon-sidebar-selected: 'var(--token-color-icon-primary)' # Used token variable
+      token-color-text-primary: 'rgba(19, 21, 54, 0.98)'
+      token-color-text-secondary: 'rgba(19, 21, 54, 0.8)'
+      token-color-text-disabled: 'rgba(19, 21, 54, 0.45)'
+      token-color-text-sidebar-selected: 'var(--token-color-text-primary)' # Used token variable
+      token-color-text-sidebar: 'var(--token-color-text-secondary)' # Used token variable
+      token-color-text-label-badge: 'rgba(19, 21, 54, 0.85)'
+      token-color-text-chip: 'rgb(0, 0, 0)'
+      token-color-background-base: 'rgba(234, 235, 238, 0.6)'
+      token-color-background-secondary: 'rgba(245, 245, 245, 0.5)'
+      token-color-background-sidebar: 'var(--token-color-background-base)' # Used token variable
+      token-color-background-input-base: 'rgba(255, 255, 255, 0.7)'
+      token-color-background-input-disabled: 'rgba(245, 245, 245, 0.6)'
+      token-color-background-label-badge: 'rgb(230, 230, 230)'
+      token-color-background-card: 'rgba(255, 255, 255, 0.85)'
+      token-color-background-skrim: 'rgba(0, 0, 0, 0.6)'
+      token-color-background-divider: 'rgba(224, 224, 224, 0.3)'
+      token-color-background-scrollbar-thumb: 'rgb(180, 180, 180)'
+      token-color-background-label-badge-red: 'var(--token-color-feedback-error)' # Used token variable
+      token-color-background-label-badge-blue: 'var(--token-color-feedback-info)' # Used token variable
+      token-color-background-label-badge-green: 'rgb(78, 183, 128)'
+      token-color-background-label-badge-yellow: 'var(--token-color-feedback-warning)' # Used token variable
+      token-color-background-label-badge-grey: 'rgb(83, 90, 103)'
+      token-color-background-popup-scrim: 'rgba(0, 0, 0, 1)'
+      token-color-border-card: 'rgba(255, 255, 255, 0.3)'
+      token-color-switch-button-unchecked: 'rgba(0, 0, 0, 0.6)'
+      token-color-switch-track-unchecked: 'rgba(0, 0, 0, 0.3)'
+      token-color-codemirror-string: 'rgb(0, 77, 153)'
+      token-color-codemirror-keyword: 'rgb(70, 112, 216)'
+      token-color-codemirror-number: 'rgb(204, 85, 0)'
+      token-shadow-card-medium: '0 12px 20px rgba(0, 0, 0, 0.15)'
+      token-size-radius-small: '10px'
+      token-size-radius-medium: '14px'
+      token-size-radius-large: '18px'
+      token-size-radius-card: '18px'
+      token-size-width-border-card: '0.5px'
+      token-size-height-slider: '5px'
+      token-size-height-navbar: '60px'
+      token-size-font-xs: '10px'
+      token-size-font-s: '12px'
+      token-size-font-m: '14px'
+      token-size-font-l: '15px'
+      token-size-font-xl: '20px'
+      token-size-font-2xl: '25px'
+      token-size-font-3xl: '29px'
+      token-size-font-4xl: '33px'
+      token-size-font-5xl: '42px'
+      token-size-spacing-medium: '17px'
+      token-size-section-min-width: 320px
+      token-color-transparent: 'rgba(0, 0, 0, 0)'
+      token-color-black: 'rgb(0, 0, 0)'
+      token-color-white: 'rgb(255, 255, 255)'
+      token-opacity-ripple-hover: '0.1'
+      token-font-family-primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      token-weight-font-title-card: '500'
+
+      header-height: '60px'
+      paper-slider-height: '5px'
+
+      ha-font-family-body: 'var(--token-font-family-primary)'
+      ha-font-family-heading: 'var(--token-font-family-primary)'
+      ha-font-family-code: 'var(--token-font-family-primary)'
+      ha-font-family-longform: 'var(--token-font-family-primary)'
+      ha-card-header-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-button-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-body1-font-family: 'var(--token-font-family-primary)'
+      md-list-item-label-text-font: 'var(--token-font-family-primary)'
+      paper-font-common-base_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-common-code_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-body1_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-subhead_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-headline_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-caption_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-title_-_font-family: 'var(--token-font-family-primary)'
+
+      ha-font-weight-normal: '400'
+      ha-font-weight-medium: '500'
+      ha-font-weight-bold: '700'
+      ha-font-weight-body: '400'
+      ha-font-weight-heading: '500'
+      ha-font-weight-action: '500'
+      mdc-typography-button-font-weight: '500'
+      title-font-weight: 'var(--token-weight-font-title-card)' # Corrected token variable
+
+      ha-font-size-xs: '10px'
+      ha-font-size-s: '12px'
+      ha-font-size-m: '14px'
+      ha-font-size-l: '15px'
+      ha-font-size-xl: '20px'
+      ha-font-size-2xl: '25px'
+      ha-font-size-3xl: '29px'
+      ha-font-size-4xl: '33px'
+      ha-font-size-5xl: '42px'
+      title-font-size: 'var(--token-size-font-xl)' # Used token variable
+      ha-heading-card-title-font-size: 'var(--token-size-font-l)' # Adjusted for typical usage, previously undefined token
+      ha-heading-card-title-font-weight: 'var(--token-weight-font-title-card)'
+      ha-font-smoothing: 'antialiased'
+
+      # Colors and other properties - direct values
+      primary-text-color: 'var(--token-color-text-primary)'
+      secondary-text-color: 'var(--token-color-text-secondary)'
+      text-primary-color: 'var(--token-color-text-primary)'
+      disabled-text-color: 'var(--token-color-text-disabled)'
+      app-header-edit-text-color: 'var(--token-color-text-primary)'
+      text-light-primary-color: 'rgb(28, 29, 33)' # Kept as is, no direct token equivalent
+      paper-item-icon-color: 'var(--token-color-icon-primary)'
+      state-inactive-color: 'var(--token-color-text-secondary)'
+      primary-color: 'var(--token-color-primary)'
+      dark-primary-color: 'var(--token-color-primary)'
+      light-primary-color: 'var(--token-color-primary-light)'
+      accent-color: 'var(--token-color-accent)'
+      divider-color: 'var(--token-color-background-divider)'
+      scrollbar-thumb-color: 'var(--token-color-background-scrollbar-thumb)'
+      disabled-color: 'var(--token-color-disabled)'
+      info-color: 'var(--token-color-feedback-info)'
+      success-color: 'var(--token-color-feedback-success)'
+      warning-color: 'var(--token-color-feedback-warning)'
+      error-color: 'var(--token-color-feedback-error)'
+      background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-light-background.jpg')"
+      lovelace-background: var(--background-image)
+      primary-background-color: 'var(--token-color-background-base)'
+      secondary-background-color: 'var(--token-color-background-secondary)'
+      clear-background-color: 'rgba(255, 255, 255, 0.7)' # Kept as is, specific transparency
+      app-header-background-color: 'var(--token-color-background-base)' # Harmonized and used token
+      app-header-text-color: 'var(--token-color-icon-primary)' # Used token
+      app-header-edit-background-color: 'rgba(255, 255, 255, 0.8)' # Kept as is, specific transparency
+      sidebar-icon-color: 'var(--token-color-icon-sidebar)' # Used token
+      sidebar-text-color: 'var(--token-color-text-sidebar)' # Used token
+      sidebar-background-color: 'var(--token-color-background-sidebar)' # Harmonized and used token
+      sidebar-selected-icon-color: 'var(--token-color-icon-sidebar-selected)' # Used token
+      sidebar-selected-text-color: 'var(--token-color-text-sidebar-selected)' # Used token
+      border-radius: 'var(--token-size-radius-large)'
+      card-background-color: 'var(--token-color-background-card)'
+      ha-card-background: 'var(--token-color-background-card)' # Harmonized with card-background-color
+      ha-card-border-radius: 'var(--token-size-radius-large)'
+      ha-card-border-color: 'var(--token-color-border-card)'
+      ha-card-border-width: 'var(--token-size-width-border-card)'
+      ha-card-border-style: 'solid'
+      ha-card-border: 'var(--token-size-width-border-card) solid var(--token-color-border-card)'
+      ha-card-box-shadow: 'var(--token-shadow-card-medium)'
+      ha-view-sections-column-gap: 'var(--token-size-spacing-medium)'
+      ha-view-sections-column-min-width: var(--token-size-section-min-width)
+      state-icon-color: 'var(--token-color-icon-primary)'
+      state-on-color: 'var(--token-color-feedback-success)'
+      state-off-color: 'var(--token-color-feedback-error)'
+      label-badge-text-color: 'var(--token-color-text-label-badge)'
+      label-badge-red: 'var(--token-color-background-label-badge-red)'
+      label-badge-blue: 'var(--token-color-background-label-badge-blue)'
+      label-badge-green: 'var(--token-color-background-label-badge-green)'
+      label-badge-yellow: 'var(--token-color-background-label-badge-yellow)'
+      label-badge-grey: 'var(--token-color-background-label-badge-grey)'
+      ha-chip-text-color: 'var(--token-color-text-chip)'
+      mdc-dialog-scrim-color: 'var(--token-color-background-skrim)'
+      paper-slider-knob-color: 'var(--token-color-primary)'
+      paper-slider-knob-start-color: 'var(--token-color-primary)'
+      paper-slider-pin-color: 'var(--token-color-primary)'
+      paper-slider-active-color: 'var(--token-color-primary)'
+      paper-slider-secondary-color: 'var(--token-color-primary-light)'
+      switch-checked-button-color: 'var(--token-color-primary)'
+      switch-checked-track-color: 'var(--token-color-primary)'
+      switch-unchecked-button-color: 'var(--token-color-switch-button-unchecked)'
+      switch-unchecked-track-color: 'var(--token-color-switch-track-unchecked)'
+      paper-toggle-button-checked-button-color: 'var(--token-color-primary)'
+      paper-toggle-button-checked-bar-color: 'var(--token-color-primary)'
+      paper-toggle-button-unchecked-button-color: 'var(--token-color-switch-button-unchecked)'
+      paper-toggle-button-unchecked-bar-color: 'var(--token-color-switch-track-unchecked)'
+      mdc-checkbox-unchecked-color: 'var(--token-color-icon-secondary)'
+      mdc-radio-unchecked-color: 'var(--token-color-icon-secondary)'
+      mdc-ripple-hover-opacity: 'var(--token-opacity-ripple-hover)'
+      input-background-color: 'var(--token-color-background-input-base)'
+      input-background-token-color-disabled: 'var(--token-color-background-input-disabled)'
+      input-fill-color: 'var(--token-color-background-input-base)'
+      input-ink-color: 'var(--token-color-text-primary)'
+      input-label-ink-color: 'var(--token-color-text-primary)'
+      input-disabled-fill-color: 'var(--token-color-background-input-disabled)'
+      input-disabled-ink-color: 'var(--token-color-text-disabled)'
+      input-disabled-label-ink-color: 'var(--token-color-text-disabled)'
+      input-idle-line-color: 'var(--token-color-transparent)'
+      input-dropdown-icon-color: 'var(--token-color-text-secondary)'
+      input-hover-line-color: 'var(--token-color-primary)'
+      mdc-select-idle-line-color: 'var(--token-color-transparent)'
+      mdc-text-field-idle-line-color: 'var(--token-color-transparent)'
+      code-editor-background-color: 'rgba(234, 235, 238, 1)' # Kept as is, specific transparency
+      codemirror-meta: 'var(--token-color-text-primary)'
+      codemirror-property: 'var(--token-color-primary)'
+      codemirror-atom: 'var(--token-color-primary)'
+      codemirror-string: 'var(--token-color-codemirror-string)'
+      codemirror-keyword: 'var(--token-color-codemirror-keyword)'
+      codemirror-number: 'var(--token-color-codemirror-number)'
+      mcg-title-font-weight: 'var(--ha-font-weight-normal)' # Used token
+      mush-title-font-weight: 'var(--ha-font-weight-medium)' # Used token
+      mush-title-font-size: 'var(--token-size-font-2xl)'
+      light-grey-color: 'var(--token-color-grey)'
+      mush-rgb-grey: 'var(--token-rgb-grey)'
+    dark:
+      card-mod-theme: "Frosted Glass Dark"
+      # Styles applied directly to ha-card elements (usually within individual cards)
+      card-mod-card: |
+        ha-card {
+          background: none !important; # Ensures the main card background is transparent
+          backdrop-filter: blur(8px) saturate(1.2); # <-- MOVED HERE for Frosted Glass effect
+          -webkit-backdrop-filter: blur(8px) saturate(1.2); # <-- MOVED HERE for Frosted Glass effect
+        }
+        /* Bubble Card transparency for Dark theme */
+        .bubble-button-card-container {
+          background: rgba(30,30,30,0.4); # Semi-transparent dark for dark theme
+        }
+      # Global CSS variables and styles injected into the :host (root) element
+      card-mod-root: |
+        :host {
+          --ha-card-background: rgba(30, 30, 30, 0.85);
+          --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+          --ha-card-border-width: 0.5px;
+          --ha-card-border-color: rgba(60, 60, 60, 0.5);
+
+          /* Define your 'token' variables as CSS variables here for global use by card-mod */
+          --token-rgb-primary: 106, 116, 211;
+          --token-rgb-black: 0, 0, 0;
+          --token-rgb-white: 240, 243, 255;
+          --token-rgb-purple: 129, 45, 250;
+          --token-rgb-pink: 204, 0, 136;
+          --token-rgb-red: 204, 0, 51;
+          --token-rgb-deep-purple: 98, 0, 234;
+          --token-rgb-indigo: 48, 63, 159;
+          --token-rgb-blue: 33, 150, 243;
+          --token-rgb-light-blue: 3, 169, 244;
+          --token-rgb-cyan: 106, 116, 211;
+          --token-rgb-teal: 106, 116, 211;
+          --token-rgb-green: 56, 142, 60;
+          --token-rgb-light-green: 139, 195, 74;
+          --token-rgb-lime: 205, 220, 57;
+          --token-rgb-yellow: 250, 183, 0;
+          --token-rgb-amber: 255, 193, 7;
+          --token-rgb-orange: 255, 158, 0;
+          --token-rgb-deep-orange: 255, 87, 34;
+          --token-rgb-brown: 121, 85, 72;
+          --token-rgb-grey: 170, 170, 170;
+          --token-rgb-blue-grey: 150, 170, 180;
+          --token-rgb-disabled: 100, 100, 100;
+          --token-rgb-state-inactive: 100, 100, 100;
+          --token-color-primary: rgb(var(--token-rgb-primary));
+          --token-color-primary-light: rgb(130 140 220);
+          --token-color-accent: rgb(var(--token-rgb-teal));
+          --token-color-disabled: rgb(100 100 100);
+          --token-color-feedback-info: rgb(106, 116, 211);
+          --token-color-feedback-warning: rgb(255, 219, 117);
+
+          --token-color-feedback-error: rgb(234, 114, 135);
+          --token-color-feedback-success: rgb(118, 214, 152);
+          --token-color-icon-primary: rgba(240, 243, 255, 0.95);
+          --token-color-icon-secondary: rgba(240, 243, 255, 0.75);
+          --token-color-icon-sidebar: rgba(240, 243, 255, 0.6);
+          --token-color-icon-sidebar-selected: var(--token-color-icon-primary);
+          --token-color-text-primary: rgba(240, 243, 255, 0.98);
+          --token-color-text-secondary: rgba(240, 243, 255, 0.8);
+          --token-color-text-disabled: rgba(240, 243, 255, 0.45);
+          --token-color-text-sidebar-selected: var(--token-color-text-primary);
+          --token-color-text-sidebar: var(--token-color-text-secondary);
+          --token-color-text-label-badge: rgba(240, 243, 255, 0.85);
+          --token-color-text-chip: rgb(var(--token-rgb-white)); # Use rgb(var(--token-rgb-white)) if you want the rgb() function applied
+          --token-color-background-base: rgba(30, 30, 30, 0.6); # Changed alpha from 1.0 to 0.6
+          --token-color-background-secondary: rgba(40, 40, 40, 0.5);
+          --token-color-background-sidebar: var(--token-color-background-base); # Harmonized with primary-background-color
+          --token-color-background-input-base: rgba(50, 50, 50, 0.7);
+          --token-color-background-input-disabled: rgba(45, 45, 45, 0.6);
+          --token-color-background-label-badge: rgb(40, 40, 40);
+          --token-color-background-card: rgba(30, 30, 30, 0.85);
+          --token-color-background-skrim: rgba(0, 0, 0, 0.6);
+          --token-color-background-divider: rgba(60, 60, 60, 0.3);
+          --token-color-background-scrollbar-thumb: rgb(80, 80, 80);
+          --token-color-background-label-badge-red: var(--token-color-feedback-error);
+          --token-color-background-label-badge-blue: var(--token-color-feedback-info);
+          --token-color-background-label-badge-green: rgb(78, 183, 128);
+          --token-color-background-label-badge-yellow: var(--token-color-feedback-warning);
+          --token-color-background-label-badge-grey: rgb(83, 90, 103);
+          --token-color-background-popup-scrim: rgba(0, 0, 0, 1);
+          --token-color-border-card: rgba(60, 60, 60, 0.5);
+          --token-color-switch-button-unchecked: rgba(120, 120, 120, 0.6);
+          --token-color-switch-track-unchecked: rgba(120, 120, 120, 0.3);
+          --token-color-codemirror-string: rgb(153, 204, 255);
+          --token-color-codemirror-keyword: rgb(170, 204, 255);
+          --token-color-codemirror-number: rgb(255, 170, 102);
+          --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.4);
+          --token-size-radius-small: 10px;
+          --token-size-radius-medium: 14px;
+          --token-size-radius-large: 18px;
+          --token-size-radius-card: var(--token-size-radius-large);
+          --token-size-width-border-card: 0.5px;
+          --token-size-height-slider: 5px;
+          --token-size-height-navbar: 60px;
+          --token-size-font-xs: calc(10px * var(--ha-font-size-scale));
+          --token-size-font-s: calc(12px * var(--ha-font-size-scale));
+          --token-size-font-m: calc(14px * var(--ha-font-size-scale));
+          --token-size-font-l: calc(15px * var(--ha-font-size-scale));
+          --token-size-font-xl: calc(20px * var(--ha-font-size-scale));
+          --token-size-font-2xl: calc(25px * var(--ha-font-size-scale));
+          --token-size-font-3xl: calc(29px * var(--ha-font-size-scale));
+          --token-size-font-4xl: calc(33px * var(--ha-font-size-scale));
+          --token-size-font-5xl: calc(42px * var(--ha-font-size-scale));
+          --token-size-spacing-medium: 17px;
+          --token-size-section-min-width: 320px;
+          --token-color-transparent: rgba(0, 0, 0, 0);
+          --token-color-black: rgb(0, 0, 0);
+          --token-color-white: rgb(255, 255, 255);
+          --token-opacity-ripple-hover: 0.1;
+          --token-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+          --token-weight-font-title-card: 500;
+
+          # Additional color variables
+          --token-color-red: rgb(var(--token-rgb-red));
+          --token-color-green: rgb(var(--token-rgb-green));
+          --token-color-blue: rgb(var(--token-rgb-blue));
+          --token-color-yellow: rgb(var(--token-rgb-yellow));
+          --token-color-orange: rgb(var(--token-rgb-orange));
+          --token-color-purple: rgb(var(--token-rgb-purple));
+          --token-color-pink: rgb(var(--token-rgb-pink));
+          --token-color-amber: rgb(var(--token-rgb-amber));
+          --token-color-cyan: rgb(var(--token-rgb-cyan));
+          --token-color-teal: rgb(var(--token-rgb-teal));
+          --token-color-lime: rgb(var(--token-rgb-lime));
+          --token-color-light-green: rgb(var(--token-rgb-light-green));
+          --token-color-deep-orange: rgb(var(--token-rgb-deep-orange));
+          --token-color-brown: rgb(var(--token-rgb-brown));
+          --token-color-grey: rgb(var(--token-rgb-grey));
+          --token-color-blue-grey: rgb(var(--token-rgb-blue-grey));
+          --token-color-indigo: rgb(var(--token-rgb-indigo));
+          --token-color-deep-purple: rgb(var(--token-rgb-deep-purple));
+          --token-color-light-blue: rgb(var(--token-rgb-light-blue));
+
+          # Text Dividers from text-divier-row card
+          --text-divider-color: rgb(240, 243, 255); # Set directly for clarity
+          --text-divider-font-size: "16px"; # Adjusted for better visibility
+          --text-divider-line-size: "1px";
+        }
+
+        ha-card {
+          border-radius: var(--token-size-radius-large);
+        }
+        ha-card ha-card { # Inner cards should not have borders
+          --ha-card-border-width: 0px;
+        }
+        app-header, app-toolbar {
+          background: rgba(30, 30, 30, 0.8) !important; # Harmonized with primary-background-color
+          backdrop-filter: blur(10px) saturate(1.2);
+          -webkit-backdrop-filter: blur(10px) saturate(1.2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        ha-drawer {
+          --mdc-drawer-scrim-color: var(--token-color-background-skrim) !important;
+        }
+        .mdc-drawer .mdc-drawer__content {
+          background: rgba(30, 30, 30, 0.7) !important; # Harmonized with primary-background-color
+          backdrop-filter: blur(30px) saturate(1.3);
+          -webkit-backdrop-filter: blur(30px) saturate(30px) !important;
+        }
+        ha-label-badge {
+          --label-badge-background-color: rgba(40, 40, 40, 0.2) !important;
+          backdrop-filter: blur(12px) saturate(1.1);
+          -webkit-backdrop-filter: blur(12px) saturate(1.1);
+          --label-badge-text-color: var(--token-color-text-primary) !important;
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+          border: 0.5px solid var(--token-color-border-card);
+        }
+        input, ha-textfield, ha-select {
+          background: var(--token-color-background-input-base) !important;
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          border-radius: var(--token-size-radius-small);
+          border: none !important;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- FINAL FIX FOR DROPDOWN MENUS (Mushroom and Stock) --- */
+        /* Target the mwc-menu host element */
+        mwc-menu {
+          z-index: 9999 !important;
+          overflow: visible !important;
+          transform: none !important;
+        }
+
+        /* Target the actual menu surface within the mwc-menu's shadow DOM */
+        mwc-menu-surface.mdc-menu-surface {
+          z-index: 9999 !important;
+          left: 0px !important;
+          position: fixed !important;
+          transform: none !important;
+          background: var(--token-color-background-input-base) !important;
+          backdrop-filter: blur(8px) saturate(1.2) !important;
+          -webkit-backdrop-filter: blur(8px) saturate(1.2) !important;
+          overflow: visible !important;
+          max-width: unset !important;
+          min-width: unset !important;
+          width: auto !important;
+        }
+
+        /* If the actual list items within the menu are affected, target them too */
+        .mdc-list-item {
+          background: transparent !important;
+        }
+        /* --- END FINAL FIX FOR DROPDOWN MENUS --- */
+
+      card-mod-dialog: |
+        ha-dialog {
+          --mdc-dialog-box-shadow: 0px 15px 30px rgba(0,0,0,0.4);
+          --ha-dialog-border-radius: var(--token-size-radius-large);
+        }
+        ha-dialog .mdc-dialog__surface {
+          background: rgba(30, 30, 30, 0.98) !important;
+          backdrop-filter: blur(15px) saturate(1.1);
+          -webkit-backdrop-filter: blur(15px) saturate(1.1);
+          border: 1px solid rgba(60, 60, 60, 0.5);
+        }
+
+      token-rgb-primary: '106, 116, 211'
+      token-rgb-black: '0, 0, 0'
+      token-rgb-white: '240, 243, 255'
+      token-rgb-purple: '129, 45, 250'
+      token-rgb-pink: '204, 0, 136'
+      token-rgb-red: '204, 0, 51'
+      token-rgb-deep-purple: '98, 0, 234'
+      token-rgb-indigo: '48, 63, 159'
+      token-rgb-blue: '33, 150, 243'
+      token-rgb-light-blue: '3, 169, 244'
+      token-rgb-cyan: '106, 116, 211'
+      token-rgb-teal: '106, 116, 211'
+      token-rgb-green: '56, 142, 60'
+      token-rgb-light-green: '139, 195, 74'
+      token-rgb-lime: '205, 220, 57'
+      token-rgb-yellow: '250, 183, 0'
+      token-rgb-amber: '255, 193, 7'
+      token-rgb-orange: '255, 158, 0'
+      token-rgb-deep-orange: '255, 87, 34'
+      token-rgb-brown: '121, 85, 72'
+      token-rgb-grey: '170, 170, 170'
+      token-rgb-blue-grey: '150, 170, 180'
+      token-rgb-disabled: '100, 100, 100'
+      token-rgb-state-inactive: '100, 100, 100'
+      token-color-primary: 'rgb(106, 116, 211)'
+      token-color-primary-light: 'rgb(130, 140, 220)'
+      token-color-accent: 'rgb(106, 116, 211)'
+      token-color-disabled: 'rgb(100, 100, 100)'
+      token-color-feedback-info: 'rgb(106, 116, 211)'
+      token-color-feedback-warning: 'rgb(255, 219, 117)'
+      token-color-feedback-error: 'rgb(234, 114, 135)'
+      token-color-feedback-success: 'rgb(118, 214, 152)'
+      token-color-icon-primary: 'rgba(240, 243, 255, 0.95)'
+      token-color-icon-secondary: 'rgba(240, 243, 255, 0.75)'
+      token-color-icon-sidebar: 'rgba(240, 243, 255, 0.6)'
+      token-color-icon-sidebar-selected: 'var(--token-color-icon-primary)' # Used token variable
+      token-color-text-primary: 'rgba(240, 243, 255, 0.98)'
+      token-color-text-secondary: 'rgba(240, 243, 255, 0.8)'
+      token-color-text-disabled: 'rgba(240, 243, 255, 0.45)'
+      token-color-text-sidebar-selected: 'var(--token-color-text-primary)' # Used token variable
+      token-color-text-sidebar: 'var(--token-color-text-secondary)' # Used token variable
+      token-color-text-label-badge: 'rgba(240, 243, 255, 0.85)'
+      token-color-text-chip: 'rgb(255, 255, 255)'
+      token-color-background-base: 'rgba(30, 30, 30, 0.6)' # Applied opacity change
+      token-color-background-secondary: 'rgba(40, 40, 40, 0.5)'
+      token-color-background-sidebar: 'var(--token-color-background-base)' # Used token variable
+      token-color-background-input-base: 'rgba(50, 50, 50, 0.7)'
+      token-color-background-input-disabled: 'rgba(45, 45, 45, 0.6)'
+      token-color-background-label-badge: 'rgb(40, 40, 40)'
+      token-color-background-card: 'rgba(30, 30, 30, 0.85)'
+      token-color-background-skrim: 'rgba(0, 0, 0, 0.6)'
+      token-color-background-divider: 'rgba(60, 60, 60, 0.3)'
+      token-color-background-scrollbar-thumb: 'rgb(80, 80, 80)'
+      token-color-background-label-badge-red: 'var(--token-color-feedback-error)'
+      token-color-background-label-badge-blue: 'var(--token-color-feedback-info)'
+      token-color-background-label-badge-green: 'rgb(78, 183, 128)'
+      token-color-background-label-badge-yellow: 'var(--token-color-feedback-warning)'
+      token-color-background-label-badge-grey: 'rgb(83, 90, 103)'
+      token-color-background-popup-scrim: 'rgba(0, 0, 0, 1)'
+      token-color-border-card: 'rgba(60, 60, 60, 0.5)'
+      token-color-switch-button-unchecked: 'rgba(120, 120, 120, 0.6)'
+      token-color-switch-track-unchecked: 'rgba(120, 120, 120, 0.3)'
+      token-color-codemirror-string: 'rgb(153, 204, 255)'
+      token-color-codemirror-keyword: 'rgb(170, 204, 255)'
+      token-color-codemirror-number: 'rgb(255, 170, 102)'
+      token-shadow-card-medium: '0 12px 20px rgba(0, 0, 0, 0.4)'
+      token-size-radius-small: '10px'
+      token-size-radius-medium: '14px'
+      token-size-radius-large: '18px'
+      token-size-radius-card: 'var(--token-size-radius-large)'
+      token-size-width-border-card: '0.5px'
+      token-size-height-slider: '5px'
+      token-size-height-navbar: '60px'
+      token-size-font-xs: '10px'
+      token-size-font-s: '12px'
+      token-size-font-m: '14px'
+      token-size-font-l: '15px'
+      token-size-font-xl: '20px'
+      token-size-font-2xl: '25px'
+      token-size-font-3xl: '29px'
+      token-size-font-4xl: '33px'
+      token-size-font-5xl: '42px'
+      token-size-spacing-medium: '17px'
+      token-size-section-min-width: 320px
+      token-color-transparent: 'rgba(0, 0, 0, 0)'
+      token-color-black: 'rgb(0, 0, 0)'
+      token-color-white: 'rgb(255, 255, 255)'
+      token-opacity-ripple-hover: '0.1'
+      token-font-family-primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      token-weight-font-title-card: '500'
+
+      header-height: '60px'
+      paper-slider-height: '5px'
+
+      ha-font-family-body: 'var(--token-font-family-primary)'
+      ha-font-family-heading: 'var(--token-font-family-primary)'
+      ha-font-family-code: 'var(--token-font-family-primary)'
+      ha-font-family-longform: 'var(--token-font-family-primary)'
+      ha-card-header-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-button-font-family: 'var(--token-font-family-primary)'
+      mdc-typography-body1-font-family: 'var(--token-font-family-primary)'
+      md-list-item-label-text-font: 'var(--token-font-family-primary)'
+      paper-font-common-base_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-common-code_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-body1_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-subhead_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-headline_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-caption_-_font-family: 'var(--token-font-family-primary)'
+      paper-font-title_-_font-family: 'var(--token-font-family-primary)'
+
+      ha-font-weight-normal: '400'
+      ha-font-weight-medium: '500'
+      ha-font-weight-bold: '700'
+      ha-font-weight-body: '400'
+      ha-font-weight-heading: '500'
+      ha-font-weight-action: '500'
+      mdc-typography-button-font-weight: '500'
+      title-font-weight: 'var(--token-weight-font-title-card)'
+
+      ha-font-size-xs: '10px'
+      ha-font-size-s: '12px'
+      ha-font-size-m: '14px'
+      ha-font-size-l: '15px'
+      ha-font-size-xl: '20px'
+      ha-font-size-2xl: '25px'
+      ha-font-size-3xl: '29px'
+      ha-font-size-4xl: '33px'
+      ha-font-size-5xl: '42px'
+      title-font-size: 'var(--token-size-font-xl)'
+      ha-heading-card-title-font-size: 'var(--token-size-font-l)'
+      ha-heading-card-title-font-weight: 'var(--token-weight-font-title-card)'
+      ha-font-smoothing: 'antialiased'
+
+      # Colors and other properties - direct values
+      primary-text-color: 'var(--token-color-text-primary)'
+      secondary-text-color: 'var(--token-color-text-secondary)'
+      text-primary-color: 'var(--token-color-text-primary)'
+      disabled-text-color: 'var(--token-color-text-disabled)'
+      app-header-edit-text-color: 'var(--token-color-text-primary)'
+      text-light-primary-color: 'rgb(255, 255, 255)' # Adjusted for dark theme
+      paper-item-icon-color: 'var(--token-color-icon-primary)'
+      state-inactive-color: 'var(--token-color-text-secondary)'
+      primary-color: 'var(--token-color-primary)'
+      dark-primary-color: 'var(--token-color-primary)'
+      light-primary-color: 'var(--token-color-primary-light)'
+      accent-color: 'var(--token-color-accent)'
+      divider-color: 'var(--token-color-background-divider)'
+      scrollbar-thumb-color: 'var(--token-color-background-scrollbar-thumb)'
+      disabled-color: 'var(--token-color-disabled)'
+      info-color: 'var(--token-color-feedback-info)'
+      success-color: 'var(--token-color-feedback-success)'
+      warning-color: 'var(--token-color-feedback-warning)'
+      error-color: 'var(--token-color-feedback-error)'
+      background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-dark-background.jpg')"
+      lovelace-background: var(--background-image)
+      primary-background-color: 'var(--token-color-background-base)' # Applied opacity change
+      secondary-background-color: 'var(--token-color-background-secondary)'
+      clear-background-color: 'rgba(50, 50, 50, 0.7)' # Adjusted for dark theme
+      app-header-background-color: 'rgba(30, 30, 30, 0.8)' # Harmonized with primary-background-color
+      app-header-text-color: 'var(--token-color-icon-primary)'
+      app-header-edit-background-color: 'rgba(40, 40, 40, 0.8)' # Adjusted for dark theme
+      sidebar-icon-color: 'var(--token-color-icon-sidebar)'
+      sidebar-text-color: 'var(--token-color-text-sidebar)'
+      sidebar-background-color: 'rgba(30, 30, 30, 0.7)' # Harmonized with primary-background-color
+      sidebar-selected-icon-color: 'var(--token-color-icon-sidebar-selected)'
+      sidebar-selected-text-color: 'var(--token-color-text-sidebar-selected)'
+      border-radius: 'var(--token-size-radius-large)'
+      card-background-color: 'var(--token-color-background-card)'
+      ha-card-background: 'var(--token-color-background-card)'
+      ha-card-border-radius: 'var(--token-size-radius-large)'
+      ha-card-border-color: 'var(--token-color-border-card)'
+      ha-card-border-width: 'var(--token-size-width-border-card)'
+      ha-card-border-style: 'solid'
+      ha-card-border: 'var(--token-size-width-border-card) solid var(--token-color-border-card)'
+      ha-card-box-shadow: 'var(--token-shadow-card-medium)'
+      ha-view-sections-column-gap: 'var(--token-size-spacing-medium)'
+      ha-view-sections-column-min-width: var(--token-size-section-min-width)
+      state-icon-color: 'var(--token-color-icon-primary)'
+      state-on-color: 'var(--token-color-feedback-success)'
+      state-off-color: 'var(--token-color-feedback-error)'
+      label-badge-text-color: 'var(--token-color-text-label-badge)'
+      label-badge-red: 'var(--token-color-background-label-badge-red)'
+      label-badge-blue: 'var(--token-color-background-label-badge-blue)'
+      label-badge-green: 'var(--token-color-background-label-badge-green)'
+      label-badge-yellow: 'var(--token-color-background-label-badge-yellow)'
+      label-badge-grey: 'var(--token-color-background-label-badge-grey)'
+      ha-chip-text-color: 'var(--token-color-text-chip)'
+      mdc-dialog-scrim-color: 'var(--token-color-background-skrim)'
+      paper-slider-knob-color: 'var(--token-color-primary)'
+      paper-slider-knob-start-color: 'var(--token-color-primary)'
+      paper-slider-pin-color: 'var(--token-color-primary)'
+      paper-slider-active-color: 'var(--token-color-primary)'
+      paper-slider-secondary-color: 'var(--token-color-primary-light)'
+      switch-checked-button-color: 'var(--token-color-primary)'
+      switch-checked-track-color: 'var(--token-color-primary)'
+      switch-unchecked-button-color: 'var(--token-color-switch-button-unchecked)'
+      switch-unchecked-track-color: 'var(--token-color-switch-track-unchecked)'
+      paper-toggle-button-checked-button-color: 'var(--token-color-primary)'
+      paper-toggle-button-checked-bar-color: 'var(--token-color-primary)'
+      paper-toggle-button-unchecked-button-color: 'var(--token-color-switch-button-unchecked)'
+      paper-toggle-button-unchecked-bar-color: 'var(--token-color-switch-track-unchecked)'
+      mdc-checkbox-unchecked-color: 'rgb(120, 122, 135)' # Kept as is, no direct token equivalent
+      mdc-radio-unchecked-color: 'rgb(120, 122, 135)' # Kept as is, no direct token equivalent
+      mdc-ripple-hover-opacity: '0.1'
+      input-background-color: 'rgba(50, 50, 50, 0.7)' # Adjusted for dark theme
+      input-background-token-color-disabled: 'rgba(45, 45, 45, 0.6)'
+      input-fill-color: 'rgba(50, 50, 50, 0.7)' # Adjusted for dark theme
+      input-ink-color: 'rgb(210, 210, 215)' # Adjusted for dark theme
+      input-label-ink-color: 'rgb(210, 210, 215)' # Adjusted for dark theme
+      input-disabled-fill-color: 'rgba(45, 45, 45, 0.6)'
+      input-disabled-ink-color: 'rgba(210, 210, 215, 0.5)' # Adjusted for dark theme
+      input-disabled-label-ink-color: 'rgba(210, 210, 215, 0.5)' # Adjusted for dark theme
+      input-idle-line-color: 'transparent'
+      input-dropdown-icon-color: 'rgb(210, 210, 215)' # Adjusted for dark theme
+      input-hover-line-color: 'rgb(106, 116, 211)'
+      mdc-select-idle-line-color: 'transparent'
+      mdc-text-field-idle-line-color: 'transparent'
+      code-editor-background-color: 'rgba(30, 30, 30, 1)' # Adjusted for dark theme
+      codemirror-meta: 'rgb(240, 243, 255)' # Adjusted for dark theme
+      codemirror-property: 'rgb(106, 116, 211)'
+      codemirror-atom: 'rgb(106, 116, 211)'
+      codemirror-string: 'rgb(153, 204, 255)'
+      codemirror-keyword: 'rgb(170, 204, 255)'
+      codemirror-number: 'rgb(255, 170, 102)'
+      mcg-title-font-weight: 'var(--ha-font-weight-normal)'
+      mush-title-font-weight: 'var(--ha-font-weight-medium)'
+      mush-title-font-size: 'var(--token-size-font-2xl)'
+      light-grey-color: 'var(--token-color-grey)'
+      mush-rgb-grey: 'var(--token-rgb-grey)'
