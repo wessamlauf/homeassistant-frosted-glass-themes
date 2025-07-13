@@ -16,6 +16,13 @@ Frosted Glass:
         .bubble-button-card-container {
           background: rgba(255,255,255,0.2); # Semi-transparent white for light theme
         }
+        /* FIX energy-sources-table */
+        .mdc-data-table {
+          background: none !important;
+        }
+        .mdc-data-table__header-cell {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }        
 
       # Global CSS variables and styles injected into the :host (root) element
       card-mod-root: |
@@ -466,6 +473,13 @@ Frosted Glass:
         .bubble-button-card-container {
           background: rgba(30,30,30,0.4); # Semi-transparent dark for dark theme
         }
+        /* FIX energy-sources-table */
+        .mdc-data-table {
+          background: none !important;
+        }
+        .mdc-data-table__header-cell {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }        
       # Global CSS variables and styles injected into the :host (root) element
       card-mod-root: |
         :host {
