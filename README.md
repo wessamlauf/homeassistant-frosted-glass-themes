@@ -56,3 +56,7 @@ If you haven't already, install HACS by following the official guide.
 
 ### Dark Version:
 ![dark_only](https://github.com/user-attachments/assets/e4686ecb-4ff8-476c-ab03-f90330ba2f74)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=wessamlauf/homeassistant-frosted-glass-themes&type=Date)](https://www.star-history.com/#wessamlauf/homeassistant-frosted-glass-themes&Date)
