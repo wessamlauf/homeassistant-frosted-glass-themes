@@ -32,16 +32,6 @@ If you haven't already, install HACS by following the official guide.
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=WessamLauf&repository=homeassistant-frosted-glass-themes&category=theme) 
 
-**HACS manual configuration:** 
-1. Go to HACS in Home Assistant.
-2. On the top right, click "Custom repositories".
-3. Enter the repository URL: [https://github.com/joseluis9595/lovelace-navbar-card.git](https://github.com/wessamlauf/homeassistant-frosted-glass-themes)
-4. Type: Theme".
-5. Click Add!
-
-![image](https://github.com/user-attachments/assets/47fe5623-66fc-4a6d-9d18-7522b3b9136d)
-
-
 **Step 3: Restart Home Assistant.**
 
 **Step 4: Choose the Frosted Glass (Light, Dark or Auto) from your profile.**
