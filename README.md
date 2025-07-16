@@ -34,7 +34,7 @@ If you haven't already, install HACS by following the official guide.
 
 **Step 3: Restart Home Assistant.**
 
-**Step 4: Choose the Frosted Glass (Light, Dark or Auto) from your profile.**
+**Step 4: Choose the Frosted Glass from your profile.**
 
 -----
 
