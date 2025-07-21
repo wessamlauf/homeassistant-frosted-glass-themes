@@ -2,12 +2,13 @@
 If you feel like supporting this fun little project feel free to click the button ❤
 
 # Frosted Glass Theme for Home Assistant ✨
-![combination](https://github.com/user-attachments/assets/80d402d2-708c-40cb-887f-4c4d12cc729c)
-
+<img width="1536" height="424" alt="Frosted glass logo" src="https://github.com/user-attachments/assets/2d12f6ec-9c68-4744-9386-56fb37d2ad45" />
 
 ### Immerse yourself in a sleek, modern, and visually captivating Home Assistant experience with the Frosted Glass Theme\!
 
 This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboard, combining transparency with elegant blurring effects to create a truly unique and contemporary look. Designed for both visual appeal and comfortable usability, the Frosted Glass Theme transforms your Home Assistant interface into a work of art. 🖼️
+
+![screen-20250721-190520-ezgif com-crop](https://github.com/user-attachments/assets/98492b6c-8244-4bfc-ac47-f6ebaf089244)
 
 ## **Key Features:**
 
@@ -17,6 +18,7 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
       * **Dark Version:** A deep, rich, and comfortable aesthetic that reduces eye strain in low-light conditions. 🌙
   * **Modern Aesthetics:** Clean lines, subtle shadows, and carefully chosen color palettes ensure a cohesive and up-to-date look across your entire dashboard.
   * **Enhanced User Experience:** Beyond just looks, the theme is designed to make your Home Assistant interface feel more polished and intuitive. 👍
+
 
 ## **Compatibility:**
 
@@ -39,6 +41,10 @@ If you haven't already, install HACS by following the official guide.
 -----
 
 ## **Screenshots:**
+
+![screen-20250721-1853472-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/d0517fec-6473-4a01-be56-15bb5a5a0053)
+
+![screen-20250721-1855432-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/ed18961b-9e56-41da-b2b7-fe7aa0836855)
 
 ### Light Version:
 ![light_only](https://github.com/user-attachments/assets/f4255065-c137-4a90-a7d1-f49ebd33870c)
