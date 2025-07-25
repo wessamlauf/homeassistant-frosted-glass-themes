@@ -1,11 +1,10 @@
 # Frosted Glass Theme 
-# ver. 1.1.8 (2025-07-21)
+# ver. 1.1.9 (2025-07-25)
 
 Frosted Glass:
   modes:
     light:
       card-mod-theme: "Frosted Glass Light"
-      map-card-internal-zoomer-background: 'transparent' # // Used to work during testing, then it broke, keeping it here for now
 
       # =========================
       # HEADER (Top Bar)
@@ -78,6 +77,51 @@ Frosted Glass:
           backdrop-filter: blur(8px) saturate(1.2) !important;
           -webkit-backdrop-filter: blur(8px) saturate(1.2) !important;
         }
+        /* Markdown card with text_only → no background or blur */                        # 1.1.9 Change - text only markdown and mushroom title card no background // Beginning
+        :host(.text-only) ha-card,
+        :host(.text-only) ha-card::before {
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        }
+        /* Mushroom title card (no background or blur) */           
+        :host(mushroom-title-card) ha-card {
+          background: none !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;                   
+         }
+        :host(mushroom-title-card) ha-card::before {
+         content: none !important;                                                    
+        }
+        # === Prevent frosted glass from applying to bubble cards ===               # 1.1.9 Change - Bubble cards are no longer applied 
+        ha-card.type-custom-bubble-card {
+          background: none !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          box-shadow: none !important;
+          border-radius: 0px !important;
+        }
+
+        ha-card.type-custom-bubble-card::before {
+        content: none !important;
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        }
+        /* === Prevent frosted glass from applying to mushroom-chips-card outer container === */      # 1.1.9 Change - Outer mushroom chips no longer applied 
+        :host(mushroom-chips-card) ha-card {
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+         box-shadow: none !important;
+        }
+        :host(mushroom-chips-card) ha-card::before {
+         content: none !important;
+         background: none !important;
+         backdrop-filter: none !important;
+         -webkit-backdrop-filter: none !important;
+        } 
 
       # =========================
       # CARD-MOD-ROOT GLOBAL CSS
@@ -88,7 +132,7 @@ Frosted Glass:
           --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
           --ha-card-border-width: 0.5px;
           --ha-card-border-color: rgba(255, 255, 255, 0.3);
-
+          --ha-card-backdrop-filter: blur(8px) saturate(1.2);                                               # 1.1.9 change - added blur & saturation for badges
           /* Tokens (used throughout cards/UI) */
           --token-rgb-primary: 106, 116, 211;
           --token-rgb-black: 0, 0, 0;
@@ -389,7 +433,6 @@ Frosted Glass:
       mush-rgb-grey: '103, 104, 119'
 
       # Misc sizes
-      header-height: '60px'
       paper-slider-height: '5px'
       border-radius: '18px'
 
@@ -468,6 +511,51 @@ Frosted Glass:
           backdrop-filter: blur(10px) saturate(1.2) !important;
           -webkit-backdrop-filter: blur(10px) saturate(1.2) !important;
         }
+        /* Markdown card with text_only → no background or blur */                           # 1.1.9 Change - text only markdown and mushroom title card no background // Beginning
+        :host(.text-only) ha-card,
+        :host(.text-only) ha-card::before {
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        }
+        /* Mushroom title card (no background or blur) */           
+        :host(mushroom-title-card) ha-card {
+         background: none !important;
+         backdrop-filter: none !important;
+         -webkit-backdrop-filter: none !important;                   
+        }
+        :host(mushroom-title-card) ha-card::before {
+        content: none !important;                                                    
+        }
+        # === Prevent frosted glass from applying to bubble cards ===                       # 1.1.9 Change - Bubble cards are no longer applied 
+        ha-card.type-custom-bubble-card {
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border-radius: 0px !important;
+        }
+
+        ha-card.type-custom-bubble-card::before {
+        content: none !important;
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+         }
+        /* === Prevent frosted glass from applying to mushroom-chips-card outer container === */      # 1.1.9 Change - Outer mushroom chips no longer applied 
+        :host(mushroom-chips-card) ha-card {
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        }
+        :host(mushroom-chips-card) ha-card::before {
+        content: none !important;
+         background: none !important;
+         backdrop-filter: none !important;
+         -webkit-backdrop-filter: none !important;
+        } 
 
       # =========================
       # CARD-MOD-ROOT GLOBAL CSS
@@ -478,6 +566,7 @@ Frosted Glass:
           --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.28);
           --ha-card-border-width: 0.5px;
           --ha-card-border-color: rgba(60, 60, 60, 0.5);
+          --ha-card-backdrop-filter: blur(8px) saturate(1.2);                                               # 1.1.9 change - added blur & saturation for badges
 
           /* Tokens - match structure to Light theme for consistency */
           --token-rgb-primary: 106, 116, 211;
