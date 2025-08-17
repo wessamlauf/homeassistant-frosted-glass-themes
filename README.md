@@ -20,6 +20,7 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 - **Light & Dark Modes**: Choose between a bright, clean look or a soft dark interface. ☀️🌑
 - **Modern Design**: Rounded corners, minimal shadows, and cohesive color palettes. 🛋️
 - **Enhanced UX**: Designed to feel fluid, comfortable, and polished. 🖼️
+- **Lite Editions (New)**: Optional no-blur builds for older/low-end devices. They keep the same semi-transparent, glassy look while improving performance and avoiding dropdown misplacement caused by HA’s blur handling. ⚡
 
 ## 🚀 Quick Installation Guide
 
@@ -39,22 +40,42 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 -----
 
 > ⚠️ **Note:** This theme *requires* [`card-mod`](https://github.com/thomasloven/lovelace-card-mod) to render correctly. Without it, blur effects and styling will not work.
+> Additionally, **Markdown cards** that are text-only will still receive the theme’s glass/border styling (themes can’t reliably detect “text-only” variants). If you want a truly plain text-only Markdown card, add this to that card (copy&paste ready):
+
+```yaml
+card_mod:
+  style: |
+    ha-card {
+      background: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+    ha-card::before {
+      content: none !important;
+      background: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+```
+
 
 > 💡 **Optional:** To match the navigation bar shown in screenshots, install the [lovelace-navbar-card](https://github.com/joseluis9595/lovelace-navbar-card).
 
 -----
 
-## 🖼️ **Screenshots** 
+## 🖼️ **Screenshots**
 
 ### ☀️ Light Mode: 
-![Screenshot_2025-07-25-23-04-57-629](https://github.com/user-attachments/assets/85fe48bf-c151-4af0-8c29-8bb0bc93222b)
-![Screenshot_2025-07-25-23-05-19-615](https://github.com/user-attachments/assets/d20a2787-04f5-47ea-a9a4-0cc0780deefa)
-![Screenshot_2025-07-25-23-05-01-929](https://github.com/user-attachments/assets/fe27c4d3-b428-4a7e-96f2-4ffe986ce498)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/68102fc2-15af-4cd2-a1ec-d1a4cd5710fa" />
+<img width="1909" height="1067" alt="image" src="https://github.com/user-attachments/assets/44224133-c307-4e8f-8a93-05b32938d334" />
+<img width="1918" height="1079" alt="image" src="https://github.com/user-attachments/assets/5bce4ee9-5b1a-45c8-9400-2c5dfd409bc7" />
+
 
 ### 🌑 Dark Mode: 
-![Screenshot_2025-07-25-23-05-39-956](https://github.com/user-attachments/assets/68b928ec-d2ce-4a13-add5-3cad97124947)
-![Screenshot_2025-07-25-23-05-57-936](https://github.com/user-attachments/assets/c675de08-1483-4a25-ba29-d68c004191e8)
-![Screenshot_2025-07-25-23-05-45-793](https://github.com/user-attachments/assets/f225d13a-5dc8-4104-b233-6ace56e306b8)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6a6a0f7e-26f4-4819-9a92-8c8abc6ef041" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/346dd10a-35b4-4309-afb6-807cb5cd269d" />
+<img width="1917" height="1079" alt="image" src="https://github.com/user-attachments/assets/8f7e8af6-25f7-43f2-a09d-137d4ff6b031" />
 
 
 ## ❤️ Support the Project
@@ -92,7 +113,7 @@ Dynamic background colors using Jinja templates in `card_mod` (e.g., for chips) 
 📦 [#42](https://github.com/wessamlauf/homeassistant-frosted-glass-themes/issues/42)  
 Blur effects break dropdown visibility inside HACS menus due to how Home Assistant renders these elements **outside the theme root DOM**.  
 Multiple fixes were tested, but the problem stems from **Material Web Components** and is unlikely to be solvable from the theme side.  
-➡️ *Won’t fix unless upstream behavior changes.*
+➡️ Tip: **The Lite version** (no blur) render dropdowns correctly and avoid this issue.
 
 
 ### 4. **stack-in-card Incompatibility**  
@@ -103,7 +124,7 @@ Cards rendered inside `custom:stack-in-card` are deeply nested, and the theme’
 
 ### 5. **Performance on Low-End Devices**  
 The heavy use of `backdrop-filter: blur()` may cause noticeable lag on low-end hardware (older tablets, Pi-based dashboards, etc.).  
-➡️ *A future “Frosted Glass Lite” variant is planned, with simplified visuals for better performance.*
+➡️ Tip: **The Lite version** (no blur) for the same glassy look without blur, dramatically better performance, and no dropdown misplacement.
 
 ---
 
