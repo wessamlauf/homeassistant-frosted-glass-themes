@@ -1,15 +1,14 @@
-# Frosted Glass Theme
+# Frosted Glass Lite Theme
 # ver. 1.2 (2025-08-16)
 
-Frosted Glass:
+Frosted Glass Lite:
   modes:
     light:
-      card-mod-theme: "Frosted Glass Light"
+      card-mod-theme: "Frosted Glass Light Lite"
 
       # =========================
       # HEADER (Top Bar)
       # =========================
-      app-header-backdrop-filter: 'blur(6px) saturate(1.2)'
       app-header-background-color: 'rgba(234, 235, 238, 0.1)'
       app-header-text-color: 'rgba(19, 21, 54, 0.95)'
       app-header-edit-background-color: 'rgba(255, 255, 255, 0.8)'
@@ -30,7 +29,6 @@ Frosted Glass:
       # =========================
       # DIALOGS
       # =========================
-      ha-dialog-surface-backdrop-filter: 'blur(8px)'                                   
       ha-dialog-surface-background: 'rgba(234, 235, 238, 0.7)'
       dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'                                                     # 1.2 Glass – fix: remove stray quotes inside rgba
       paper-dialog-background-color: 'rgba(234, 235, 238, 0.7)'
@@ -43,8 +41,6 @@ Frosted Glass:
         /* Base reset */
         ha-card {
           background: transparent !important;
-          backdrop-filter: unset !important;
-          -webkit-backdrop-filter: unset !important;
         }
 
         /* Glass layer */
@@ -53,8 +49,6 @@ Frosted Glass:
           position: absolute;
           inset: 0;
           background: var(--ha-card-glass-tint, rgba(255, 255, 255, 0.08));                                    /* 1.2 Glass – subtle tint */
-          backdrop-filter: var(--ha-card-backdrop-filter, blur(8px) saturate(1.2));
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, blur(8px) saturate(1.2));
           z-index: -1;
           pointer-events: none;
           border-radius: inherit;
@@ -70,8 +64,6 @@ Frosted Glass:
         :host(hui-heading-card) ha-card,
         :host(hui-glance-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
         :host(hui-heading-card) ha-card::before,
         :host(hui-glance-card) ha-card::before {
@@ -88,8 +80,6 @@ Frosted Glass:
         }
         .mdc-data-table__header-cell {
           background: rgba(255, 255, 255, 0.1) !important;
-          backdrop-filter: var(--ha-card-backdrop-filter) !important;
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter) !important;
           box-shadow: var(--ha-card-glass-inset-shadow) !important;                                           /* 1.2 Glass – consistent bevel */
         }
 
@@ -99,8 +89,6 @@ Frosted Glass:
         ha-card.text-only,
         ha-card.text-only::before {                                                                           /* 1.2 Glass – add ha-card.text-only for compatibility */
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           content: none !important;
         }
@@ -108,8 +96,6 @@ Frosted Glass:
         /* Mushroom title card (no background or blur) */
         :host(mushroom-title-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;                                                                         /* 1.2 Glass – ensure no bevel */
         }
         :host(mushroom-title-card) ha-card::before {
@@ -119,30 +105,22 @@ Frosted Glass:
         /* === Prevent frosted glass from applying to bubble cards ===               # 1.2 Change - Bubble cards are no longer applied */
         ha-card.type-custom-bubble-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
         ha-card.type-custom-bubble-card::before {
           content: none !important;
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
 
         /* === Prevent frosted glass from applying to mushroom-chips-card outer container ===      # 1.2 Change - Outer mushroom chips no longer applied  */
         :host(mushroom-chips-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
         }
         :host(mushroom-chips-card) ha-card::before {
           content: none !important;
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
 
       # =========================
@@ -153,8 +131,7 @@ Frosted Glass:
         --ha-card-background: rgba(242, 245, 255, 0.1);
         --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         --ha-card-border-width: 0.5px;
-        --ha-card-border-color: rgba(255, 255, 255, 0.3);
-        --ha-card-backdrop-filter: blur(8px) saturate(1.2);                                                   # 1.1.9 change - added blur & saturation for badges
+        --ha-card-border-color: rgba(255, 255, 255, 0.3);                                                # 1.1.9 change - added blur & saturation for badges
 
         /* Glass system tokens (new) */
         --ha-card-glass-tint: rgba(255, 255, 255, 0.08);                                                      # 1.2 Glass – global tint layer
@@ -295,8 +272,6 @@ Frosted Glass:
 
         /* SIDEBAR BLUR */
         .mdc-drawer .mdc-drawer__content {
-          backdrop-filter: blur(6px) saturate(1.2) !important;
-          -webkit-backdrop-filter: blur(6px) saturate(1.2) !important;
           background: rgba(234, 235, 238, 0.7) !important;
           box-shadow: var(--ha-card-glass-inset-shadow) !important;                                          /* 1.2 Glass – subtle inner edge for consistency */
         }
@@ -319,8 +294,6 @@ Frosted Glass:
         /* LABEL BADGE */
         ha-label-badge {
           --label-badge-background-color: rgba(230, 230, 230, 0.2) !important;
-          backdrop-filter: blur(12px) saturate(1.1) !important;
-          -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
           --label-badge-text-color: rgba(19, 21, 54, 0.9) !important;
           box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05) !important;
           border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
@@ -329,8 +302,6 @@ Frosted Glass:
         /* INPUTS */
         input, ha-textfield, ha-select {
           background: rgba(255, 255, 255, 0.7) !important;
-          backdrop-filter: blur(6px) !important;
-          -webkit-backdrop-filter: blur(6px);
           border-radius: var(--token-size-radius-small);
           border: none !important;
           box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
@@ -479,12 +450,11 @@ Frosted Glass:
       border-radius: '18px'
 
     dark:
-      card-mod-theme: 'Frosted Glass Dark'
+      card-mod-theme: 'Frosted Glass Dark Lite'
 
       # =========================
       # HEADER (Top Bar)
       # =========================
-      app-header-backdrop-filter: 'blur(8px) saturate(1.1)'
       app-header-background-color: 'rgba(30, 30, 30, 0.01)'
       app-header-text-color: 'rgba(240, 243, 255, 0.95)'
       app-header-edit-background-color: 'rgba(30, 33, 54, 0.8)'
@@ -503,7 +473,6 @@ Frosted Glass:
       # =========================
       # DIALOGS
       # =========================
-      ha-dialog-surface-backdrop-filter: 'blur(8px)'                  # 1.2 Glass – same blur as cards
       ha-dialog-surface-background: 'rgba(30, 30, 30, 0.7)'
       dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.25)'
       paper-dialog-background-color: 'rgba(30, 30, 30, 0.7)'
@@ -516,8 +485,6 @@ Frosted Glass:
         /* Base reset */
         ha-card {
           background: transparent !important;
-          backdrop-filter: unset !important;
-          -webkit-backdrop-filter: unset !important;
         }
 
         /* Glass layer (variable-driven, matches Light) */
@@ -526,8 +493,6 @@ Frosted Glass:
           position: absolute;
           inset: 0;
           background: var(--ha-card-glass-tint, rgba(28, 29, 33, 0.18));                    /* 1.2 Glass – subtle dark tint */
-          backdrop-filter: var(--ha-card-backdrop-filter, blur(10px) saturate(1.2));
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, blur(10px) saturate(1.2));
           z-index: -1;
           pointer-events: none;
           border-radius: inherit;
@@ -543,8 +508,6 @@ Frosted Glass:
         :host(hui-heading-card) ha-card,
         :host(hui-glance-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
         :host(hui-heading-card) ha-card::before,
         :host(hui-glance-card) ha-card::before {
@@ -560,8 +523,6 @@ Frosted Glass:
         }
         .mdc-data-table__header-cell {
           background: rgba(30, 33, 54, 0.18) !important;
-          backdrop-filter: var(--ha-card-backdrop-filter) !important;
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter) !important;
           box-shadow: var(--ha-card-glass-inset-shadow) !important;                         /* 1.2 Glass – consistent bevel */
         }
 
@@ -571,8 +532,6 @@ Frosted Glass:
         ha-card.text-only,
         ha-card.text-only::before {                                                         /* 1.2 Glass – add ha-card.text-only for compatibility */
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           content: none !important;
         }
@@ -580,8 +539,6 @@ Frosted Glass:
         /* Mushroom title card (no background or blur) */
         :host(mushroom-title-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;                                                      /* 1.2 Glass – ensure no bevel */
         }
         :host(mushroom-title-card) ha-card::before {
@@ -591,30 +548,22 @@ Frosted Glass:
         /* === Prevent frosted/glass from applying to bubble cards ===                      # 1.1.9 Change - Bubble cards are no longer applied */
         ha-card.type-custom-bubble-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
         ha-card.type-custom-bubble-card::before {
           content: none !important;
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
 
         /* === Prevent frosted/glass on mushroom-chips-card outer container ===             # 1.1.9 Change - Outer mushroom chips no longer applied */
         :host(mushroom-chips-card) ha-card {
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
         }
         :host(mushroom-chips-card) ha-card::before {
           content: none !important;
           background: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
         }
 
         /* (Removed) .bubble-button-card-container styling to avoid conflicts               # 1.2 Glass – matches Light exclusions */
@@ -628,7 +577,6 @@ Frosted Glass:
           --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.28);
           --ha-card-border-width: 0.5px;
           --ha-card-border-color: rgba(234, 235, 238, 0.1);
-          --ha-card-backdrop-filter: blur(10px) saturate(1.2);                               # 1.2 Glass – same engine as Light, tuned for Dark
 
           /* Glass system tokens (new, dark-tuned) */
           --ha-card-glass-tint: rgba(28, 29, 33, 0.18);                                      # 1.2 Glass – global tint layer
@@ -755,8 +703,6 @@ Frosted Glass:
 
         /* SIDEBAR BLUR */
         .mdc-drawer .mdc-drawer__content {
-          backdrop-filter: blur(8px) saturate(1.1) !important;
-          -webkit-backdrop-filter: blur(8px) saturate(1.1) !important;
           background: rgba(25, 28, 45, 0.8) !important;
           box-shadow: var(--ha-card-glass-inset-shadow) !important;                         # 1.2 Glass – subtle inner edge for consistency
         }
@@ -779,8 +725,6 @@ Frosted Glass:
         /* LABEL BADGE */
         ha-label-badge {
           --label-badge-background-color: rgba(60, 60, 78, 0.28) !important;
-          backdrop-filter: blur(10px) saturate(1.1) !important;
-          -webkit-backdrop-filter: blur(10px) saturate(1.1) !important;
           --label-badge-text-color: rgba(234, 235, 238, 0.9) !important;
           box-shadow: 0 5px 10px rgba(0, 0, 0, 0.10) !important;
           border: 0.5px solid rgba(234, 235, 238, 0.22) !important;
@@ -789,8 +733,6 @@ Frosted Glass:
         /* INPUTS */
         input, ha-textfield, ha-select {
           background: rgba(30, 33, 54, 0.7) !important;
-          backdrop-filter: blur(6px) !important;
-          -webkit-backdrop-filter: blur(6px);
           border-radius: var(--token-size-radius-small);
           border: none !important;
           box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.09) !important;

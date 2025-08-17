@@ -1,38 +1,34 @@
-# Frosted Glass Light
-# ver. 1.2 (2025-08-16)
+# Frosted Glass Dark Lite
+# ver. 1.2 - (2025-08-16) 
 
-Frosted Glass Light:
-  card-mod-theme: "Frosted Glass Light"
+Frosted Glass Dark Lite:
+  card-mod-theme: 'Frosted Glass Dark Lite'
 
   # =========================
   # HEADER (Top Bar)
   # =========================
-  app-header-backdrop-filter: 'blur(6px) saturate(1.2)'
-  app-header-background-color: 'rgba(234, 235, 238, 0.1)'
-  app-header-text-color: 'rgba(19, 21, 54, 0.95)'
-  app-header-edit-background-color: 'rgba(255, 255, 255, 0.8)'
-  app-header-edit-text-color: 'rgba(19, 21, 54, 0.98)'
-  app-theme-color: 'rgb(91, 138, 168)'                                                                   # 1.2 Glass – header theme color hint for browsers
+  app-header-background-color: 'rgba(30, 30, 30, 0.01)'
+  app-header-text-color: 'rgba(240, 243, 255, 0.95)'
+  app-header-edit-background-color: 'rgba(30, 33, 54, 0.8)'
+  app-header-edit-text-color: 'rgba(234, 235, 238, 0.98)'
+  app-theme-color: 'rgb(0, 0, 0)'                                                      # 1.2 Glass – header theme color hint for browsers
 
   # =========================
   # SIDEBAR / DRAWER
   # =========================
-  sidebar-background-color: 'rgba(254, 244, 242, 0.7)'
-  sidebar-icon-color: 'rgba(19, 21, 54, 0.6)'
-  sidebar-text-color: 'rgba(19, 21, 54, 0.8)'
-  sidebar-selected-icon-color: 'rgba(19, 21, 54, 0.95)'
-  sidebar-selected-text-color: 'rgba(19, 21, 54, 0.98)'
-
-  # Sidebar blur (card-mod-root section at end handles blur effect!)
+  sidebar-background-color: 'rgba(30, 30, 30, 0.8)'
+  sidebar-icon-color: 'rgba(234, 235, 238, 0.6)'
+  sidebar-text-color: 'rgba(234, 235, 238, 0.8)'
+  sidebar-selected-icon-color: 'rgba(234, 235, 238, 0.95)'
+  sidebar-selected-text-color: 'rgba(234, 235, 238, 0.98)'
 
   # =========================
   # DIALOGS
   # =========================
-  ha-dialog-surface-backdrop-filter: 'blur(8px)'                                   
-  ha-dialog-surface-background: 'rgba(234, 235, 238, 0.7)'
-  dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'                                                     # 1.2 Glass – fix: remove stray quotes inside rgba
-  paper-dialog-background-color: 'rgba(234, 235, 238, 0.7)'
-  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.6)'
+  ha-dialog-surface-background: 'rgba(30, 30, 30, 0.7)'
+  dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.25)'
+  paper-dialog-background-color: 'rgba(30, 30, 30, 0.7)'
+  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.8)'
 
   # =========================
   # CARDS / CARD-MOD
@@ -41,64 +37,53 @@ Frosted Glass Light:
     /* Base reset */
     ha-card {
       background: transparent !important;
-      backdrop-filter: unset !important;
-      -webkit-backdrop-filter: unset !important;
     }
 
-    /* Glass layer */
-    ha-card::before {                                                                                      /* 1.2 Glass – glass overlay */
+    /* Glass layer (variable-driven, matches Light) */
+    ha-card::before {                                                                   /* 1.2 Glass – glass overlay */
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--ha-card-glass-tint, rgba(255, 255, 255, 0.08));                                    /* 1.2 Glass – subtle tint */
-      backdrop-filter: var(--ha-card-backdrop-filter, blur(8px) saturate(1.2));
-      -webkit-backdrop-filter: var(--ha-card-backdrop-filter, blur(8px) saturate(1.2));
+      background: var(--ha-card-glass-tint, rgba(28, 29, 33, 0.18));                    /* 1.2 Glass – subtle dark tint */
       z-index: -1;
       pointer-events: none;
       border-radius: inherit;
-      box-shadow: var(--ha-card-glass-inset-shadow,                                                         /* 1.2 Glass – inner bevel/glow */
-        3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset,
-        -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset,
-        0 0 8px 1px rgba(255, 255, 255, 0.10) inset,
-        0 0 2px 0 rgba(0, 0, 0, 0.10)
+      box-shadow: var(--ha-card-glass-inset-shadow,                                     /* 1.2 Glass – inner bevel/glow */
+        3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.22) inset,
+        -2px -2px 0.5px -2px rgba(255, 255, 255, 0.18) inset,
+        0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
+        0 0 2px 0 rgba(0, 0, 0, 0.18)
       );
     }
 
-    /* Headings + Glance (kept as your exclusions) */
+    /* Headings + Glance (kept excluded) */
     :host(hui-heading-card) ha-card,
     :host(hui-glance-card) ha-card {
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
     }
     :host(hui-heading-card) ha-card::before,
     :host(hui-glance-card) ha-card::before {
       content: none !important;
     }
 
-    /* IMPORTANT: Allow normal Markdown cards to be glassy; only exclude text-only variant */
-    /* (Fix) Removed global :host(hui-markdown-card) exclusion you had before                     # 1.2 Glass – bugfix
-       so standard Markdown gets the glass. The text-only variant remains excluded below. */
+    /* IMPORTANT: Allow normal Markdown to be glassy; only exclude text-only */
+    /* (Fix) Removed global :host(hui-markdown-card) exclusion so standard Markdown gets glass. */
 
     /* Data tables */
     .mdc-data-table {
       background: none !important;
     }
     .mdc-data-table__header-cell {
-      background: rgba(255, 255, 255, 0.1) !important;
-      backdrop-filter: var(--ha-card-backdrop-filter) !important;
-      -webkit-backdrop-filter: var(--ha-card-backdrop-filter) !important;
-      box-shadow: var(--ha-card-glass-inset-shadow) !important;                                           /* 1.2 Glass – consistent bevel */
+      background: rgba(30, 33, 54, 0.18) !important;
+      box-shadow: var(--ha-card-glass-inset-shadow) !important;                         /* 1.2 Glass – consistent bevel */
     }
 
-    /* Markdown card with text_only → no background or blur */                        # 1.1.9 Change - text only markdown and mushroom title card no background // Beginning
+    /* Markdown card with text_only → no background or blur */                          # 1.1.9 Change - text only markdown and mushroom title card no background // Beginning
     :host(.text-only) ha-card,
     :host(.text-only) ha-card::before,
     ha-card.text-only,
-    ha-card.text-only::before {                                                                           /* 1.2 Glass – add ha-card.text-only for compatibility */
+    ha-card.text-only::before {                                                         /* 1.2 Glass – add ha-card.text-only for compatibility */
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
       box-shadow: none !important;
       content: none !important;
     }
@@ -106,80 +91,58 @@ Frosted Glass Light:
     /* Mushroom title card (no background or blur) */
     :host(mushroom-title-card) ha-card {
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-      box-shadow: none !important;                                                                         /* 1.2 Glass – ensure no bevel */
+
+      box-shadow: none !important;                                                      /* 1.2 Glass – ensure no bevel */
     }
     :host(mushroom-title-card) ha-card::before {
       content: none !important;
     }
 
-    /* === Prevent frosted glass from applying to bubble cards ===               # 1.2 Change - Bubble cards are no longer applied */
+    /* === Prevent frosted/glass from applying to bubble cards ===                      # 1.1.9 Change - Bubble cards are no longer applied */
     ha-card.type-custom-bubble-card {
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
       box-shadow: none !important;
       border-radius: 0px !important;
     }
     ha-card.type-custom-bubble-card::before {
       content: none !important;
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
     }
 
-    /* === Prevent frosted glass from applying to mushroom-chips-card outer container ===      # 1.2 Change - Outer mushroom chips no longer applied  */
+    /* === Prevent frosted/glass on mushroom-chips-card outer container ===             # 1.1.9 Change - Outer mushroom chips no longer applied */
     :host(mushroom-chips-card) ha-card {
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
       box-shadow: none !important;
     }
     :host(mushroom-chips-card) ha-card::before {
       content: none !important;
       background: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
     }
+
+    /* (Removed) .bubble-button-card-container styling to avoid conflicts               # 1.2 Glass – matches Light exclusions */
 
   # =========================
   # CARD-MOD-ROOT GLOBAL CSS
   # =========================
   card-mod-root: |
-   :host {
-    --ha-card-background: rgba(242, 245, 255, 0.1);
-    --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-    --ha-card-border-width: 0.5px;
-    --ha-card-border-color: rgba(255, 255, 255, 0.3);
-    --ha-card-backdrop-filter: blur(8px) saturate(1.2);                                                   # 1.1.9 change - added blur & saturation for badges
+    :host {
+      --ha-card-background: rgba(30, 30, 30, 0.1);
+      --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.28);
+      --ha-card-border-width: 0.5px;
+      --ha-card-border-color: rgba(234, 235, 238, 0.1);
 
-    /* Glass system tokens (new) */
-    --ha-card-glass-tint: rgba(255, 255, 255, 0.08);                                                      # 1.2 Glass – global tint layer
-    --ha-card-glass-inset-shadow:                                                                         # 1.2 Glass – inner bevel/glow (Liquid Glass inspired)
-      3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset,
-      -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset,
-      0 0 8px 1px rgba(255, 255, 255, 0.10) inset,
-      0 0 2px 0 rgba(0, 0, 0, 0.10);
-   }
+      /* Glass system tokens (new, dark-tuned) */
+      --ha-card-glass-tint: rgba(28, 29, 33, 0.18);                                      # 1.2 Glass – global tint layer
+      --ha-card-glass-inset-shadow:                                                      # 1.2 Glass – inner bevel/glow (Liquid Glass inspired)
+        3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset,
+        -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset,
+        0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
+        0 0 2px 0 rgba(0, 0, 0, 0.18);
 
-   /* Custom text divider row size fix */
-   custom-text-divider-row .text-divider-content {
-    background: #fff !important; /* or your color */
-    opacity: 1 !important;
-    box-shadow: none !important;
-    border-radius: 10px !important; /* adjust as needed */
-    padding: 0 8px !important;
-    --text-divider-font-size: 16px !important;
-    --text-divider-line-size: 1px;
-    --text-divider-color: rgba(19, 21, 54, 1) !important;
-   }
-
-    
-      # Tokens (used throughout cards/UI)
+      /* Tokens - match structure to Light theme for consistency */
       --token-rgb-primary: 106, 116, 211;
       --token-rgb-black: 0, 0, 0;
-      --token-rgb-white: 240, 243, 255;
+      --token-rgb-white: 234, 235, 238;
       --token-rgb-purple: 129, 45, 250;
       --token-rgb-pink: 204, 0, 136;
       --token-rgb-red: 204, 0, 51;
@@ -210,40 +173,40 @@ Frosted Glass Light:
       --token-color-feedback-warning: rgb(255, 219, 117);
       --token-color-feedback-error: rgb(234, 114, 135);
       --token-color-feedback-success: rgb(118, 214, 152);
-      --token-color-icon-primary: rgba(19, 21, 54, 0.95);
-      --token-color-icon-secondary: rgba(19, 21, 54, 0.75);
-      --token-color-icon-sidebar: rgba(19, 21, 54, 0.6);
+      --token-color-icon-primary: rgba(234, 235, 238, 0.95);
+      --token-color-icon-secondary: rgba(234, 235, 238, 0.75);
+      --token-color-icon-sidebar: rgba(234, 235, 238, 0.6);
       --token-color-icon-sidebar-selected: var(--token-color-icon-primary);
-      --token-color-text-primary: rgba(19, 21, 54, 0.98);
-      --token-color-text-secondary: rgba(19, 21, 54, 0.8);
-      --token-color-text-disabled: rgba(19, 21, 54, 0.45);
+      --token-color-text-primary: rgba(234, 235, 238, 0.98);
+      --token-color-text-secondary: rgba(234, 235, 238, 0.8);
+      --token-color-text-disabled: rgba(234, 235, 238, 0.45);
       --token-color-text-sidebar-selected: var(--token-color-text-primary);
       --token-color-text-sidebar: var(--token-color-text-secondary);
-      --token-color-text-label-badge: rgba(19, 21, 54, 0.85);
-      --token-color-text-chip: rgb(var(--token-rgb-black));
-      --token-color-background-base: rgba(234, 235, 238, 0.6);
-      --token-color-background-secondary: rgba(245, 245, 245, 0.5);
+      --token-color-text-label-badge: rgba(234, 235, 238, 0.85);
+      --token-color-text-chip: rgb(var(--token-rgb-white));
+      --token-color-background-base: rgba(25, 28, 45, 0.8);
+      --token-color-background-secondary: rgba(30, 33, 54, 0.7);
       --token-color-background-sidebar: var(--token-color-background-base);
-      --token-color-background-input-base: rgba(255, 255, 255, 0.7);
-      --token-color-background-input-disabled: rgba(245, 245, 245, 0.6);
-      --token-color-background-label-badge: rgb(230, 230, 230);
-      --token-color-background-card: rgba(255, 255, 255, 0.85);
-      --token-color-background-skrim: rgba(0, 0, 0, 0.6);
-      --token-color-background-divider: rgba(224, 224, 224, 0.3);
-      --token-color-background-scrollbar-thumb: rgb(180, 180, 180);
+      --token-color-background-input-base: rgba(30, 33, 54, 0.7);
+      --token-color-background-input-disabled: rgba(30, 33, 54, 0.5);
+      --token-color-background-label-badge: rgb(60, 60, 78);
+      --token-color-background-card: rgba(28, 29, 33, 0.85);
+      --token-color-background-skrim: rgba(0, 0, 0, 0.7);
+      --token-color-background-divider: rgba(84, 84, 98, 0.28);
+      --token-color-background-scrollbar-thumb: rgb(68, 68, 88);
       --token-color-background-label-badge-red: var(--token-color-feedback-error);
       --token-color-background-label-badge-blue: var(--token-color-feedback-info);
       --token-color-background-label-badge-green: rgb(78, 183, 128);
       --token-color-background-label-badge-yellow: var(--token-color-feedback-warning);
       --token-color-background-label-badge-grey: rgb(83, 90, 103);
       --token-color-background-popup-scrim: rgba(0, 0, 0, 1);
-      --token-color-border-card: rgba(255, 255, 255, 0.3);
-      --token-color-switch-button-unchecked: rgba(0, 0, 0, 0.6);
-      --token-color-switch-track-unchecked: rgba(0, 0, 0, 0.3);
-      --token-color-codemirror-string: rgb(0, 77, 153);
-      --token-color-codemirror-keyword: rgb(70, 112, 216);
-      --token-color-codemirror-number: rgb(204, 85, 0);
-      --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.15);
+      --token-color-border-card: rgba(234, 235, 238, 0.22);
+      --token-color-switch-button-unchecked: rgba(234, 235, 238, 0.3);
+      --token-color-switch-track-unchecked: rgba(234, 235, 238, 0.18);
+      --token-color-codemirror-string: rgb(164, 209, 255);
+      --token-color-codemirror-keyword: rgb(148, 182, 255);
+      --token-color-codemirror-number: rgb(255, 171, 64);
+      --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.28);
       --token-size-radius-small: 10px;
       --token-size-radius-medium: 14px;
       --token-size-radius-large: 18px;
@@ -264,11 +227,11 @@ Frosted Glass Light:
       --token-size-section-min-width: 320px;
       --token-color-transparent: rgba(0, 0, 0, 0);
       --token-color-black: rgb(0, 0, 0);
-      --token-color-white: rgb(255, 255, 255);
+      --token-color-white: rgb(234, 235, 238);
       --token-opacity-ripple-hover: 0.1;
-      --token-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      --token-font-family-primary: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
       --token-weight-font-title-card: 500;
-
+      
       # Additional color variables
       --token-color-red: rgb(var(--token-rgb-red));
       --token-color-green: rgb(var(--token-rgb-green));
@@ -293,16 +256,14 @@ Frosted Glass Light:
 
     /* SIDEBAR BLUR */
     .mdc-drawer .mdc-drawer__content {
-      backdrop-filter: blur(6px) saturate(1.2) !important;
-      -webkit-backdrop-filter: blur(6px) saturate(1.2) !important;
-      background: rgba(234, 235, 238, 0.7) !important;
-      box-shadow: var(--ha-card-glass-inset-shadow) !important;                                          /* 1.2 Glass – subtle inner edge for consistency */
+      background: rgba(25, 28, 45, 0.8) !important;
+      box-shadow: var(--ha-card-glass-inset-shadow) !important;                         # 1.2 Glass – subtle inner edge for consistency
     }
 
     /* CARDS RADIUS */
     ha-card {
       border-radius: var(--token-size-radius-large);
-      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));       /* 1.2 Glass – ensure border follows tokens */
+      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));       # 1.2 Glass – ensure border follows tokens
       box-shadow: var(--ha-card-box-shadow);
     }
     ha-card ha-card {
@@ -311,27 +272,35 @@ Frosted Glass Light:
 
     /* DRAWER SCRIM */
     ha-drawer {
-      --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.6) !important;
+      --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.8) !important;
     }
 
     /* LABEL BADGE */
     ha-label-badge {
-      --label-badge-background-color: rgba(230, 230, 230, 0.2) !important;
-      backdrop-filter: blur(12px) saturate(1.1) !important;
-      -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
-      --label-badge-text-color: rgba(19, 21, 54, 0.9) !important;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05) !important;
-      border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
+      --label-badge-background-color: rgba(60, 60, 78, 0.28) !important;
+      --label-badge-text-color: rgba(234, 235, 238, 0.9) !important;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.10) !important;
+      border: 0.5px solid rgba(234, 235, 238, 0.22) !important;
     }
 
     /* INPUTS */
     input, ha-textfield, ha-select {
-      background: rgba(255, 255, 255, 0.7) !important;
-      backdrop-filter: blur(6px) !important;
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(30, 33, 54, 0.7) !important;
       border-radius: var(--token-size-radius-small);
       border: none !important;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.09) !important;
+    }
+
+    /* Custom text divider row size fix */
+    custom-text-divider-row .text-divider-content {
+      background: #181929 !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+      border-radius: 10px !important;
+      padding: 0 8px !important;
+      --text-divider-font-size: 16px !important;
+      --text-divider-line-size: 1px;
+      --text-divider-color: rgba(234, 235, 238, 1) !important;
     }
 
   # =========================
@@ -380,48 +349,48 @@ Frosted Glass Light:
   # =========================
   # COLORS & MISCELLANEOUS
   # =========================
-  primary-text-color: 'rgba(19, 21, 54, 0.98)'
-  secondary-text-color: 'rgba(19, 21, 54, 0.8)'
-  text-primary-color: 'rgba(19, 21, 54, 0.98)'
-  disabled-text-color: 'rgba(19, 21, 54, 0.45)'
-  text-light-primary-color: 'rgb(28, 29, 33)'
-  paper-item-icon-color: 'rgba(19, 21, 54, 0.95)'
-  state-inactive-color: 'rgba(19, 21, 54, 0.8)'
-  state-icon-color: 'rgba(19, 21, 54, 0.95)'
+  primary-text-color: 'rgba(234, 235, 238, 0.98)'
+  secondary-text-color: 'rgba(234, 235, 238, 0.8)'
+  text-primary-color: 'rgba(234, 235, 238, 0.98)'
+  disabled-text-color: 'rgba(234, 235, 238, 0.45)'
+  text-light-primary-color: 'rgb(234, 235, 238)'
+  paper-item-icon-color: 'rgba(234, 235, 238, 0.95)'
+  state-inactive-color: 'rgba(234, 235, 238, 0.8)'
+  state-icon-color: 'rgba(234, 235, 238, 0.95)'
   state-on-color: 'rgb(118, 214, 152)'
   state-off-color: 'rgb(234, 114, 135)'
-  label-badge-text-color: 'rgba(19, 21, 54, 0.85)'
+  label-badge-text-color: 'rgba(234, 235, 238, 0.85)'
   label-badge-red: 'rgb(234, 114, 135)'
   label-badge-blue: 'rgb(106, 116, 211)'
   label-badge-green: 'rgb(78, 183, 128)'
   label-badge-yellow: 'rgb(255, 219, 117)'
   label-badge-grey: 'rgb(83, 90, 103)'
-  ha-chip-text-color: 'rgb(0, 0, 0)'
+  ha-chip-text-color: 'rgb(234, 235, 238)'
 
   primary-color: 'rgb(106, 116, 211)'
   dark-primary-color: 'rgb(106, 116, 211)'
   light-primary-color: 'rgb(167, 182, 199)'
   accent-color: 'rgb(106, 116, 211)'
-  divider-color: 'rgba(224, 224, 224, 0.3)'
-  scrollbar-thumb-color: 'rgb(180, 180, 180)'
+  divider-color: 'rgba(84, 84, 98, 0.28)'
+  scrollbar-thumb-color: 'rgb(68, 68, 88)'
   disabled-color: 'rgb(173, 176, 184)'
   info-color: 'rgb(106, 116, 211)'
   success-color: 'rgb(118, 214, 152)'
   warning-color: 'rgb(255, 219, 117)'
   error-color: 'rgb(234, 114, 135)'
-  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-light-background.jpg')"
-  lovelace-background: var(--background-image)
-  primary-background-color: 'rgba(254, 244, 242, 1)'
-  secondary-background-color: 'rgba(245, 245, 245, 0.5)'
-  clear-background-color: 'rgba(254, 244, 242, 0.9)'
-  card-background-color: 'rgba(254, 244, 242, 0.9)'
-  ha-card-background: 'rgba(254, 244, 242, 0.9)'
+  background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-dark-background.jpg')"
+  lovelace-background: 'var(--background-image)'
+  primary-background-color: 'rgba(30, 30, 30, 1)'                                      # 1.2 change - improved background color for a darker feel 
+  secondary-background-color: 'rgba(30, 33, 54, 0.6)'
+  clear-background-color: 'rgba(30, 33, 54, 0.7)'
+  card-background-color: 'rgba(30, 30, 30, 0.85)'
+  ha-card-background: 'rgba(30, 30, 30, 0.9)'
   ha-card-border-radius: '18px'
-  ha-card-border-color: 'rgba(255, 255, 255, 0.3)'
+  ha-card-border-color: 'rgba(234, 235, 238, 0.22)'
   ha-card-border-width: '0.5px'
   ha-card-border-style: 'solid'
-  ha-card-border: '0.5px solid rgba(255, 255, 255, 0.3)'
-  ha-card-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'
+  ha-card-border: '0.5px solid rgba(234, 235, 238, 0.1)'
+  ha-card-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.28)'
   ha-view-sections-column-gap: '17px'
   ha-view-sections-column-min-width: 320px
 
@@ -433,39 +402,39 @@ Frosted Glass Light:
   paper-slider-secondary-color: 'rgb(167, 182, 199)'
   switch-checked-button-color: 'rgb(106, 116, 211)'
   switch-checked-track-color: 'rgb(106, 116, 211)'
-  switch-unchecked-button-color: 'rgba(0, 0, 0, 0.6)'
-  switch-unchecked-track-color: 'rgba(0, 0, 0, 0.3)'
+  switch-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
+  switch-unchecked-track-color: 'rgba(234, 235, 238, 0.18)'
   paper-toggle-button-checked-button-color: 'rgb(106, 116, 211)'
   paper-toggle-button-checked-bar-color: 'rgb(106, 116, 211)'
-  paper-toggle-button-unchecked-button-color: 'rgba(0, 0, 0, 0.6)'
-  paper-toggle-button-unchecked-bar-color: 'rgba(0, 0, 0, 0.3)'
-  mdc-checkbox-unchecked-color: 'rgba(19, 21, 54, 0.75)'
-  mdc-radio-unchecked-color: 'rgba(19, 21, 54, 0.75)'
+  paper-toggle-button-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
+  paper-toggle-button-unchecked-bar-color: 'rgba(234, 235, 238, 0.18)'
+  mdc-checkbox-unchecked-color: 'rgba(234, 235, 238, 0.75)'
+  mdc-radio-unchecked-color: 'rgba(234, 235, 238, 0.75)'
   mdc-ripple-hover-opacity: '0.1'
 
   # Inputs
-  input-background-color: 'rgba(254, 255, 252, 0.8)'
-  input-background-token-color-disabled: 'rgba(254, 255, 252, 0.8)'
-  input-fill-color: 'rgba(255, 255, 252, 0.8)'
-  input-ink-color: 'rgba(19, 21, 54, 0.98)'
-  input-label-ink-color: 'rgba(19, 21, 54, 0.98)'
-  input-disabled-fill-color: 'rgba(245, 245, 245, 0.6)'
-  input-disabled-ink-color: 'rgba(19, 21, 54, 0.45)'
-  input-disabled-label-ink-color: 'rgba(19, 21, 54, 0.45)'
+  input-background-color: 'rgba(50, 50, 50, 0.1)'
+  input-background-token-color-disabled: 'rgba(50, 50, 50, 0.1)'
+  input-fill-color: 'rgba(50,50, 50, 0.1)'
+  input-ink-color: 'rgba(234, 235, 238, 0.98)'
+  input-label-ink-color: 'rgba(234, 235, 238, 0.98)'
+  input-disabled-fill-color: 'rgba(30, 33, 54, 0.5)'
+  input-disabled-ink-color: 'rgba(234, 235, 238, 0.45)'
+  input-disabled-label-ink-color: 'rgba(234, 235, 238, 0.45)'
   input-idle-line-color: 'transparent'
-  input-dropdown-icon-color: 'rgba(19, 21, 54, 0.8)'
+  input-dropdown-icon-color: 'rgba(234, 235, 238, 0.8)'
   input-hover-line-color: 'rgb(106, 116, 211)'
   mdc-select-idle-line-color: 'transparent'
   mdc-text-field-idle-line-color: 'transparent'
 
   # Code Editor & Misc
-  code-editor-background-color: 'rgba(234, 235, 238, 1)'
-  codemirror-meta: 'rgba(19, 21, 54, 0.98)'
+  code-editor-background-color: 'rgba(25, 28, 45, 1)'
+  codemirror-meta: 'rgba(234, 235, 238, 0.98)'
   codemirror-property: 'rgb(106, 116, 211)'
   codemirror-atom: 'rgb(106, 116, 211)'
-  codemirror-string: 'rgb(0, 77, 153)'
-  codemirror-keyword: 'rgb(70, 112, 216)'
-  codemirror-number: 'rgb(204, 85, 0)'
+  codemirror-string: 'rgb(164, 209, 255)'
+  codemirror-keyword: 'rgb(148, 182, 255)'
+  codemirror-number: 'rgb(255, 171, 64)'
   mcg-title-font-weight: '400'
   mush-title-font-weight: '500'
   mush-title-font-size: 'var(--token-size-font-2xl)'
