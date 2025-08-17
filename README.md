@@ -40,6 +40,7 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 -----
 
 > ⚠️ **Note:** This theme *requires* [`card-mod`](https://github.com/thomasloven/lovelace-card-mod) to render correctly. Without it, blur effects and styling will not work.
+
 > Additionally, **Markdown cards** that are text-only will still receive the theme’s glass/border styling (themes can’t reliably detect “text-only” variants). If you want a truly plain text-only Markdown card, add this to that card (copy&paste ready):
 
 ```yaml
