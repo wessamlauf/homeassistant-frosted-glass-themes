@@ -6,7 +6,8 @@
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-☕-orange?logo=buymeacoffee&logoColor=white)](https://www.buymeacoffee.com/wessamlauf)
 
 
-<img width="1536" height="424" alt="Frosted glass logo" src="https://github.com/user-attachments/assets/2d12f6ec-9c68-4744-9386-56fb37d2ad45" />
+<img width="1024" height="373" alt="Frosted Glass logo" src="https://github.com/user-attachments/assets/f1fd71d5-f5bb-451e-862c-cc668d987f66" />
+
 
 
 ### Bring depth and elegance to your dashboard with blurred glass panels and soft UI touches. ☀️
@@ -68,15 +69,17 @@ card_mod:
 ## 🖼️ **Screenshots**
 
 ### ☀️ Light Mode: 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/68102fc2-15af-4cd2-a1ec-d1a4cd5710fa" />
-<img width="1909" height="1067" alt="image" src="https://github.com/user-attachments/assets/44224133-c307-4e8f-8a93-05b32938d334" />
-<img width="1918" height="1079" alt="image" src="https://github.com/user-attachments/assets/5bce4ee9-5b1a-45c8-9400-2c5dfd409bc7" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182634" src="https://github.com/user-attachments/assets/6adca904-9a3d-4df6-b080-1480fce3fa35" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182706" src="https://github.com/user-attachments/assets/f0000f43-8afe-48c8-97f4-cfe52a6b6e42" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182719" src="https://github.com/user-attachments/assets/78e30168-16ae-4ac6-82d2-ef50c1262756" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182906" src="https://github.com/user-attachments/assets/b9782161-d9e8-47d8-b027-4bcf2a765135" />
 
 
 ### 🌑 Dark Mode: 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6a6a0f7e-26f4-4819-9a92-8c8abc6ef041" />
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/346dd10a-35b4-4309-afb6-807cb5cd269d" />
-<img width="1917" height="1079" alt="image" src="https://github.com/user-attachments/assets/8f7e8af6-25f7-43f2-a09d-137d4ff6b031" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182734" src="https://github.com/user-attachments/assets/8fadd748-c3a9-4578-994d-838f2b6a1329" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182756" src="https://github.com/user-attachments/assets/c0b2e265-5d5b-4d4b-bb6c-37fa7223c6bd" />
+<img width="1919" height="1078" alt="Snímka obrazovky 2025-08-22 182809" src="https://github.com/user-attachments/assets/da57d161-aeca-4266-95a5-b772c6c58007" />
+<img width="1919" height="1079" alt="Snímka obrazovky 2025-08-22 182852" src="https://github.com/user-attachments/assets/a8c5f368-568f-46c3-b705-fdc71d27cef1" />
 
 
 ## ❤️ Support the Project
