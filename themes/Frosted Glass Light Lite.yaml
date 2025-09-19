@@ -1,8 +1,11 @@
 # Frosted Glass Light Lite
-# ver. 1.2 (2025-08-16)
+# ver. 1.2.1 - (2025-09-19)  
 
 Frosted Glass Light Lite:
   card-mod-theme: "Frosted Glass Light Lite"
+
+  modes:                           # 1.2.1 - change add modes: light-only declaration
+    light: {}
 
   # =========================
   # HEADER (Top Bar)
@@ -27,10 +30,10 @@ Frosted Glass Light Lite:
   # =========================
   # DIALOGS
   # =========================
-  ha-dialog-surface-background: 'rgba(234, 235, 238, 0.7)'
+  ha-dialog-surface-background: 'rgba(234, 235, 238, 0.9)'
   dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'                                                     # 1.2 Glass – fix: remove stray quotes inside rgba
-  paper-dialog-background-color: 'rgba(234, 235, 238, 0.7)'
-  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.6)'
+  paper-dialog-background-color: 'rgba(234, 235, 238, 0.9)'
+  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.9)'
 
   # =========================
   # CARDS / CARD-MOD
@@ -351,6 +354,32 @@ Frosted Glass Light Lite:
   # =========================
   # COLORS & MISCELLANEOUS
   # =========================
+  # 1.2.1 - change add HA 2025.8 primary color scale aligned to theme
+  ha-color-primary-05: '#0D0E19'
+  ha-color-primary-10: '#131526'
+  ha-color-primary-20: '#20233F'
+  ha-color-primary-30: '#30345F'
+  ha-color-primary-40: '#40467F'
+  ha-color-primary-50: '#6A74D3'   # base theme primary (kept)
+  ha-color-primary-60: '#8F97DE'
+  ha-color-primary-70: '#ADB3E7'
+  ha-color-primary-80: '#D2D5F2'
+  ha-color-primary-90: '#EAECF9'
+  ha-color-primary-95: '#F6F7FC'
+
+  # 1.2.1 - change add aliases for compatibility (some threads reference --color-primary-xx)
+  color-primary-05: '#0D0E19'
+  color-primary-10: '#131526'
+  color-primary-20: '#20233F'
+  color-primary-30: '#30345F'
+  color-primary-40: '#40467F'
+  color-primary-50: '#6A74D3'
+  color-primary-60: '#8F97DE'
+  color-primary-70: '#ADB3E7'
+  color-primary-80: '#D2D5F2'
+  color-primary-90: '#EAECF9'
+  color-primary-95: '#F6F7FC'
+
   primary-text-color: 'rgba(19, 21, 54, 0.98)'
   secondary-text-color: 'rgba(19, 21, 54, 0.8)'
   text-primary-color: 'rgba(19, 21, 54, 0.98)'

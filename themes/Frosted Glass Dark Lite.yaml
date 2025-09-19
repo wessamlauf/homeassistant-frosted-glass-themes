@@ -1,8 +1,11 @@
 # Frosted Glass Dark Lite
-# ver. 1.2 - (2025-08-16) 
+# ver. 1.2.1 - (2025-09-19) 
 
 Frosted Glass Dark Lite:
   card-mod-theme: 'Frosted Glass Dark Lite'
+
+  modes:                         # 1.2.1 - change add modes: dark-only declaration
+    dark: {}
 
   # =========================
   # HEADER (Top Bar)
@@ -25,10 +28,10 @@ Frosted Glass Dark Lite:
   # =========================
   # DIALOGS
   # =========================
-  ha-dialog-surface-background: 'rgba(30, 30, 30, 0.7)'
+  ha-dialog-surface-background: 'rgba(30, 30, 30, 0.9)'
   dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.25)'
-  paper-dialog-background-color: 'rgba(30, 30, 30, 0.7)'
-  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.8)'
+  paper-dialog-background-color: 'rgba(30, 30, 30, 0.9)'
+  mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.9)'
 
   # =========================
   # CARDS / CARD-MOD
@@ -254,55 +257,6 @@ Frosted Glass Dark Lite:
       --token-color-light-blue: rgb(var(--token-rgb-light-blue));
     }
 
-    /* SIDEBAR BLUR */
-    .mdc-drawer .mdc-drawer__content {
-      background: rgba(25, 28, 45, 0.8) !important;
-      box-shadow: var(--ha-card-glass-inset-shadow) !important;                         # 1.2 Glass – subtle inner edge for consistency
-    }
-
-    /* CARDS RADIUS */
-    ha-card {
-      border-radius: var(--token-size-radius-large);
-      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));       # 1.2 Glass – ensure border follows tokens
-      box-shadow: var(--ha-card-box-shadow);
-    }
-    ha-card ha-card {
-      --ha-card-border-width: 0px;
-    }
-
-    /* DRAWER SCRIM */
-    ha-drawer {
-      --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.8) !important;
-    }
-
-    /* LABEL BADGE */
-    ha-label-badge {
-      --label-badge-background-color: rgba(60, 60, 78, 0.28) !important;
-      --label-badge-text-color: rgba(234, 235, 238, 0.9) !important;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.10) !important;
-      border: 0.5px solid rgba(234, 235, 238, 0.22) !important;
-    }
-
-    /* INPUTS */
-    input, ha-textfield, ha-select {
-      background: rgba(30, 33, 54, 0.7) !important;
-      border-radius: var(--token-size-radius-small);
-      border: none !important;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.09) !important;
-    }
-
-    /* Custom text divider row size fix */
-    custom-text-divider-row .text-divider-content {
-      background: #181929 !important;
-      opacity: 1 !important;
-      box-shadow: none !important;
-      border-radius: 10px !important;
-      padding: 0 8px !important;
-      --text-divider-font-size: 16px !important;
-      --text-divider-line-size: 1px;
-      --text-divider-color: rgba(234, 235, 238, 1) !important;
-    }
-
   # =========================
   # TYPOGRAPHY
   # =========================
@@ -349,6 +303,32 @@ Frosted Glass Dark Lite:
   # =========================
   # COLORS & MISCELLANEOUS
   # =========================
+  # 1.2.1 - change add HA 2025.8 primary color scale aligned to theme
+  ha-color-primary-05: '#0D0E19'
+  ha-color-primary-10: '#131526'
+  ha-color-primary-20: '#20233F'
+  ha-color-primary-30: '#30345F'
+  ha-color-primary-40: '#40467F'
+  ha-color-primary-50: '#6A74D3'   # base theme primary (kept)
+  ha-color-primary-60: '#8F97DE'
+  ha-color-primary-70: '#ADB3E7'
+  ha-color-primary-80: '#D2D5F2'
+  ha-color-primary-90: '#EAECF9'
+  ha-color-primary-95: '#F6F7FC'
+
+  # 1.2.1 - change add aliases for compatibility (some threads reference --color-primary-xx)
+  color-primary-05: '#0D0E19'
+  color-primary-10: '#131526'
+  color-primary-20: '#20233F'
+  color-primary-30: '#30345F'
+  color-primary-40: '#40467F'
+  color-primary-50: '#6A74D3'
+  color-primary-60: '#8F97DE'
+  color-primary-70: '#ADB3E7'
+  color-primary-80: '#D2D5F2'
+  color-primary-90: '#EAECF9'
+  color-primary-95: '#F6F7FC'
+
   primary-text-color: 'rgba(234, 235, 238, 0.98)'
   secondary-text-color: 'rgba(234, 235, 238, 0.8)'
   text-primary-color: 'rgba(234, 235, 238, 0.98)'
