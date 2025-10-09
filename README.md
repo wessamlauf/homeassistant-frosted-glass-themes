@@ -52,6 +52,7 @@ card_mod:
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       box-shadow: none !important;
+      border: none !important;
     }
     ha-card::before {
       content: none !important;
