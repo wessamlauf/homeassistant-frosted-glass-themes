@@ -108,26 +108,20 @@ This card aggressively reapplies internal styles that override theme-level color
 ➡️ *Currently not fixable from the theme side.*
 
 
-### 2. **State-Based card-mod Styling Fails**  
-🎨 [#17](https://github.com/wessamlauf/homeassistant-frosted-glass-themes/issues/17)  
-Dynamic background colors using Jinja templates in `card_mod` (e.g., for chips) are overridden by the theme’s global transparency rules (`background: none !important`).  
-➡️ *Workaround: Disable Frosted Glass manually per card using `card-mod`.*
-
-
-### 3. **HACS Dropdowns Broken by Blur**  
+### 2. **Dropdowns Broken by Blur**  
 📦 [#42](https://github.com/wessamlauf/homeassistant-frosted-glass-themes/issues/42)  
-Blur effects break dropdown visibility inside HACS menus due to how Home Assistant renders these elements **outside the theme root DOM**.  
+Blur effects break dropdown visibility inside HACS menus (and other deeper level HA dropdowns) due to how Home Assistant renders these elements **outside the theme root DOM**.  
 Multiple fixes were tested, but the problem stems from **Material Web Components** and is unlikely to be solvable from the theme side.  
 ➡️ Tip: **The Lite version** (no blur) render dropdowns correctly and avoid this issue.
 
 
-### 4. **stack-in-card Incompatibility**  
+### 3. **stack-in-card Incompatibility**  
 🧱 [#44](https://github.com/wessamlauf/homeassistant-frosted-glass-themes/issues/44)  
 Cards rendered inside `custom:stack-in-card` are deeply nested, and the theme’s `::before` blur cannot be excluded reliably for inner elements.  
 ➡️ *Recommended workaround: Use `card-mod` inside each card to manually disable the `::before` layer.*
 
 
-### 5. **Performance on Low-End Devices**  
+### 4. **Performance on Low-End Devices**  
 The heavy use of `backdrop-filter: blur()` may cause noticeable lag on low-end hardware (older tablets, Pi-based dashboards, etc.).  
 ➡️ Tip: **The Lite version** (no blur) for the same glassy look without blur, dramatically better performance, and no dropdown misplacement.
 
