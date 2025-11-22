@@ -42,9 +42,9 @@ Frosted Glass:
       card-mod-card: |
         /* Base reset */
         ha-card {
-          background: transparent !important;
-          backdrop-filter: unset !important;
-          -webkit-backdrop-filter: unset !important;
+          background: transparent;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
         }
 
         /* Glass layer */
