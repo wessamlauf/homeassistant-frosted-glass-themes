@@ -1,5 +1,5 @@
 # Frosted Glass Dark Lite
-# ver. 1.2.1 - (2025-09-19) 
+# ver. 1.2.2 - (2025-11-22) 
 
 Frosted Glass Dark Lite:
   card-mod-theme: 'Frosted Glass Dark Lite'
@@ -39,7 +39,7 @@ Frosted Glass Dark Lite:
   card-mod-card: |
     /* Base reset */
     ha-card {
-      background: transparent !important;
+      background: transparent;
     }
 
     /* Glass layer (variable-driven, matches Light) */
@@ -102,12 +102,12 @@ Frosted Glass Dark Lite:
     }
 
     /* === Prevent frosted/glass from applying to bubble cards ===                      # 1.1.9 Change - Bubble cards are no longer applied */
-    ha-card.type-custom-bubble-card {
+    :host(.type-custom-bubble-card) ha-card {
       background: none !important;
       box-shadow: none !important;
       border-radius: 0px !important;
     }
-    ha-card.type-custom-bubble-card::before {
+    :host(.type-custom-bubble-card) ha-card::before {
       content: none !important;
       background: none !important;
     }
@@ -388,8 +388,8 @@ Frosted Glass Dark Lite:
   paper-toggle-button-checked-bar-color: 'rgb(106, 116, 211)'
   paper-toggle-button-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
   paper-toggle-button-unchecked-bar-color: 'rgba(234, 235, 238, 0.18)'
-  mdc-checkbox-unchecked-color: 'rgba(234, 235, 238, 0.75)'
-  mdc-radio-unchecked-color: 'rgba(234, 235, 238, 0.75)'
+  mdc-checkbox-unchecked-color: 'rgba(19, 21, 54, 0.75)'
+  mdc-radio-unchecked-color: 'rgba(19, 21, 54, 0.75)'
   mdc-ripple-hover-opacity: '0.1'
 
   # Inputs

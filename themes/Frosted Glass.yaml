@@ -1,5 +1,5 @@
 # Frosted Glass Light Lite
-# ver. 1.2.1 - (2025-09-19) 
+# ver. 1.2.1 - (2025-11-22) 
 
 Frosted Glass:
   modes:
@@ -117,14 +117,14 @@ Frosted Glass:
         }
 
         /* === Prevent frosted glass from applying to bubble cards ===               # 1.2 Change - Bubble cards are no longer applied */
-        ha-card.type-custom-bubble-card {
+        :host(.type-custom-bubble-card) ha-card {
           background: none !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
-        ha-card.type-custom-bubble-card::before {
+        :host(.type-custom-bubble-card) ha-card::before {
           content: none !important;
           background: none !important;
           backdrop-filter: none !important;
@@ -541,9 +541,9 @@ Frosted Glass:
       card-mod-card: |
         /* Base reset */
         ha-card {
-          background: transparent !important;
-          backdrop-filter: unset !important;
-          -webkit-backdrop-filter: unset !important;
+          background: transparent;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
         }
 
         /* Glass layer (variable-driven, matches Light) */
@@ -615,14 +615,14 @@ Frosted Glass:
         }
 
         /* === Prevent frosted/glass from applying to bubble cards ===                      # 1.1.9 Change - Bubble cards are no longer applied */
-        ha-card.type-custom-bubble-card {
+        :host(.type-custom-bubble-card) ha-card {
           background: none !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
-        ha-card.type-custom-bubble-card::before {
+        :host(.type-custom-bubble-card) ha-card::before {
           content: none !important;
           background: none !important;
           backdrop-filter: none !important;

@@ -1,5 +1,5 @@
 # Frosted Glass Light Lite
-# ver. 1.2.1 - (2025-09-19)  
+# ver. 1.2.2 - (2025-11-22)  
 
 Frosted Glass Lite:
   modes:
@@ -40,7 +40,7 @@ Frosted Glass Lite:
       card-mod-card: |
         /* Base reset */
         ha-card {
-          background: transparent !important;
+          background: transparent;
         }
 
         /* Glass layer */
@@ -103,12 +103,12 @@ Frosted Glass Lite:
         }
 
         /* === Prevent frosted glass from applying to bubble cards ===               # 1.2 Change - Bubble cards are no longer applied */
-        ha-card.type-custom-bubble-card {
+        :host(.type-custom-bubble-card) ha-card {
           background: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
-        ha-card.type-custom-bubble-card::before {
+        :host(.type-custom-bubble-card) ha-card::before {
           content: none !important;
           background: none !important;
         }
@@ -511,7 +511,7 @@ Frosted Glass Lite:
       card-mod-card: |
         /* Base reset */
         ha-card {
-          background: transparent !important;
+          background: transparent;
         }
 
         /* Glass layer (variable-driven, matches Light) */
@@ -573,12 +573,12 @@ Frosted Glass Lite:
         }
 
         /* === Prevent frosted/glass from applying to bubble cards ===                      # 1.1.9 Change - Bubble cards are no longer applied */
-        ha-card.type-custom-bubble-card {
+        :host(.type-custom-bubble-card) ha-card {
           background: none !important;
           box-shadow: none !important;
           border-radius: 0px !important;
         }
-        ha-card.type-custom-bubble-card::before {
+        :host(.type-custom-bubble-card) ha-card::before {
           content: none !important;
           background: none !important;
         }
@@ -848,7 +848,6 @@ Frosted Glass Lite:
       color-primary-80: '#D2D5F2'
       color-primary-90: '#EAECF9'
       color-primary-95: '#F6F7FC'
-      
       primary-text-color: 'rgba(234, 235, 238, 0.98)'
       secondary-text-color: 'rgba(234, 235, 238, 0.8)'
       text-primary-color: 'rgba(234, 235, 238, 0.98)'
