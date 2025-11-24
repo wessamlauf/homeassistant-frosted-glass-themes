@@ -79,6 +79,8 @@ It allows you to:
 * 🖼️ **Set custom backgrounds** by simply pasting a URL.
 * ⚡ **Generate both** Standard and Lite versions of your custom theme instantly.
 
+![Untitled design (1)](https://github.com/user-attachments/assets/c5b9dd7b-290e-4769-9b8d-97d1d87046c6)
+
 ---
 
 ## 🖼️ **Screenshots**
