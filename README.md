@@ -21,7 +21,8 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 - **Light & Dark Modes**: Choose between a bright, clean look or a soft dark interface. ☀️🌑
 - **Modern Design**: Rounded corners, minimal shadows, and cohesive color palettes. 🛋️
 - **Enhanced UX**: Designed to feel fluid, comfortable, and polished. 🖼️
-- **Lite Editions (New)**: Optional no-blur builds for older/low-end devices. They keep the same semi-transparent, glassy look while improving performance and avoiding dropdown misplacement caused by HA’s blur handling. ⚡
+- **Lite Editions**: Optional no-blur builds for older/low-end devices. They keep the same semi-transparent, glassy look while improving performance and avoiding dropdown misplacement caused by HA’s blur handling. ⚡
+- **Want to Customize? (New!)**: Install Frosted Glass Theme Manager to choose your own color&background! 🎨
 
 ## 🚀 Quick Installation Guide
 
@@ -66,6 +67,19 @@ card_mod:
 > 💡 **Optional:** To match the navigation bar shown in screenshots, install the [lovelace-navbar-card](https://github.com/joseluis9595/lovelace-navbar-card).
 
 -----
+
+## 🎨 Want to Customize? (New!)
+
+**Want to use your own Primary Color or Background Image without editing code?**
+
+Check out the official **[Frosted Glass Theme Manager](https://github.com/wessamlauf/frosted-glass-manager)** integration! 🛠️
+
+It allows you to:
+* 🌈 **Pick any color** via a UI Color Picker (it automatically calculates the correct contrast/shades).
+* 🖼️ **Set custom backgrounds** by simply pasting a URL.
+* ⚡ **Generate both** Standard and Lite versions of your custom theme instantly.
+
+---
 
 ## 🖼️ **Screenshots**
 
