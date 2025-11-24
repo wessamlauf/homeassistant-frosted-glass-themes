@@ -1,5 +1,5 @@
 # Frosted Glass Light Lite
-# ver. 1.2.2 - (2025-11-22)  
+# ver. 1.3 - (2025-11-24)  
 
 Frosted Glass Light Lite:
   card-mod-theme: "Frosted Glass Light Lite"
@@ -475,5 +475,6 @@ Frosted Glass Light Lite:
   # Misc sizes
   paper-slider-height: '5px'
   border-radius: '18px'
+
 
   # --- End of Theme ---
