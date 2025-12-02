@@ -216,7 +216,7 @@ Frosted Glass Dark:
       --token-color-background-input-disabled: rgba(30, 33, 54, 0.5);
       --token-color-background-label-badge: rgb(60, 60, 78);
       --token-color-background-card: rgba(28, 29, 33, 0.85);
-      --token-color-background-skrim: rgba(0, 0, 0, 0.7);
+      --token-color-background-scrim: rgba(0, 0, 0, 0.7);
       --token-color-background-divider: rgba(84, 84, 98, 0.28);
       --token-color-background-scrollbar-thumb: rgb(68, 68, 88);
       --token-color-background-label-badge-red: var(--token-color-feedback-error);
@@ -504,3 +504,4 @@ Frosted Glass Dark:
 
 
   # --- End of Theme ---
+
