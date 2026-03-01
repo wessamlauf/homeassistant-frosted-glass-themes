@@ -1,5 +1,5 @@
 # Frosted Glass Light
-# ver. 1.3 - (2025-11-24)  
+# ver. 1.3.9 - (2026-03-01)
 
 Frosted Glass Light:
   card-mod-theme: "Frosted Glass Light"
@@ -10,8 +10,7 @@ Frosted Glass Light:
   # =========================
   # HEADER (Top Bar)
   # =========================
-  app-header-backdrop-filter: 'blur(6px) saturate(1.2)'
-  app-header-background-color: 'rgba(234, 235, 238, 0.1)'
+  app-header-background-color: 'rgba(234, 235, 238, 0.88)'
   app-header-text-color: 'rgba(19, 21, 54, 0.95)'
   app-header-edit-background-color: 'rgba(255, 255, 255, 0.8)'
   app-header-edit-text-color: 'rgba(19, 21, 54, 0.98)'
@@ -31,8 +30,7 @@ Frosted Glass Light:
   # =========================
   # DIALOGS
   # =========================
-  ha-dialog-surface-backdrop-filter: 'blur(8px)'                                   
-  ha-dialog-surface-background: 'rgba(234, 235, 238, 0.7)'
+  ha-dialog-surface-background: 'rgba(234, 235, 238, 0.94)'
   dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'                                                     # 1.2 Glass – fix: remove stray quotes inside rgba
   paper-dialog-background-color: 'rgba(234, 235, 238, 0.7)'
   mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.6)'
@@ -67,15 +65,13 @@ Frosted Glass Light:
       );
     }
 
-    /* Headings + Glance (kept as your exclusions) */
-    :host(hui-heading-card) ha-card,
-    :host(hui-glance-card) ha-card {
+    /* Headings (kept excluded) */
+    :host(hui-heading-card) ha-card {
       background: none !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
     }
-    :host(hui-heading-card) ha-card::before,
-    :host(hui-glance-card) ha-card::before {
+    :host(hui-heading-card) ha-card::before {
       content: none !important;
     }
 
@@ -146,6 +142,18 @@ Frosted Glass Light:
       -webkit-backdrop-filter: none !important;
     }
 
+    /* === Prevent frosted/glass from applying to streamline-card wrapper === */
+    :host(.type-custom-streamline-card) ha-card {
+      background: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
+      border-radius: 0px !important;
+    }
+    :host(.type-custom-streamline-card) ha-card::before {
+      content: none !important;
+    }
+
   # =========================
   # CARD-MOD-ROOT GLOBAL CSS
   # =========================
@@ -155,32 +163,18 @@ Frosted Glass Light:
     --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     --ha-card-border-width: 0.5px;
     --ha-card-border-color: rgba(255, 255, 255, 0.3);
-    --ha-card-backdrop-filter: blur(8px) saturate(1.2);                                                   # 1.1.9 change - added blur & saturation for badges
+    --ha-card-backdrop-filter: blur(8px) saturate(1.2);
 
-    /* Glass system tokens (new) */
-    --ha-card-glass-tint: rgba(255, 255, 255, 0.08);                                                      # 1.2 Glass – global tint layer
-    --ha-card-glass-inset-shadow:                                                                         # 1.2 Glass – inner bevel/glow (Liquid Glass inspired)
+    /* Glass system tokens */
+    --ha-card-glass-tint: rgba(255, 255, 255, 0.08);
+    --ha-card-glass-inset-shadow:
       3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset,
       -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset,
       0 0 8px 1px rgba(255, 255, 255, 0.10) inset,
       0 0 2px 0 rgba(0, 0, 0, 0.10);
-   }
 
-   /* Custom text divider row size fix */
-   custom-text-divider-row .text-divider-content {
-    background: #fff !important; /* or your color */
-    opacity: 1 !important;
-    box-shadow: none !important;
-    border-radius: 10px !important; /* adjust as needed */
-    padding: 0 8px !important;
-    --text-divider-font-size: 16px !important;
-    --text-divider-line-size: 1px;
-    --text-divider-color: rgba(19, 21, 54, 1) !important;
-   }
-
-    
-      # Tokens (used throughout cards/UI)
-      --token-rgb-primary: 106, 116, 211;
+    /* Tokens (used throughout cards/UI) */
+    --token-rgb-primary: 106, 116, 211;
       --token-rgb-black: 0, 0, 0;
       --token-rgb-white: 240, 243, 255;
       --token-rgb-purple: 129, 45, 250;
@@ -272,8 +266,8 @@ Frosted Glass Light:
       --token-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       --token-weight-font-title-card: 500;
 
-      # Additional color variables
-      --token-color-red: rgb(var(--token-rgb-red));
+    /* Additional color variables */
+    --token-color-red: rgb(var(--token-rgb-red));
       --token-color-green: rgb(var(--token-rgb-green));
       --token-color-blue: rgb(var(--token-rgb-blue));
       --token-color-yellow: rgb(var(--token-rgb-yellow));
@@ -291,21 +285,31 @@ Frosted Glass Light:
       --token-color-blue-grey: rgb(var(--token-rgb-blue-grey));
       --token-color-indigo: rgb(var(--token-rgb-indigo));
       --token-color-deep-purple: rgb(var(--token-rgb-deep-purple));
-      --token-color-light-blue: rgb(var(--token-rgb-light-blue));
-    }
+    --token-color-light-blue: rgb(var(--token-rgb-light-blue));
+   }
 
-    /* SIDEBAR BLUR */
+   /* Custom text divider row size fix */
+   custom-text-divider-row .text-divider-content {
+    background: #fff !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    border-radius: 10px !important;
+    padding: 0 8px !important;
+    --text-divider-font-size: 16px !important;
+    --text-divider-line-size: 1px;
+    --text-divider-color: rgba(19, 21, 54, 1) !important;
+   }
+
+    /* SIDEBAR */
     .mdc-drawer .mdc-drawer__content {
-      backdrop-filter: blur(6px) saturate(1.2) !important;
-      -webkit-backdrop-filter: blur(6px) saturate(1.2) !important;
-      background: rgba(234, 235, 238, 0.7) !important;
-      box-shadow: var(--ha-card-glass-inset-shadow) !important;                                          /* 1.2 Glass – subtle inner edge for consistency */
+      background: rgba(234, 235, 238, 0.88) !important;
+      box-shadow: var(--ha-card-glass-inset-shadow) !important;
     }
 
     /* CARDS RADIUS */
     ha-card {
       border-radius: var(--token-size-radius-large);
-      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));       /* 1.2 Glass – ensure border follows tokens */
+      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));
       box-shadow: var(--ha-card-box-shadow);
     }
     ha-card ha-card {
@@ -319,9 +323,7 @@ Frosted Glass Light:
 
     /* LABEL BADGE */
     ha-label-badge {
-      --label-badge-background-color: rgba(230, 230, 230, 0.2) !important;
-      backdrop-filter: blur(12px) saturate(1.1) !important;
-      -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
+      --label-badge-background-color: rgba(230, 230, 230, 0.85) !important;
       --label-badge-text-color: rgba(19, 21, 54, 0.9) !important;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05) !important;
       border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
@@ -330,12 +332,19 @@ Frosted Glass Light:
     /* INPUTS */
     input, ha-textfield, ha-select {
       background: rgba(255, 255, 255, 0.7) !important;
-      backdrop-filter: blur(6px) !important;
-      -webkit-backdrop-filter: blur(6px);
       border-radius: var(--token-size-radius-small);
       border: none !important;
       box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
     }
+
+  # =========================
+  # CARD-MOD-VIEW (edit-mode empty card fix)
+  # =========================
+  card-mod-view-yaml: |
+    hui-sections-view $ hui-grid-section $ hui-card-edit-mode $: |
+      .card-wrapper {
+        min-height: var(--row-height);
+      }
 
   # =========================
   # TYPOGRAPHY

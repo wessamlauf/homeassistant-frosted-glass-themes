@@ -1,5 +1,5 @@
 # Frosted Glass Dark Lite
-# ver. 1.3 - (2025-11-24) 
+# ver. 1.3.9 - (2026-03-01)
 
 Frosted Glass Dark Lite:
   card-mod-theme: 'Frosted Glass Dark Lite'
@@ -59,13 +59,11 @@ Frosted Glass Dark Lite:
       );
     }
 
-    /* Headings + Glance (kept excluded) */
-    :host(hui-heading-card) ha-card,
-    :host(hui-glance-card) ha-card {
+    /* Headings (kept excluded) */
+    :host(hui-heading-card) ha-card {
       background: none !important;
     }
-    :host(hui-heading-card) ha-card::before,
-    :host(hui-glance-card) ha-card::before {
+    :host(hui-heading-card) ha-card::before {
       content: none !important;
     }
 
@@ -122,7 +120,15 @@ Frosted Glass Dark Lite:
       background: none !important;
     }
 
-    /* (Removed) .bubble-button-card-container styling to avoid conflicts               # 1.2 Glass – matches Light exclusions */
+    /* === Prevent frosted/glass from applying to streamline-card wrapper === */
+    :host(.type-custom-streamline-card) ha-card {
+      background: none !important;
+      box-shadow: none !important;
+      border-radius: 0px !important;
+    }
+    :host(.type-custom-streamline-card) ha-card::before {
+      content: none !important;
+    }
 
   # =========================
   # CARD-MOD-ROOT GLOBAL CSS
@@ -134,9 +140,9 @@ Frosted Glass Dark Lite:
       --ha-card-border-width: 0.5px;
       --ha-card-border-color: rgba(234, 235, 238, 0.1);
 
-      /* Glass system tokens (new, dark-tuned) */
-      --ha-card-glass-tint: rgba(28, 29, 33, 0.18);                                      # 1.2 Glass – global tint layer
-      --ha-card-glass-inset-shadow:                                                      # 1.2 Glass – inner bevel/glow (Liquid Glass inspired)
+      /* Glass system tokens (dark-tuned) */
+      --ha-card-glass-tint: rgba(28, 29, 33, 0.18);
+      --ha-card-glass-inset-shadow:
         3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset,
         -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset,
         0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
@@ -235,7 +241,7 @@ Frosted Glass Dark Lite:
       --token-font-family-primary: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
       --token-weight-font-title-card: 500;
       
-      # Additional color variables
+      /* Additional color variables */
       --token-color-red: rgb(var(--token-rgb-red));
       --token-color-green: rgb(var(--token-rgb-green));
       --token-color-blue: rgb(var(--token-rgb-blue));
@@ -256,6 +262,64 @@ Frosted Glass Dark Lite:
       --token-color-deep-purple: rgb(var(--token-rgb-deep-purple));
       --token-color-light-blue: rgb(var(--token-rgb-light-blue));
     }
+
+    /* SIDEBAR */
+    .mdc-drawer .mdc-drawer__content {
+      background: rgba(25, 28, 45, 0.8) !important;
+      box-shadow: var(--ha-card-glass-inset-shadow) !important;
+    }
+
+    /* CARDS RADIUS */
+    ha-card {
+      border-radius: var(--token-size-radius-large);
+      border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));
+      box-shadow: var(--ha-card-box-shadow);
+    }
+    ha-card ha-card {
+      --ha-card-border-width: 0px;
+    }
+
+    /* DRAWER SCRIM */
+    ha-drawer {
+      --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.8) !important;
+    }
+
+    /* LABEL BADGE */
+    ha-label-badge {
+      --label-badge-background-color: rgba(60, 60, 78, 0.28) !important;
+      --label-badge-text-color: rgba(234, 235, 238, 0.9) !important;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.10) !important;
+      border: 0.5px solid rgba(234, 235, 238, 0.22) !important;
+    }
+
+    /* INPUTS */
+    input, ha-textfield, ha-select {
+      background: rgba(30, 33, 54, 0.7) !important;
+      border-radius: var(--token-size-radius-small);
+      border: none !important;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.09) !important;
+    }
+
+    /* Custom text divider row size fix */
+    custom-text-divider-row .text-divider-content {
+      background: #181929 !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+      border-radius: 10px !important;
+      padding: 0 8px !important;
+      --text-divider-font-size: 16px !important;
+      --text-divider-line-size: 1px;
+      --text-divider-color: rgba(234, 235, 238, 1) !important;
+    }
+
+  # =========================
+  # CARD-MOD-VIEW (edit-mode empty card fix)
+  # =========================
+  card-mod-view-yaml: |
+    hui-sections-view $ hui-grid-section $ hui-card-edit-mode $: |
+      .card-wrapper {
+        min-height: var(--row-height);
+      }
 
   # =========================
   # TYPOGRAPHY
@@ -388,8 +452,8 @@ Frosted Glass Dark Lite:
   paper-toggle-button-checked-bar-color: 'rgb(106, 116, 211)'
   paper-toggle-button-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
   paper-toggle-button-unchecked-bar-color: 'rgba(234, 235, 238, 0.18)'
-  mdc-checkbox-unchecked-color: 'rgba(19, 21, 54, 0.75)'
-  mdc-radio-unchecked-color: 'rgba(19, 21, 54, 0.75)'
+  mdc-checkbox-unchecked-color: 'rgba(234, 235, 238, 0.75)'
+  mdc-radio-unchecked-color: 'rgba(234, 235, 238, 0.75)'
   mdc-ripple-hover-opacity: '0.1'
 
   # Inputs
