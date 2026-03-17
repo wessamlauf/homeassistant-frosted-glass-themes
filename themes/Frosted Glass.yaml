@@ -4,7 +4,7 @@
 Frosted Glass:
   modes:
     light:
-      card-mod-theme: "Frosted Glass"
+      card-mod-theme: "Frosted Glass Light"
 
       # =========================
       # HEADER (Top Bar)
@@ -494,7 +494,7 @@ Frosted Glass:
       border-radius: '18px'
 
     dark:
-      card-mod-theme: "Frosted Glass"
+      card-mod-theme: "Frosted Glass Dark"
 
       # =========================
       # HEADER (Top Bar)
