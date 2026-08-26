@@ -10,6 +10,26 @@ on:
 permissions: {}
 
 jobs:
+  validate-themes:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install validator dependency
+        run: python -m pip install PyYAML==6.0.2
+
+      - name: Check generated themes
+        run: python scripts/sync_themes.py --check
+
+      - name: Validate YAML and embedded CSS
+        run: python scripts/validate_themes.py
+
   validate-hacs:
     runs-on: "ubuntu-latest"
     steps:
