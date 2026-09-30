@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 import yaml
+from jinja2 import Environment, StrictUndefined, TemplateError
 from yaml.constructor import ConstructorError
 from yaml.resolver import BaseResolver
 
@@ -38,6 +39,8 @@ REQUIRED_COMPATIBILITY_KEYS = {
     "card-mod-card-yaml",
     "card-mod-root",
     "card-mod-badge",
+    "card-mod-more-info-yaml",
+    "card-mod-dialog-yaml",
     "frosted-glass-badge-shadow",
 }
 
@@ -70,6 +73,27 @@ UniqueKeyLoader.add_constructor(
 
 
 def _validate_css(path: Path, key: str, css: str) -> list[str]:
+    if "{{" in css or "{%" in css:
+        try:
+            template = Environment(undefined=StrictUndefined).from_string(css)
+            errors = []
+            for entity, state in (
+                (None, None),
+                ("fan.test", "on"),
+                ("fan.test", "off"),
+                ("light.test", "on"),
+                ("light.test", "off"),
+                ("light.test", "unavailable"),
+            ):
+                rendered = template.render(
+                    config={"entity": entity} if entity else {},
+                    is_state=lambda name, expected, current_entity=entity, current_state=state:
+                        name == current_entity and expected == current_state,
+                )
+                errors.extend(_validate_css(path, f"{key}[{entity}/{state}]", rendered))
+            return errors
+        except TemplateError as err:
+            return [f"{path.name}: {key} contains an invalid state template: {err}"]
     errors = []
     if css.count("/*") != css.count("*/"):
         errors.append(f"{path.name}: {key} has an unbalanced CSS comment")
@@ -218,6 +242,17 @@ def _validate_compatibility(path: Path, name: str, values: dict) -> list[str]:
                 f"{path.name}: {name} must keep dialog backdrop-filter disabled "
                 "for fixed-position legacy dropdowns"
             )
+        if section.get("ha-dialog-scrim-backdrop-filter") != "none":
+            errors.append(f"{path.name}: {name} must not filter the legacy dialog ancestor")
+        for key in (
+            "ha-card-background",
+            "ha-card-glass-tint",
+            "bubble-main-background-color",
+            "bubble-horizontal-buttons-stack-background-color",
+            "navbar-background-color",
+        ):
+            if section.get(key) != "transparent":
+                errors.append(f"{path.name}: {name} {key} must remain transparent")
 
         if re.search(r"input\s*,\s*ha-textfield\s*,\s*ha-select", root_css):
             errors.append(
@@ -229,6 +264,10 @@ def _validate_compatibility(path: Path, name: str, values: dict) -> list[str]:
             for key in ("ha-card-backdrop-filter", "sidebar-backdrop-filter", "navbar-backdrop-filter"):
                 if section.get(key) != "none":
                     errors.append(f"{path.name}: {name} Lite {key} must be none")
+            if section.get("frosted-glass-popup-backdrop-filter") != "none":
+                errors.append(f"{path.name}: {name} Lite popup blur must be none")
+            if section.get("frosted-glass-popup-surface") != section.get("primary-background-color"):
+                errors.append(f"{path.name}: {name} Lite popups must be fully opaque")
             if re.search(r"(?<![\w-])(?:-webkit-)?backdrop-filter\s*:", card_css):
                 errors.append(f"{path.name}: {name} Lite card CSS must not use backdrop-filter")
 

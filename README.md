@@ -21,7 +21,7 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 - **Light & Dark Modes**: Choose between a bright, clean look or a soft dark interface. ☀️🌑
 - **Modern Design**: Rounded corners, minimal shadows, and cohesive color palettes. 🛋️
 - **Enhanced UX**: Designed to feel fluid, comfortable, and polished. 🖼️
-- **Lite Editions**: Optional no-blur builds for older or low-end devices. They keep the same semi-transparent, glassy look while improving performance. ⚡
+- **Lite Editions**: Optional no-blur builds for older or low-end devices. Cards keep transparent backgrounds and glass edges; popups stay opaque for readability. ⚡
 - **Home Assistant 2026.8 Ready**: Uses the current form, switch and border-radius theme tokens, with validated single-mode declarations.
 - **Two Styling Engines**: Works with UIX and remains compatible with card-mod.
 - **Native Custom-Card Profiles**: Bubble Card, Navbar Card, stack-in-card, Mushroom, Simple Swipe Card and other common HACS cards inherit deliberate theme contracts instead of generic overrides.
@@ -85,21 +85,27 @@ The theme uses each card's public CSS variables where they exist. This keeps the
 | Card / integration | Theme behavior |
 | --- | --- |
 | Bubble Card | Uses official surface, border, shadow, popup and select-menu variables. Blur sits on a background pseudo-element, keeping fixed-position menus out of a filtered containing block. The outer `ha-card` does not add a second border or tint. |
-| Navbar Card | Uses the official navbar color, radius and shadow variables. Standard builds apply blur directly to the navbar surface; Lite builds use the same opaque visual profile without blur. |
+| Navbar Card | Uses the official navbar radius and shadow variables on a transparent surface. Standard builds apply blur directly to that surface; Lite builds keep it transparent without blur. |
 | stack-in-card | Suppresses glass and borders on children whose background the card explicitly makes transparent. `keep.background` and individual `--keep-background: true` choices retain their surfaces. |
 | Mushroom | Title and chip containers remain transparent. Template cards use a direct glass layer so custom `::before` / `::after` styling remains available. |
 | room-summary-card | Its built-in Frosted Glass detection continues to consume the theme's card tint, filter, border and inset-shadow tokens. |
-| Hue-Like Light Card | The card's calculated light background and matching foreground are preserved instead of being replaced by a transparent generic surface. |
+| Hue-Like Light Card | Uses transparent glass and the theme's matching text color, including when its native light-color calculation selects a dark foreground. |
 | Slider Button Card | Public button and slider-track variables follow the light/dark palette. |
 | Simple Swipe Card | Pagination uses the theme palette. For blurred child cards, add `enable_backdrop_filter: true` to the card configuration as required by Simple Swipe Card itself. |
 | config-template-card, auto-entities, layout-card and streamline-card | These are transparent wrappers, so the actual child card receives the theme. Bubble Card nested inside a wrapper is detected by its rendered container to avoid a duplicate layer. |
 | Energy Flow Card Plus and standard `ha-card` custom cards | Inherit the shared radius, border, tint and shadow tokens normally. |
 
-Fan animation follows exposed HA state attributes, entity-row and Glance icons, Mushroom's internal disabled state, and Bubble's active `mdi:fan` / `mdi:fan-speed-*` icons. Standard active light cards and Bubble lightbulb cards receive a subtle surface glow; Mushroom light icons receive a small glow. Other custom icons and cards without exposed state are left to their native behavior. All added fan motion respects `prefers-reduced-motion`.
+Full and Lite cards have **transparent backgrounds**, including Bubble and Navbar. Full adds blur; Lite keeps the glass edges and transparency without blur. The original inset highlights remain visible at the top-left and bottom-right edges. Slider fills and icon controls retain their functional colors.
+
+Fan animation follows exposed HA state attributes, entity-row and Glance icons, and Bubble's actual `ha-card.is-on` state. Mushroom fan and light cards use the engine's Home Assistant template subscription for `config.entity`, because their entity state is not exposed on the card's DOM. Running Mushroom fans rotate; active Mushroom lights receive both a card glow and a small icon glow. The subscription updates on entity changes without polling. All added fan motion respects `prefers-reduced-motion`.
 
 The sidebar has a dedicated theme-engine hook. Its wallpaper and tint match the dashboard, with blur on a pseudo-element so the sidebar host can still position tooltips correctly. Lite variants use the same structure with every filter token set to `none`.
 
 Legacy MWC selects and current Material/Web Awesome menus share an opaque glass menu surface. Dialog and select hosts intentionally do not use `backdrop-filter`, because a filtered ancestor changes the containing block of fixed-position legacy menus. This keeps dropdowns such as **HACS → Custom repositories → Type** aligned and visible.
+
+Modern popup hooks blur the separate Web Awesome backdrop and use a translucent surface. The hooks cover direct dialogs and UIX's adaptive desktop/mobile dialogs. Older MWC popups and engines without the matching adaptive hook use a fully opaque fallback. **Lite popup surfaces are fully opaque and have no blur.** Bubble popups also receive an opaque fallback because their optional native blur is configured by the card itself.
+
+Settings, sidebar and topbar share the warm light palette (`254, 244, 242`) or the blue-purple dark palette (`25, 28, 45`).
 
 See [the source audit and regression checks](docs/compatibility-audit.md) for the reviewed versions, styling contracts and test scope.
 

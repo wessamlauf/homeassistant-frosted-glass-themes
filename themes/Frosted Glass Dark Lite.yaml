@@ -8,16 +8,16 @@ Frosted Glass Dark Lite:
   # =========================
   # HEADER (Top Bar)
   # =========================
-  app-header-background-color: 'rgba(28, 31, 40, 0.98)'
+  app-header-background-color: 'rgb(25, 28, 45)'
   app-header-text-color: 'rgba(240, 243, 255, 0.95)'
-  app-header-edit-background-color: 'rgba(30, 33, 54, 0.8)'
+  app-header-edit-background-color: 'rgb(25, 28, 45)'
   app-header-edit-text-color: 'rgba(234, 235, 238, 0.98)'
   app-theme-color: 'rgb(0, 0, 0)'                                                      # 1.2 Glass – header theme color hint for browsers
 
   # =========================
   # SIDEBAR / DRAWER
   # =========================
-  sidebar-background-color: 'rgba(24, 26, 34, 0.96)'
+  sidebar-background-color: 'rgb(25, 28, 45)'
   sidebar-backdrop-filter: 'none'
   sidebar-border-color: 'rgba(255, 255, 255, 0.12)'
   sidebar-icon-color: 'rgba(234, 235, 238, 0.6)'
@@ -29,41 +29,41 @@ Frosted Glass Dark Lite:
   # DIALOGS
   # =========================
   ha-dialog-surface-backdrop-filter: 'none'
-  ha-dialog-surface-background: 'rgba(24, 26, 34, 0.98)'
+  ha-dialog-surface-background: 'rgb(25, 28, 45)'
   dialog-box-shadow: '0 24px 64px rgba(0, 0, 0, 0.48), 0 4px 18px rgba(0, 0, 0, 0.28)'
-  paper-dialog-background-color: 'rgba(24, 26, 34, 0.98)'
+  paper-dialog-background-color: 'rgb(25, 28, 45)'
   mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.82)'
 
   # =========================
   # THIRD-PARTY CARD CONTRACTS
   # =========================
   bubble-border-radius: '18px'
-  bubble-main-background-color: 'var(--ha-card-glass-tint)'
+  bubble-main-background-color: 'transparent'
   bubble-secondary-background-color: 'rgba(255, 255, 255, 0.10)'
   bubble-accent-color: 'rgb(106, 116, 211)'
   bubble-icon-border-radius: '14px'
   bubble-icon-background-color: 'rgba(255, 255, 255, 0.12)'
   bubble-sub-button-border-radius: '12px'
   bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.11)'
-  bubble-box-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+  bubble-box-shadow: 'var(--ha-card-box-shadow)'
   bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
   bubble-pop-up-border-radius: '28px'
-  bubble-pop-up-main-background-color: 'rgba(24, 26, 34, 0.98)'
-  bubble-pop-up-background-color: 'rgba(24, 26, 34, 0.98)'
+  bubble-pop-up-main-background-color: 'rgb(25, 28, 45)'
+  bubble-pop-up-background-color: 'rgb(25, 28, 45)'
   bubble-backdrop-background-color: 'rgba(0, 0, 0, 0.62)'
   bubble-select-list-border-radius: '14px'
-  bubble-select-list-background-color: 'rgba(30, 32, 42, 1)'
+  bubble-select-list-background-color: 'var(--frosted-glass-menu-surface)'
   bubble-select-list-item-accent-color: 'rgba(106, 116, 211, 0.24)'
   bubble-horizontal-buttons-stack-border-radius: '18px'
-  bubble-horizontal-buttons-stack-background-color: 'rgba(24, 27, 36, 0.98)'
-  navbar-background-color: 'rgba(20, 22, 30, 0.98)'
+  bubble-horizontal-buttons-stack-background-color: 'transparent'
+  navbar-background-color: 'transparent'
   navbar-primary-color: 'rgb(106, 116, 211)'
   navbar-border-radius: '18px'
-  navbar-box-shadow: '0 -1px 0 rgba(255, 255, 255, 0.10), 0 -12px 34px rgba(0, 0, 0, 0.34)'
-  navbar-box-shadow-desktop: '0 18px 46px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
-  navbar-box-shadow-mobile-floating: '0 18px 46px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+  navbar-box-shadow: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
+  navbar-box-shadow-desktop: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
+  navbar-box-shadow-mobile-floating: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
   navbar-backdrop-filter: 'none'
-  simple-swipe-card-pagination-background: 'rgba(20, 22, 30, 0.96)'
+  simple-swipe-card-pagination-background: 'transparent'
   simple-swipe-card-pagination-dot-inactive-color: 'rgba(234, 235, 238, 0.34)'
   simple-swipe-card-pagination-dot-active-color: 'rgb(106, 116, 211)'
   simple-swipe-card-pagination-dot-active-box-shadow: '0 0 12px rgba(106, 116, 211, 0.30)'
@@ -75,13 +75,24 @@ Frosted Glass Dark Lite:
   # CARDS / CARD-MOD
   # =========================
   card-mod-card-yaml: |
-    .: |+
+    .: |
+      {% set entity = config.entity if config is defined and config.entity is defined and config.entity is string else '' %}
+      {% set light_on = entity.startswith('light.') and is_state(entity, 'on') %}
+      {% set fan_on = entity.startswith('fan.') and is_state(entity, 'on') %}
+      :host {
+        --frosted-glass-entity-light-glow: {{ 'var(--frosted-glass-light-glow)' if light_on else '0 0 0 0 transparent' }};
+        --frosted-glass-entity-light-border: {{ 'var(--frosted-glass-light-border-color)' if light_on else 'var(--ha-card-border-color)' }};
+        --frosted-glass-entity-light-filter: {{ 'drop-shadow(var(--frosted-glass-light-icon-glow))' if light_on else 'none' }};
+      }
+
       /* Keep fixed-position menus in the viewport coordinate system. */
       ha-card {
-        background: transparent;
+        background: transparent !important;
 
         position: relative;
         isolation: isolate;
+        border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
+        box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
         transition: box-shadow 220ms ease, border-color 220ms ease;
       }
 
@@ -134,11 +145,29 @@ Frosted Glass Dark Lite:
       }
 
 
-      /* Hue calculates foreground contrast from its own light-colored background. */
+      .bubble-container {
+        background: transparent !important;
+        border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
+        box-shadow: var(--bubble-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+      }
+      .bubble-background {
+        background: transparent !important;
+        transition: none;
+      }
+      .bubble-container::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        box-shadow: var(--ha-card-glass-inset-shadow);
+      }
+
+      /* Transparent Hue surfaces need the theme's matching foreground. */
       :host(hue-like-light-card) ha-card,
       :host(.type-custom-hue-like-light-card) ha-card {
-        --frosted-glass-card-layer-content: none;
-        background: var(--hue-background, var(--ha-card-background));
+        --hue-text-color: var(--primary-text-color);
+        color: var(--primary-text-color) !important;
       }
 
       /* These cards declare defaults on :host, so inherited public variables alone
@@ -154,7 +183,7 @@ Frosted Glass Dark Lite:
       :host(navbar-card) ha-card,
       :host(.type-custom-navbar-card) ha-card {
         --frosted-glass-card-layer-content: none;
-        background: var(--navbar-background-color);
+        background: var(--navbar-background-color) !important;
 
         border: var(--ha-card-border);
       }
@@ -171,7 +200,8 @@ Frosted Glass Dark Lite:
 
       /* Leave both pseudo-elements available for Mushroom template artwork. */
       :host(mushroom-template-card) ha-card {
-        background: var(--ha-card-glass-tint);
+        background: transparent !important;
+        box-shadow: var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
 
       }
 
@@ -202,7 +232,7 @@ Frosted Glass Dark Lite:
         border-color: var(--frosted-glass-light-border-color);
         box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-light-glow);
       }
-      .bubble-container:has(.bubble-wrapper.is-on .bubble-main-icon[icon^="mdi:lightbulb"]) {
+      ha-card.is-on .bubble-container:has(.bubble-main-icon[icon^="mdi:lightbulb"]) {
         border-color: var(--frosted-glass-light-border-color);
         box-shadow: var(--bubble-box-shadow), var(--frosted-glass-light-glow);
       }
@@ -213,23 +243,24 @@ Frosted Glass Dark Lite:
       }
 
       @keyframes frosted-glass-fan-spin {
+        from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"],
       ha-tile-icon[data-domain="fan"][data-state="on"] ha-state-icon,
-      .bubble-wrapper.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
+      ha-card.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
 
-      /* State remains inside Mushroom's shape shadow root. Inherited variables
-         carry it through the slot without a backend template or polling. */
-      :host(mushroom-fan-card) ha-state-icon {
-        animation: var(--frosted-glass-fan-animation, none);
+      /* HA's template subscription tracks config.entity. Mushroom does not
+         expose that state as an attribute outside its shape shadow root. */
+      :host(mushroom-fan-card) mushroom-shape-icon ha-state-icon {
+        animation: {{ 'frosted-glass-fan-spin 4s linear infinite' if fan_on else 'none' }};
         transform-origin: center;
       }
-      :host(mushroom-light-card) ha-state-icon {
-        filter: var(--frosted-glass-mushroom-light-filter, none);
+      :host(mushroom-light-card) mushroom-shape-icon ha-state-icon {
+        filter: var(--frosted-glass-entity-light-filter, none);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -242,22 +273,11 @@ Frosted Glass Dark Lite:
         }
       }
 
-
-    mushroom-shape-icon $: |
-      .shape {
-        --frosted-glass-fan-animation: none;
-        --frosted-glass-mushroom-light-filter: none;
-      }
-      .shape:not(.disabled) {
-        --frosted-glass-fan-animation: frosted-glass-fan-spin 4s linear infinite;
-        --frosted-glass-mushroom-light-filter: drop-shadow(var(--frosted-glass-light-icon-glow));
-      }
-
   # Global glass tokens are inherited by dialogs, sidebar and custom cards.
-  ha-card-glass-tint: 'rgba(28, 31, 40, 0.98)'
+  ha-card-glass-tint: 'transparent'
   ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset, 0 0 8px 1px rgba(255, 255, 255, 0.06) inset, 0 0 2px 0 rgba(0, 0, 0, 0.18)'
-  frosted-glass-menu-surface: 'rgba(30, 32, 42, 1)'
-  frosted-glass-control-surface: 'rgba(24, 27, 36, 0.98)'
+  frosted-glass-menu-surface: 'rgb(25, 28, 45)'
+  frosted-glass-control-surface: 'rgba(25, 28, 45, 0.48)'
   frosted-glass-badge-shadow: '0 3px 10px rgba(0, 0, 0, 0.22)'
   frosted-glass-light-border-color: 'rgba(255, 211, 96, 0.28)'
   frosted-glass-light-glow: '0 0 22px rgba(255, 202, 74, 0.16)'
@@ -282,6 +302,52 @@ Frosted Glass Dark Lite:
       backdrop-filter: var(--ha-card-backdrop-filter, none);
       -webkit-backdrop-filter: var(--ha-card-backdrop-filter, none);
     }
+
+  card-mod-more-info-yaml: |
+    $:
+      .: |
+        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
+           filter their ancestor instead, so they keep the opaque fallback. */
+        wa-dialog {
+          --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
+          --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
+        }
+      ha-dialog $: |
+        wa-dialog {
+          --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
+          --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
+        }
+      ha-bottom-sheet $: |
+        wa-drawer {
+          --ha-bottom-sheet-surface-background: var(--frosted-glass-popup-surface);
+          --ha-bottom-sheet-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --ha-bottom-sheet-scrim-color: var(--frosted-glass-popup-scrim);
+        }
+
+  card-mod-dialog-yaml: |
+    $:
+      .: |
+        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
+           filter their ancestor instead, so they keep the opaque fallback. */
+        wa-dialog {
+          --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
+          --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
+        }
+      ha-dialog $: |
+        wa-dialog {
+          --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
+          --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
+        }
+      ha-bottom-sheet $: |
+        wa-drawer {
+          --ha-bottom-sheet-surface-background: var(--frosted-glass-popup-surface);
+          --ha-bottom-sheet-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          --ha-bottom-sheet-scrim-color: var(--frosted-glass-popup-scrim);
+        }
 
   card-mod-sidebar: |
     :host {
@@ -327,6 +393,7 @@ Frosted Glass Dark Lite:
     hui-generic-entity-row $:
       state-badge $: |
         @keyframes frosted-glass-fan-spin {
+          from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
         ha-state-icon[data-domain="fan"][data-state="on"] {
@@ -338,6 +405,7 @@ Frosted Glass Dark Lite:
         }
     state-badge $: |
       @keyframes frosted-glass-fan-spin {
+        from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
@@ -351,6 +419,7 @@ Frosted Glass Dark Lite:
   card-mod-glance-yaml: |
     state-badge $: |
       @keyframes frosted-glass-fan-spin {
+        from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
@@ -586,11 +655,11 @@ Frosted Glass Dark Lite:
   error-color: 'rgb(234, 114, 135)'
   background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-dark-background.jpg')"
   lovelace-background: 'var(--background-image)'
-  primary-background-color: 'rgba(30, 30, 30, 1)'                                      # 1.2 change - improved background color for a darker feel
-  secondary-background-color: 'rgba(30, 33, 54, 0.6)'
-  clear-background-color: 'rgba(30, 33, 54, 0.7)'
+  primary-background-color: 'rgb(25, 28, 45)'
+  secondary-background-color: 'rgba(25, 28, 45, 0.5)'
+  clear-background-color: 'rgba(25, 28, 45, 0.7)'
   card-background-color: 'var(--frosted-glass-menu-surface)'
-  ha-card-background: 'var(--ha-card-glass-tint)'
+  ha-card-background: 'transparent'
   ha-card-border-radius: '18px'
   ha-card-border-color: 'rgba(234, 235, 238, 0.22)'
   ha-card-border-width: '0.5px'
@@ -599,6 +668,14 @@ Frosted Glass Dark Lite:
   ha-card-box-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), 0 2px 10px rgba(0, 0, 0, 0.24)'
   ha-view-sections-column-gap: '17px'
   ha-view-sections-column-min-width: 320px
+
+  ha-dialog-scrim-backdrop-filter: 'none'
+
+  frosted-glass-popup-surface: 'rgb(25, 28, 45)'
+
+  frosted-glass-popup-backdrop-filter: 'none'
+
+  frosted-glass-popup-scrim: 'rgba(0, 0, 0, 0.50)'
 
   # Home Assistant 2026.8 form, shape and switch tokens
   ha-color-form-background: 'rgba(30, 33, 54, 0.48)'
@@ -666,12 +743,12 @@ Frosted Glass Dark Lite:
   input-hover-line-color: 'rgb(106, 116, 211)'
   mdc-select-idle-line-color: 'transparent'
   mdc-text-field-idle-line-color: 'transparent'
-  mdc-theme-surface: 'rgba(30, 32, 42, 1)'
-  md-menu-container-color: 'rgba(30, 32, 42, 1)'
-  wa-color-surface-raised: 'rgba(30, 32, 42, 1)'
+  mdc-theme-surface: 'var(--frosted-glass-menu-surface)'
+  md-menu-container-color: 'var(--frosted-glass-menu-surface)'
+  wa-color-surface-raised: 'var(--frosted-glass-menu-surface)'
 
   # Code Editor & Misc
-  code-editor-background-color: 'rgba(25, 28, 45, 1)'
+  code-editor-background-color: 'rgb(25, 28, 45)'
   codemirror-meta: 'rgba(234, 235, 238, 0.98)'
   codemirror-property: 'rgb(106, 116, 211)'
   codemirror-atom: 'rgb(106, 116, 211)'

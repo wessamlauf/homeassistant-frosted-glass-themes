@@ -22,7 +22,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install validator dependency
-        run: python -m pip install PyYAML==6.0.2
+        run: python -m pip install PyYAML==6.0.2 Jinja2==3.1.6
 
       - name: Check generated themes
         run: python scripts/sync_themes.py --check

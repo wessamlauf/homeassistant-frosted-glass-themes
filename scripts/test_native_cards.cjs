@@ -1,0 +1,433 @@
+/* Optional integration check with actual audited Mushroom/Bubble bundles.
+ * HA services and icon components are mocked; this is not a live HA session.
+ */
+const { chromium } = require("playwright");
+const { execFileSync } = require("node:child_process");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const root = path.resolve(__dirname, "..");
+const mushroomBundle = process.env.FROSTED_GLASS_MUSHROOM_BUNDLE;
+const bubbleBundle = process.env.FROSTED_GLASS_BUBBLE_BUNDLE;
+assert(
+  mushroomBundle && bubbleBundle,
+  "Set FROSTED_GLASS_MUSHROOM_BUNDLE and FROSTED_GLASS_BUBBLE_BUNDLE to the audited browser bundles.",
+);
+const sections = JSON.parse(
+  execFileSync(
+    "python3",
+    [
+      "-c",
+      `
+import json, yaml
+from pathlib import Path
+from jinja2 import Environment, StrictUndefined
+result=[]
+for filename in ('Frosted Glass.yaml','Frosted Glass Lite.yaml'):
+    theme=next(iter(yaml.safe_load((Path('themes')/filename).read_text()).values()))
+    for mode,v in theme['modes'].items():
+        template=Environment(undefined=StrictUndefined).from_string(yaml.safe_load(v['card-mod-card-yaml'])['.'])
+        styles={}
+        for domain in ('fan','light'):
+            for state in ('on','off'):
+                styles[domain+'_'+state]=template.render(config={'entity':domain+'.qa'},is_state=lambda e,s,current=state:s==current)
+        result.append(dict(name=filename,mode=mode,values=v,styles=styles))
+print(json.dumps(result))
+`,
+    ],
+    { cwd: root, encoding: "utf8" },
+  ),
+);
+(async () => {
+  const browser = await chromium.launch({
+    headless: true,
+    ...(process.env.FROSTED_GLASS_BROWSER
+      ? {
+          executablePath: process.env.FROSTED_GLASS_BROWSER,
+          args: ["--no-sandbox", "--disable-gpu"],
+        }
+      : {}),
+  });
+  let count = 0;
+  try {
+    for (const section of sections) {
+      const page = await browser.newPage({
+        viewport: { width: 1000, height: 900 },
+      });
+      await page.route("**/*", (r) => r.abort());
+      const wallpaper =
+        section.mode === "dark"
+          ? "linear-gradient(130deg,#172b42,#51425f,#1b283c)"
+          : "linear-gradient(130deg,#f8eadf,#edd9e7,#e8e1d2)";
+      await page.setContent(
+        `<body style="display:grid;align-content:start;grid-template-columns:repeat(2,400px);gap:20px;background:${wallpaper};padding:30px;min-height:820px"></body>`,
+      );
+      const pageErrors = [];
+      page.on("pageerror", (e) => pageErrors.push(e.message));
+      await page.evaluate(() => {
+        customElements.define(
+          "ha-card",
+          class extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: "open" }).innerHTML =
+                "<style>:host{display:block;color:var(--primary-text-color);border:var(--ha-card-border);border-radius:var(--ha-card-border-radius);box-shadow:var(--ha-card-box-shadow);background:var(--ha-card-background)}</style><slot></slot>";
+            }
+          },
+        );
+        customElements.define(
+          "ha-state-icon",
+          class extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: "open" }).innerHTML =
+                "<style>:host{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center}</style>✣";
+            }
+          },
+        );
+        customElements.define(
+          "ha-icon",
+          class extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: "open" }).innerHTML =
+                "<style>:host{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center}</style>✣";
+            }
+          },
+        );
+        window.qaHass = {
+          states: {},
+          entities: {},
+          devices: {},
+          areas: {},
+          translationMetadata: { translations: { en: { isRTL: false } } },
+          language: "en",
+          themes: { darkMode: true, themes: {} },
+          config: {
+            version: "2026.9.0",
+            unit_system: { temperature: "°C" },
+            components: [],
+          },
+          locale: {
+            language: "en",
+            number_format: "language",
+            time_format: "24",
+            week_start: "monday",
+          },
+          localize: (k) => k,
+          formatEntityName: (s) => s.attributes.friendly_name,
+          formatEntityState: (s) => s.state,
+          formatEntityAttributeValue: (s, k, v) => String(v),
+          hassUrl: (p) => p,
+          callWS: async () => ({}),
+        };
+      });
+      await page.addScriptTag({ path: mushroomBundle });
+      await page.addScriptTag({ path: bubbleBundle });
+      const result = await page.evaluate(
+        async ({ values: v, styles, mode }) => {
+          const errors = [];
+          let count = 0;
+          const check = (value, label) => {
+            count++;
+            if (!value) errors.push(label);
+          };
+          const css = (e, p, pseudo) =>
+            getComputedStyle(e, pseudo).getPropertyValue(p).trim();
+          for (const [k, value] of Object.entries(v)) {
+            if (!k.startsWith("card-mod-") && !k.startsWith("uix-"))
+              document.documentElement.style.setProperty("--" + k, value);
+          }
+          document.body.style.color = "var(--primary-text-color)";
+          const hass = window.qaHass;
+          hass.themes.darkMode = mode === "dark";
+          const state = (domain, on) => ({
+            entity_id: domain + ".qa",
+            state: on ? "on" : "off",
+            attributes: {
+              friendly_name:
+                domain === "fan" ? "Living Room Fan" : "Living Room Light",
+              supported_features: 63,
+              percentage: 43,
+              brightness: 219,
+              rgb_color: [255, 176, 91],
+              supported_color_modes: ["rgb"],
+              color_mode: "rgb",
+            },
+          });
+          async function mushroom(domain) {
+            const e = document.createElement("mushroom-" + domain + "-card");
+            e.setConfig({
+              type: "custom:mushroom-" + domain + "-card",
+              entity: domain + ".qa",
+              icon_animation: false,
+              show_percentage_control: domain === "fan",
+              show_brightness_control: domain === "light",
+            });
+            hass.states[domain + ".qa"] = state(domain, true);
+            e.hass = { ...hass };
+            document.body.append(e);
+            await e.updateComplete;
+            const cm = document.createElement("card-mod");
+            const style = document.createElement("style");
+            style.textContent = styles[domain + "_on"];
+            cm.append(style);
+            e.shadowRoot.append(cm);
+            return {
+              e,
+              style,
+              icon: e.shadowRoot.querySelector(
+                "mushroom-shape-icon ha-state-icon",
+              ),
+              surface: e.shadowRoot.querySelector("ha-card"),
+            };
+          }
+          const fan = await mushroom("fan");
+          check(
+            !fan.icon.hasAttribute("data-state"),
+            "native Mushroom icon has no synthetic state",
+          );
+          const animation = fan.icon
+            .getAnimations()
+            .find((a) => a.animationName === "frosted-glass-fan-spin");
+          check(
+            Boolean(animation),
+            "native Mushroom fan has a running animation with icon_animation false",
+          );
+          if (animation) {
+            animation.pause();
+            animation.currentTime = 0;
+            const start = css(fan.icon, "transform");
+            animation.currentTime = 1000;
+            check(
+              css(fan.icon, "transform") !== start,
+              "native Mushroom fan actually rotates",
+            );
+            animation.play();
+          }
+          check(
+            css(fan.surface, "background-color") === "rgba(0, 0, 0, 0)",
+            "native Mushroom fan card transparent",
+          );
+          hass.states["fan.qa"] = state("fan", false);
+          fan.e.hass = { ...hass };
+          await fan.e.updateComplete;
+          fan.style.textContent = styles.fan_off;
+          check(
+            css(fan.icon, "animation-name") === "none",
+            "native Mushroom off fan stops",
+          );
+          const light = await mushroom("light");
+          light.surface.style.transition = "none";
+          const onShadow = css(light.surface, "box-shadow");
+          check(
+            css(light.icon, "filter").startsWith("drop-shadow"),
+            "native Mushroom light icon glow",
+          );
+          check(
+            css(light.surface, "background-color") === "rgba(0, 0, 0, 0)",
+            "native Mushroom light card transparent",
+          );
+          hass.states["light.qa"] = state("light", false);
+          light.e.hass = { ...hass };
+          await light.e.updateComplete;
+          light.style.textContent = styles.light_off;
+          check(
+            css(light.surface, "box-shadow") !== onShadow,
+            "native Mushroom light card on/off glow",
+          );
+          check(
+            css(light.icon, "filter") === "none",
+            "native Mushroom off light clears icon glow",
+          );
+          // Bubble's actual JavaScript attaches is-on to ha-card and sets an
+          // active native background. Explicit icons avoid a HA icon API request.
+          async function bubble(domain) {
+            const e = document.createElement("bubble-card");
+            e.setConfig({
+              type: "custom:bubble-card",
+              card_type: "button",
+              button_type: "switch",
+              entity: domain + ".qa",
+              icon: domain === "fan" ? "mdi:fan" : "mdi:lightbulb",
+              show_state: true,
+            });
+            hass.states[domain + ".qa"] = state(domain, true);
+            document.body.append(e);
+            e.hass = { ...hass };
+            for (let i = 0; i < 20; i++) {
+              const icon = e.shadowRoot?.querySelector(".bubble-main-icon");
+              if (
+                icon &&
+                getComputedStyle(icon).display !== "none" &&
+                icon.getBoundingClientRect().width > 0
+              )
+                break;
+              await new Promise((r) => requestAnimationFrame(r));
+            }
+            const cm = document.createElement("card-mod");
+            const style = document.createElement("style");
+            style.textContent = styles[domain + "_on"];
+            cm.append(style);
+            e.shadowRoot.append(cm);
+            return {
+              e,
+              style,
+              icon: e.shadowRoot.querySelector(".bubble-main-icon"),
+              surface: e.shadowRoot.querySelector(".bubble-container"),
+            };
+          }
+          const bubbleFan = await bubble("fan");
+          check(
+            bubbleFan.e.shadowRoot
+              .querySelector("ha-card")
+              .classList.contains("is-on"),
+            "native Bubble marks ha-card on",
+          );
+          check(
+            css(bubbleFan.icon, "animation-name") === "frosted-glass-fan-spin",
+            "native Bubble fan animation",
+          );
+          const bubbleAnimation = bubbleFan.icon
+            .getAnimations()
+            .find((a) => a.animationName === "frosted-glass-fan-spin");
+          check(
+            Boolean(bubbleAnimation),
+            "native Bubble has a real fan animation: " +
+              JSON.stringify({
+                display: css(bubbleFan.icon, "display"),
+                host: css(bubbleFan.e, "display"),
+                rect: bubbleFan.icon.getBoundingClientRect().toJSON(),
+                html: bubbleFan.icon.outerHTML,
+              }),
+          );
+          if (bubbleAnimation) {
+            bubbleAnimation.pause();
+            bubbleAnimation.currentTime = 0;
+            const start = css(bubbleFan.icon, "transform");
+            bubbleAnimation.currentTime = 1000;
+            check(
+              css(bubbleFan.icon, "transform") !== start,
+              "native Bubble fan actually rotates",
+            );
+            bubbleAnimation.play();
+          }
+          check(
+            css(bubbleFan.surface, "background-color") === "rgba(0, 0, 0, 0)",
+            "native Bubble surface transparent",
+          );
+          check(
+            css(bubbleFan.surface, "box-shadow", "::before").includes("inset"),
+            "native Bubble corner highlights",
+          );
+          hass.states["fan.qa"] = state("fan", false);
+          bubbleFan.e.hass = { ...hass };
+          bubbleFan.style.textContent = styles.fan_off;
+          for (
+            let i = 0;
+            i < 20 &&
+            !bubbleFan.e.shadowRoot
+              .querySelector("ha-card")
+              .classList.contains("is-off");
+            i++
+          )
+            await new Promise((r) => requestAnimationFrame(r));
+          check(
+            bubbleFan.e.shadowRoot
+              .querySelector("ha-card")
+              .classList.contains("is-off"),
+            "native Bubble marks fan off",
+          );
+          check(
+            css(bubbleFan.icon, "animation-name") === "none",
+            "native Bubble off fan stops",
+          );
+          const bubbleLight = await bubble("light");
+          bubbleLight.surface.style.transition = "none";
+          const bubbleOnShadow = css(bubbleLight.surface, "box-shadow");
+          const bg =
+            bubbleLight.e.shadowRoot.querySelector(".bubble-background");
+          check(
+            css(bg, "background-color") === "rgba(0, 0, 0, 0)",
+            "native Bubble active background transparent: " +
+              JSON.stringify({
+                color: css(bg, "background-color"),
+                html: bg.outerHTML,
+                style: bubbleLight.style.isConnected,
+                length: bubbleLight.style.textContent.length,
+              }),
+          );
+          hass.states["light.qa"] = state("light", false);
+          bubbleLight.e.hass = { ...hass };
+          bubbleLight.style.textContent = styles.light_off;
+          for (
+            let i = 0;
+            i < 20 &&
+            !bubbleLight.e.shadowRoot
+              .querySelector("ha-card")
+              .classList.contains("is-off");
+            i++
+          )
+            await new Promise((r) => requestAnimationFrame(r));
+          check(
+            css(bubbleLight.surface, "box-shadow") !== bubbleOnShadow,
+            "native Bubble light surface on/off glow",
+          );
+          window.qaFan = fan;
+          hass.states["fan.qa"] = state("fan", true);
+          fan.e.hass = { ...hass };
+          fan.style.textContent = styles.fan_on;
+          hass.states["light.qa"] = state("light", true);
+          light.e.hass = { ...hass };
+          light.style.textContent = styles.light_on;
+          bubbleFan.e.hass = { ...hass };
+          bubbleFan.style.textContent = styles.fan_on;
+          bubbleLight.e.hass = { ...hass };
+          bubbleLight.style.textContent = styles.light_on;
+          await fan.e.updateComplete;
+          await light.e.updateComplete;
+          for (
+            let i = 0;
+            i < 20 &&
+            !bubbleLight.e.shadowRoot
+              .querySelector("ha-card")
+              .classList.contains("is-on");
+            i++
+          )
+            await new Promise((r) => requestAnimationFrame(r));
+          return { errors, count };
+        },
+        section,
+      );
+      assert.deepEqual(result.errors, [], section.name + "/" + section.mode);
+      assert.deepEqual(pageErrors, [], section.name + " native JavaScript");
+      if (process.env.FROSTED_GLASS_SCREENSHOTS) {
+        fs.mkdirSync(process.env.FROSTED_GLASS_SCREENSHOTS, {
+          recursive: true,
+        });
+        await page.screenshot({
+          path: path.join(
+            process.env.FROSTED_GLASS_SCREENSHOTS,
+            `native-${section.name.includes("Lite") ? "lite" : "full"}-${section.mode}.png`,
+          ),
+        });
+      }
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      assert.equal(
+        await page.evaluate(
+          () => getComputedStyle(window.qaFan.icon).animationName,
+        ),
+        "none",
+      );
+      count += result.count + 1;
+      console.log("PASS native Mushroom/Bubble", section.name, section.mode);
+      await page.close();
+    }
+  } finally {
+    await browser.close();
+  }
+  console.log(count + " native component checks passed");
+})().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});
