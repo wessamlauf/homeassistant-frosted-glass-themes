@@ -65,9 +65,9 @@ Frosted Glass Light:
   navbar-background-color: 'transparent'
   navbar-primary-color: 'rgb(106, 116, 211)'
   navbar-border-radius: '18px'
-  navbar-box-shadow: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
-  navbar-box-shadow-desktop: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
-  navbar-box-shadow-mobile-floating: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
+  navbar-box-shadow: 'var(--ha-card-box-shadow)'
+  navbar-box-shadow-desktop: 'var(--ha-card-box-shadow)'
+  navbar-box-shadow-mobile-floating: 'var(--ha-card-box-shadow)'
   navbar-backdrop-filter: 'blur(20px) saturate(1.35)'
 
   # Simple Swipe Card and Slider Button Card public variables.
@@ -101,7 +101,7 @@ Frosted Glass Light:
         position: relative;
         isolation: isolate;
         border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
-        box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--ha-card-box-shadow);
         transition: box-shadow 220ms ease, border-color 220ms ease;
       }
 
@@ -116,7 +116,6 @@ Frosted Glass Light:
         z-index: -1;
         pointer-events: none;
         border-radius: inherit;
-        box-shadow: var(--ha-card-glass-inset-shadow);
       }
 
       /* Containers and text-only cards leave their content's surface intact. */
@@ -125,6 +124,10 @@ Frosted Glass Light:
       ha-card.text-only,
       :host(mushroom-title-card) ha-card,
       :host(mushroom-chips-card) ha-card {
+        --ha-card-background: transparent;
+        --ha-card-backdrop-filter: none;
+        --ha-card-box-shadow: none;
+        --frosted-glass-card-layer-content: none;
         background: none !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
@@ -158,14 +161,13 @@ Frosted Glass Light:
       .bubble-container {
         background: transparent !important;
         border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
-        box-shadow: var(--bubble-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--bubble-box-shadow);
       }
       .bubble-background {
         background: transparent !important;
         transition: none;
       }
       .bubble-container::before {
-        box-shadow: var(--ha-card-glass-inset-shadow);
         content: '';
         position: absolute;
         inset: 0;
@@ -184,14 +186,32 @@ Frosted Glass Light:
 
       /* These cards declare defaults on :host, so inherited public variables alone
          cannot override them. Aliases preserve the selected theme's values. */
-      :host(:where(navbar-card, .type-custom-navbar-card)) {
+      {% set navbar_styles = config.styles if config is mapping and config.styles is string else '' %}
+      {% set card_user_style = config.card_mod.style if config is mapping and config.card_mod is mapping and config.card_mod.style is defined else '' %}
+      {% set navbar_styles = navbar_styles ~ (card_user_style if card_user_style is string else card_user_style.get('.', '') if card_user_style is mapping else '') %}
+      {% set navbar_styles = navbar_styles.split() | join('') %}
+      :host(navbar-card),
+      :host(.type-custom-navbar-card) {
+        {% if '--navbar-background-color:' not in navbar_styles %}
         --navbar-background-color: var(--frosted-glass-navbar-background);
+        {% endif %}
+        {% if '--navbar-primary-color:' not in navbar_styles %}
         --navbar-primary-color: var(--frosted-glass-navbar-primary);
+        {% endif %}
+        {% if '--navbar-border-radius:' not in navbar_styles %}
         --navbar-border-radius: var(--frosted-glass-navbar-radius);
+        {% endif %}
+        {% if '--navbar-box-shadow:' not in navbar_styles %}
         --navbar-box-shadow: var(--frosted-glass-navbar-shadow);
+        {% endif %}
+        {% if '--navbar-box-shadow-desktop:' not in navbar_styles %}
         --navbar-box-shadow-desktop: var(--frosted-glass-navbar-shadow-desktop);
+        {% endif %}
+        {% if '--navbar-box-shadow-mobile-floating:' not in navbar_styles %}
         --navbar-box-shadow-mobile-floating: var(--frosted-glass-navbar-shadow-floating);
+        {% endif %}
       }
+      .navbar ha-card,
       :host(navbar-card) ha-card,
       :host(.type-custom-navbar-card) ha-card {
         --frosted-glass-card-layer-content: none;
@@ -212,10 +232,15 @@ Frosted Glass Light:
         --slider-track-color: var(--frosted-glass-slider-track);
       }
 
+      /* Room Summary already paints its own corner reflections. */
+      :where(:host(room-summary-card)) ha-card {
+        --ha-card-box-shadow: var(--frosted-glass-card-depth-shadow);
+      }
+
       /* Leave both pseudo-elements available for Mushroom template artwork. */
       :host(mushroom-template-card) ha-card {
         background: transparent !important;
-        box-shadow: var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--ha-card-box-shadow);
         backdrop-filter: var(--ha-card-backdrop-filter);
         -webkit-backdrop-filter: var(--ha-card-backdrop-filter);
       }
@@ -242,15 +267,15 @@ Frosted Glass Light:
 
       /* Active-state feedback uses attributes exposed by HA, or Bubble's icon/state
          classes. It never infers an entity's state from a displayed color. */
-      ha-card:has(ha-state-icon[data-domain="light"][data-state="on"]),
-      ha-card:has(ha-tile-icon[data-domain="light"][data-state="on"]),
-      ha-card:has(.light-button.state-on) {
+      ha-card:where(:has(ha-state-icon[data-domain="light"][data-state="on"]),
+                    :has(ha-tile-icon[data-domain="light"][data-state="on"]),
+                    :has(.light-button.state-on)) {
         border-color: var(--frosted-glass-light-border-color);
-        box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-light-glow);
+        box-shadow: var(--frosted-glass-light-glow), var(--ha-card-box-shadow);
       }
-      ha-card.is-on .bubble-container:has(.bubble-main-icon[icon^="mdi:lightbulb"]) {
+      :where(ha-card.is-on) .bubble-container:where(:has(.bubble-main-icon[icon^="mdi:lightbulb"])) {
         border-color: var(--frosted-glass-light-border-color);
-        box-shadow: var(--bubble-box-shadow), var(--frosted-glass-light-glow);
+        box-shadow: var(--frosted-glass-light-glow), var(--bubble-box-shadow);
       }
       ha-state-icon[data-domain="light"][data-state="on"],
       ha-tile-icon[data-domain="light"][data-state="on"] ha-state-icon,
@@ -265,6 +290,7 @@ Frosted Glass Light:
       ha-state-icon[data-domain="fan"][data-state="on"],
       ha-tile-icon[data-domain="fan"][data-state="on"] ha-state-icon,
       ha-card.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -289,6 +315,25 @@ Frosted Glass Light:
         }
       }
 
+    ha-tile-icon $: |
+      /* Older Tile layouts render their fallback icon inside this shadow root. */
+      @keyframes frosted-glass-fan-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      :host([data-domain="fan"][data-state="on"]) ::slotted(ha-state-icon),
+      :host([data-domain="fan"][data-state="on"]) .container ha-icon,
+      :host([data-domain="fan"][data-state="on"]) .container ha-svg-icon {
+        display: inline-flex;
+        animation: frosted-glass-fan-spin 4s linear infinite;
+        transform-origin: center;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::slotted(ha-state-icon), ha-icon, ha-svg-icon {
+          animation: none !important;
+        }
+      }
+
   # Global glass tokens are inherited by dialogs, sidebar and custom cards.
   ha-card-backdrop-filter: 'blur(8px) saturate(1.25) contrast(var(--frosted-glass-contrast, 1))'
   ha-card-glass-tint: 'transparent'
@@ -296,8 +341,8 @@ Frosted Glass Light:
   frosted-glass-menu-surface: 'rgb(254, 244, 242)'
   frosted-glass-control-surface: 'rgba(254, 244, 242, 0.32)'
   frosted-glass-badge-shadow: '0 3px 10px rgba(21, 25, 45, 0.10)'
-  frosted-glass-light-border-color: 'rgba(255, 210, 92, 0.34)'
-  frosted-glass-light-glow: '0 0 22px rgba(255, 202, 74, 0.16)'
+  frosted-glass-light-border-color: 'rgba(255, 165, 0, 0.10)'
+  frosted-glass-light-glow: '0 0 10px 2px rgba(255, 165, 0, 0.30)'
   frosted-glass-light-icon-glow: '0 0 7px rgba(255, 202, 74, 0.34)'
   frosted-glass-navbar-background: 'var(--navbar-background-color)'
   frosted-glass-navbar-primary: 'var(--navbar-primary-color)'
@@ -322,14 +367,56 @@ Frosted Glass Light:
   card-mod-more-info-yaml: |
     $:
       .: |
-        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
-           filter their ancestor instead, so they keep the opaque fallback. */
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
           --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
         }
       ha-dialog $: |
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
@@ -345,14 +432,56 @@ Frosted Glass Light:
   card-mod-dialog-yaml: |
     $:
       .: |
-        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
-           filter their ancestor instead, so they keep the opaque fallback. */
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
           --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
         }
       ha-dialog $: |
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
@@ -425,6 +554,7 @@ Frosted Glass Light:
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -439,6 +569,7 @@ Frosted Glass Light:
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -681,7 +812,8 @@ Frosted Glass Light:
   ha-card-border-width: '0.5px'
   ha-card-border-style: 'solid'
   ha-card-border: 'var(--ha-card-border-width) solid var(--ha-card-border-color)'
-  ha-card-box-shadow: '0 10px 32px rgba(21, 25, 45, 0.12), 0 2px 8px rgba(21, 25, 45, 0.08)'
+  frosted-glass-card-depth-shadow: '0 10px 32px rgba(21, 25, 45, 0.12), 0 2px 8px rgba(21, 25, 45, 0.08)'
+  ha-card-box-shadow: 'var(--ha-card-glass-inset-shadow), var(--frosted-glass-card-depth-shadow)'
   frosted-glass-contrast: '1'
   ha-view-sections-column-gap: '17px'
   ha-view-sections-column-min-width: 320px

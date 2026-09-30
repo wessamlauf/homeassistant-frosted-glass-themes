@@ -59,6 +59,10 @@ For sidebar and drawer styling on Settings and other panels, load the selected e
 card_mod:
   style: |
     ha-card {
+      --ha-card-background: transparent !important;
+      --ha-card-backdrop-filter: none !important;
+      --ha-card-box-shadow: none !important;
+      --frosted-glass-card-layer-content: none !important;
       background: none !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
@@ -95,17 +99,17 @@ The theme uses each card's public CSS variables where they exist. This keeps the
 | config-template-card, auto-entities, layout-card and streamline-card | These are transparent wrappers, so the actual child card receives the theme. Bubble Card nested inside a wrapper is detected by its rendered container to avoid a duplicate layer. |
 | Energy Flow Card Plus and standard `ha-card` custom cards | Inherit the shared radius, border, tint and shadow tokens normally. |
 
-Full and Lite cards have **transparent backgrounds**, including Bubble and Navbar. Full adds blur; Lite keeps the glass edges and transparency without blur. The original inset highlights remain visible at the top-left and bottom-right edges. Slider fills and icon controls retain their functional colors.
+Full and Lite cards have **transparent backgrounds**, including Bubble and Navbar. Full adds blur; Lite keeps the glass edges and transparency without blur. The original inset highlights are painted on the visible card surface at the top-left and bottom-right edges. Heading, title and chip containers stay plain; the override above also disables native shadow-root variables for text-only cards. Slider fills and icon controls retain their functional colors.
 
-Fan animation follows exposed HA state attributes, entity-row and Glance icons, and Bubble's actual `ha-card.is-on` state. Mushroom fan and light cards use the engine's Home Assistant template subscription for `config.entity`, because their entity state is not exposed on the card's DOM. Running Mushroom fans rotate; active Mushroom lights receive both a card glow and a small icon glow. The subscription updates on entity changes without polling. All added fan motion respects `prefers-reduced-motion`.
+Fan animation follows exposed HA state attributes, including standard Tile cards with inline fan-speed controls, entity-row and Glance icons, and Bubble's actual `ha-card.is-on` state. A Tile shadow-root hook also covers its internal fallback icon. Mushroom fan and light cards use the engine's Home Assistant template subscription for `config.entity`, because their entity state is not exposed on the card's DOM. Active light cards receive a subtle `0 0 10px 2px rgba(255, 165, 0, 0.30)` glow in front of the depth shadow. Normal per-card `box-shadow` and `border` overrides take precedence over automatic feedback. The subscription updates on entity changes without polling. All added fan motion respects `prefers-reduced-motion`.
 
 The sidebar has a dedicated theme-engine hook. Its wallpaper and tint match the dashboard, with blur on a pseudo-element so the sidebar host can still position tooltips correctly. Lite variants use the same structure with every filter token set to `none`.
 
 Legacy MWC selects and current Material/Web Awesome menus share an opaque glass menu surface. Dialog and select hosts intentionally do not use `backdrop-filter`, because a filtered ancestor changes the containing block of fixed-position legacy menus. This keeps dropdowns such as **HACS → Custom repositories → Type** aligned and visible.
 
-Modern popup hooks blur the separate Web Awesome backdrop and use a translucent surface. The hooks cover direct dialogs and UIX's adaptive desktop/mobile dialogs. Older MWC popups and engines without the matching adaptive hook use a fully opaque fallback. **Lite popup surfaces are fully opaque and have no blur.** Bubble popups also receive an opaque fallback because their optional native blur is configured by the card itself.
+Full popup hooks use a translucent surface with blur: Web Awesome dialogs blur their separate backdrop, while older MWC dialogs paint the glass on a background pseudo-element. The dialog surface and its legacy scrim remain unfiltered so fixed-position dropdowns stay aligned. Hooks cover direct dialogs and UIX's adaptive desktop/mobile dialogs. An engine without the matching popup hook retains the opaque fallback. **Lite popup surfaces are fully opaque and have no blur.** Bubble popups also receive an opaque fallback because their optional native blur is configured by the card itself.
 
-Settings, sidebar and topbar share the warm light palette (`254, 244, 242`) or the blue-purple dark palette (`25, 28, 45`).
+Settings, sidebar and topbar share the warm light palette (`254, 244, 242`) or the nearly black blue dark base (`2, 6, 11`, `#02060B`). Dark controls, menus, editor surfaces and tonal accents use the matching cool blue/slate palette.
 
 See [the source audit and regression checks](docs/compatibility-audit.md) for the reviewed versions, styling contracts and test scope.
 

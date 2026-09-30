@@ -104,7 +104,7 @@ async function run() {
           constructor() {
             super();
             const shadow = this.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `<style>:host { display:block; border:var(--ha-card-border); border-radius:var(--ha-card-border-radius); box-shadow:var(--ha-card-box-shadow); background:var(--ha-card-background); color:var(--primary-text-color); }</style><slot></slot>`;
+            shadow.innerHTML = `<style>:host { display:block; border:var(--ha-card-border); border-radius:var(--ha-card-border-radius); box-shadow:var(--ha-card-box-shadow); background:var(--ha-card-background); backdrop-filter:var(--ha-card-backdrop-filter,none); -webkit-backdrop-filter:var(--ha-card-backdrop-filter,none); color:var(--primary-text-color); }</style><slot></slot>`;
           }
         });
         const grid = document.createElement('div');
@@ -120,7 +120,7 @@ async function run() {
         const fan = button.shadowRoot.querySelector('ha-state-icon');
         check(css(normal, 'background-color', '::before') === color(v['ha-card-glass-tint']), 'standard card tint');
         check(css(normal, 'background-color') === 'rgba(0, 0, 0, 0)', 'standard card has no opaque base');
-        check(css(normal, 'box-shadow', '::before').includes('inset'), 'standard card keeps original corner highlights');
+        check(css(normal, 'box-shadow').includes('inset'), 'standard card keeps original corner highlights on its visible surface');
         check(css(normal, 'backdrop-filter') === 'none', 'standard card must not trap fixed menus');
         check((css(normal, 'backdrop-filter', '::before') === 'none') === lite, 'standard glass/Lite filter');
         check(css(fan, 'animation-name') === 'frosted-glass-fan-spin', 'fan on animation');
@@ -137,6 +137,10 @@ async function run() {
         check(css(lightCard, 'box-shadow') !== inactiveShadow, 'active light card glow');
         lightIcon.dataset.state = 'off';
         check(css(lightCard, 'box-shadow') === inactiveShadow, 'inactive light clears glow');
+        lightIcon.dataset.state = 'on';
+        addStyle(light.shadowRoot, 'ha-card{box-shadow:0 0 10px 2px rgba(255,165,0,.3);border:1px solid rgba(255,165,0,.1)}');
+        check(css(lightCard, 'box-shadow') === 'rgba(255, 165, 0, 0.3) 0px 0px 10px 2px', 'normal per-card light shadow takes precedence');
+        check(css(lightCard, 'border-top-color') === 'rgba(255, 165, 0, 0.1)', 'normal per-card light border takes precedence');
 
         const bubbleNative = '.bubble-container{position:relative;height:50px;background:var(--bubble-main-background-color);border:var(--bubble-border);border-radius:var(--bubble-border-radius);box-shadow:var(--bubble-box-shadow)}.bubble-wrapper{position:absolute;inset:0;display:flex;align-items:center;padding:8px;gap:12px}.bubble-background{background-color:var(--bubble-button-background-color);transition:background-color 1.5s}';
         const bubble = card('bubble-card', '<ha-card><div class="bubble-container"><div class="bubble-wrapper is-on"><ha-icon class="bubble-main-icon" icon="mdi:fan">✣</ha-icon>Bubble fan</div></div></ha-card>', bubbleNative);
@@ -148,7 +152,7 @@ async function run() {
         check(css(bubbleCard, 'content', '::before') === 'none', 'Bubble outer layer disabled');
         check(css(bubbleCard, 'border-top-style') === 'none', 'Bubble outer border disabled');
         check(css(bubbleSurface, 'background-color') === color(v['ha-card-glass-tint']), 'Bubble native tint');
-        check(css(bubbleSurface, 'box-shadow', '::before').includes('inset'), 'Bubble has original glass highlights');
+        check(css(bubbleSurface, 'box-shadow').includes('inset'), 'Bubble has original glass highlights on its visible surface');
         check(css(bubbleSurface, 'backdrop-filter') === 'none', 'Bubble surface must not trap fixed menus');
         check((css(bubbleSurface, 'backdrop-filter', '::before') === 'none') === lite, 'Bubble glass/Lite filter');
         check(css(bubbleIcon, 'animation-name') === 'frosted-glass-fan-spin', 'Bubble fan on animation');
@@ -172,10 +176,13 @@ async function run() {
         check((css(navCard, 'backdrop-filter') === 'none') === lite, 'Navbar glass/Lite filter');
         check(css(navCard, 'content', '::before') === 'none', 'Navbar no second glass layer');
         check(css(navCard, 'box-shadow').includes('inset'), 'Navbar glass highlights');
+        const adopted = new CSSStyleSheet(); adopted.replaceSync(navbarNative);
+        navbar.shadowRoot.adoptedStyleSheets = [adopted];
+        check(css(navCard, 'background-color') === 'rgba(0, 0, 0, 0)', 'Navbar adopted host defaults cannot restore a solid surface');
         check(css(navbar.shadowRoot.querySelector('.media-player'), 'content', '::before') === 'none', 'Navbar media player no second layer');
         check(navbar.shadowRoot.querySelector('.navbar-popup').getBoundingClientRect().top === 110, 'Navbar popup remains viewport-positioned');
         // A later per-card override at the same specificity remains possible.
-        addStyle(navbar.shadowRoot, ':host {--navbar-background-color:rgb(12,34,56)}');
+        navbar.style.setProperty('--navbar-background-color', 'rgb(12,34,56)');
         check(css(navCard, 'background-color') === 'rgb(12, 34, 56)', 'Navbar user variable override');
 
         const slider = card('slider-button-card', '<ha-card><div class="button off">Slider button</div><div class="track"></div></ha-card>', ':host{--btn-bg-color-off:#2b374e;--btn-bg-color-on:#20293c;--slider-track-color:#2b374e}.button.off{background:var(--btn-bg-color-off)}.track{background:var(--slider-track-color);height:4px}');
@@ -197,6 +204,7 @@ async function run() {
         const room = card('room-summary-card', '<ha-card>Room summary</ha-card>', ':host([frosted-glass]) ha-card::before{content:"";position:absolute;inset:0;background:var(--ha-card-glass-tint);backdrop-filter:var(--ha-card-backdrop-filter);box-shadow:var(--ha-card-glass-inset-shadow);border-radius:inherit}');
         room.setAttribute('frosted-glass', '');
         check(css(room.shadowRoot.querySelector('ha-card'), 'z-index', '::before') === 'auto', 'Room Summary native overlay preserved');
+        check(!css(room.shadowRoot.querySelector('ha-card'), 'box-shadow').includes('inset'), 'Room Summary uses only its native corner reflections');
         const stack = card('stack-in-card', '<ha-card><div></div></ha-card>');
         const child = card('hui-sensor-card', '<ha-card style="background: transparent;box-shadow:none;border-radius:0">Nested sensor</ha-card>');
         const kept = card('hui-button-card', '<ha-card style="--keep-background:true">Kept background</ha-card>');
@@ -265,7 +273,7 @@ async function run() {
         // while its foundation supplies viewport coordinates for position:fixed.
         const dialog = document.createElement('ha-dialog'); document.body.append(dialog);
         const dialogRoot = dialog.attachShadow({mode:'open'});
-        dialogRoot.innerHTML = '<style>.surface{position:fixed;left:330px;top:180px;width:360px;padding:24px;background:var(--ha-dialog-surface-background);backdrop-filter:var(--ha-dialog-surface-backdrop-filter);box-shadow:var(--dialog-box-shadow)}</style><div class="surface"><ha-select></ha-select></div>';
+        dialogRoot.innerHTML = '<style>.mdc-dialog{position:fixed;left:330px;top:180px;width:360px}.surface{position:relative;padding:24px;background:var(--ha-dialog-surface-background);backdrop-filter:var(--ha-dialog-surface-backdrop-filter);box-shadow:var(--dialog-box-shadow)}</style><div class="mdc-dialog"><div class="surface mdc-dialog__surface"><ha-select></ha-select></div></div>';
         const select = dialogRoot.querySelector('ha-select');
         const selectRoot = select.attachShadow({mode:'open'});
         selectRoot.innerHTML = '<style>:host{display:block}.anchor{height:48px;background:var(--mdc-select-fill-color)}.menu{position:fixed;width:220px;background:var(--mdc-theme-surface)}</style><div class="anchor">HACS repository Type ▾</div><div class="menu">Integration<br>Dashboard<br>Theme</div>';
@@ -280,6 +288,12 @@ async function run() {
         check(Math.abs(menu.getBoundingClientRect().left - anchorRect.left) < 1, 'HACS menu horizontal alignment');
         check(css(menu, 'background-color') === color(v['frosted-glass-menu-surface']), 'legacy menu readable surface');
         check(css(dialogRoot.querySelector('.surface'), 'background-color') === color(v['primary-background-color']), 'legacy dialog opaque fallback');
+        addStyle(dialogRoot, v['card-mod-more-info-yaml']['$']['.']);
+        const legacySurface = dialogRoot.querySelector('.surface');
+        check(css(legacySurface, 'background-color') === 'rgba(0, 0, 0, 0)', 'legacy popup hook clears native solid background');
+        check(css(legacySurface, 'background-color', '::before') === color(v['frosted-glass-popup-surface']), 'legacy popup hook surface alpha');
+        check((css(legacySurface, 'backdrop-filter', '::before') === 'none') === lite, 'legacy popup glass/Lite background layer');
+        check(Math.abs(menu.getBoundingClientRect().top - anchorRect.bottom) < 1, 'legacy popup background blur preserves dropdown position');
         check(v['ha-dialog-scrim-backdrop-filter'] === 'none', 'legacy MWC ancestor remains unfiltered');
         const modernMenu = document.createElement('ha-dropdown'); document.body.append(modernMenu);
         const modernRoot = modernMenu.attachShadow({mode:'open'});

@@ -317,7 +317,7 @@ print(json.dumps(result))
             "native Bubble surface transparent",
           );
           check(
-            css(bubbleFan.surface, "box-shadow", "::before").includes("inset"),
+            css(bubbleFan.surface, "box-shadow").includes("inset"),
             "native Bubble corner highlights",
           );
           hass.states["fan.qa"] = state("fan", false);

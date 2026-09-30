@@ -8,16 +8,16 @@ Frosted Glass Dark Lite:
   # =========================
   # HEADER (Top Bar)
   # =========================
-  app-header-background-color: 'rgb(25, 28, 45)'
+  app-header-background-color: 'rgb(2, 6, 11)'
   app-header-text-color: 'rgba(240, 243, 255, 0.95)'
-  app-header-edit-background-color: 'rgb(25, 28, 45)'
+  app-header-edit-background-color: 'rgb(2, 6, 11)'
   app-header-edit-text-color: 'rgba(234, 235, 238, 0.98)'
-  app-theme-color: 'rgb(0, 0, 0)'                                                      # 1.2 Glass – header theme color hint for browsers
+  app-theme-color: 'rgb(2, 6, 11)'                                                      # 1.2 Glass – header theme color hint for browsers
 
   # =========================
   # SIDEBAR / DRAWER
   # =========================
-  sidebar-background-color: 'rgb(25, 28, 45)'
+  sidebar-background-color: 'rgb(2, 6, 11)'
   sidebar-backdrop-filter: 'none'
   sidebar-border-color: 'rgba(255, 255, 255, 0.12)'
   sidebar-icon-color: 'rgba(234, 235, 238, 0.6)'
@@ -29,9 +29,9 @@ Frosted Glass Dark Lite:
   # DIALOGS
   # =========================
   ha-dialog-surface-backdrop-filter: 'none'
-  ha-dialog-surface-background: 'rgb(25, 28, 45)'
+  ha-dialog-surface-background: 'rgb(2, 6, 11)'
   dialog-box-shadow: '0 24px 64px rgba(0, 0, 0, 0.48), 0 4px 18px rgba(0, 0, 0, 0.28)'
-  paper-dialog-background-color: 'rgb(25, 28, 45)'
+  paper-dialog-background-color: 'rgb(2, 6, 11)'
   mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.82)'
 
   # =========================
@@ -40,7 +40,7 @@ Frosted Glass Dark Lite:
   bubble-border-radius: '18px'
   bubble-main-background-color: 'transparent'
   bubble-secondary-background-color: 'rgba(255, 255, 255, 0.10)'
-  bubble-accent-color: 'rgb(106, 116, 211)'
+  bubble-accent-color: 'rgb(122, 162, 190)'
   bubble-icon-border-radius: '14px'
   bubble-icon-background-color: 'rgba(255, 255, 255, 0.12)'
   bubble-sub-button-border-radius: '12px'
@@ -48,27 +48,27 @@ Frosted Glass Dark Lite:
   bubble-box-shadow: 'var(--ha-card-box-shadow)'
   bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
   bubble-pop-up-border-radius: '28px'
-  bubble-pop-up-main-background-color: 'rgb(25, 28, 45)'
-  bubble-pop-up-background-color: 'rgb(25, 28, 45)'
+  bubble-pop-up-main-background-color: 'rgb(2, 6, 11)'
+  bubble-pop-up-background-color: 'rgb(2, 6, 11)'
   bubble-backdrop-background-color: 'rgba(0, 0, 0, 0.62)'
   bubble-select-list-border-radius: '14px'
   bubble-select-list-background-color: 'var(--frosted-glass-menu-surface)'
-  bubble-select-list-item-accent-color: 'rgba(106, 116, 211, 0.24)'
+  bubble-select-list-item-accent-color: 'rgba(122, 162, 190, 0.24)'
   bubble-horizontal-buttons-stack-border-radius: '18px'
   bubble-horizontal-buttons-stack-background-color: 'transparent'
   navbar-background-color: 'transparent'
-  navbar-primary-color: 'rgb(106, 116, 211)'
+  navbar-primary-color: 'rgb(122, 162, 190)'
   navbar-border-radius: '18px'
-  navbar-box-shadow: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
-  navbar-box-shadow-desktop: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
-  navbar-box-shadow-mobile-floating: 'var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow)'
+  navbar-box-shadow: 'var(--ha-card-box-shadow)'
+  navbar-box-shadow-desktop: 'var(--ha-card-box-shadow)'
+  navbar-box-shadow-mobile-floating: 'var(--ha-card-box-shadow)'
   navbar-backdrop-filter: 'none'
   simple-swipe-card-pagination-background: 'transparent'
   simple-swipe-card-pagination-dot-inactive-color: 'rgba(234, 235, 238, 0.34)'
-  simple-swipe-card-pagination-dot-active-color: 'rgb(106, 116, 211)'
-  simple-swipe-card-pagination-dot-active-box-shadow: '0 0 12px rgba(106, 116, 211, 0.30)'
+  simple-swipe-card-pagination-dot-active-color: 'rgb(122, 162, 190)'
+  simple-swipe-card-pagination-dot-active-box-shadow: '0 0 12px rgba(122, 162, 190, 0.30)'
   btn-bg-color-off: 'rgba(255, 255, 255, 0.09)'
-  btn-bg-color-on: 'rgba(106, 116, 211, 0.22)'
+  btn-bg-color-on: 'rgba(122, 162, 190, 0.22)'
   slider-track-color: 'rgba(234, 235, 238, 0.16)'
 
   # =========================
@@ -92,7 +92,7 @@ Frosted Glass Dark Lite:
         position: relative;
         isolation: isolate;
         border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
-        box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--ha-card-box-shadow);
         transition: box-shadow 220ms ease, border-color 220ms ease;
       }
 
@@ -106,7 +106,6 @@ Frosted Glass Dark Lite:
         z-index: -1;
         pointer-events: none;
         border-radius: inherit;
-        box-shadow: var(--ha-card-glass-inset-shadow);
       }
 
       /* Containers and text-only cards leave their content's surface intact. */
@@ -115,6 +114,10 @@ Frosted Glass Dark Lite:
       ha-card.text-only,
       :host(mushroom-title-card) ha-card,
       :host(mushroom-chips-card) ha-card {
+        --ha-card-background: transparent;
+        --ha-card-backdrop-filter: none;
+        --ha-card-box-shadow: none;
+        --frosted-glass-card-layer-content: none;
         background: none !important;
 
         box-shadow: none !important;
@@ -148,7 +151,7 @@ Frosted Glass Dark Lite:
       .bubble-container {
         background: transparent !important;
         border-color: var(--frosted-glass-entity-light-border, var(--ha-card-border-color));
-        box-shadow: var(--bubble-box-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--bubble-box-shadow);
       }
       .bubble-background {
         background: transparent !important;
@@ -160,7 +163,6 @@ Frosted Glass Dark Lite:
         inset: 0;
         pointer-events: none;
         border-radius: inherit;
-        box-shadow: var(--ha-card-glass-inset-shadow);
       }
 
       /* Transparent Hue surfaces need the theme's matching foreground. */
@@ -172,14 +174,32 @@ Frosted Glass Dark Lite:
 
       /* These cards declare defaults on :host, so inherited public variables alone
          cannot override them. Aliases preserve the selected theme's values. */
-      :host(:where(navbar-card, .type-custom-navbar-card)) {
+      {% set navbar_styles = config.styles if config is mapping and config.styles is string else '' %}
+      {% set card_user_style = config.card_mod.style if config is mapping and config.card_mod is mapping and config.card_mod.style is defined else '' %}
+      {% set navbar_styles = navbar_styles ~ (card_user_style if card_user_style is string else card_user_style.get('.', '') if card_user_style is mapping else '') %}
+      {% set navbar_styles = navbar_styles.split() | join('') %}
+      :host(navbar-card),
+      :host(.type-custom-navbar-card) {
+        {% if '--navbar-background-color:' not in navbar_styles %}
         --navbar-background-color: var(--frosted-glass-navbar-background);
+        {% endif %}
+        {% if '--navbar-primary-color:' not in navbar_styles %}
         --navbar-primary-color: var(--frosted-glass-navbar-primary);
+        {% endif %}
+        {% if '--navbar-border-radius:' not in navbar_styles %}
         --navbar-border-radius: var(--frosted-glass-navbar-radius);
+        {% endif %}
+        {% if '--navbar-box-shadow:' not in navbar_styles %}
         --navbar-box-shadow: var(--frosted-glass-navbar-shadow);
+        {% endif %}
+        {% if '--navbar-box-shadow-desktop:' not in navbar_styles %}
         --navbar-box-shadow-desktop: var(--frosted-glass-navbar-shadow-desktop);
+        {% endif %}
+        {% if '--navbar-box-shadow-mobile-floating:' not in navbar_styles %}
         --navbar-box-shadow-mobile-floating: var(--frosted-glass-navbar-shadow-floating);
+        {% endif %}
       }
+      .navbar ha-card,
       :host(navbar-card) ha-card,
       :host(.type-custom-navbar-card) ha-card {
         --frosted-glass-card-layer-content: none;
@@ -198,10 +218,15 @@ Frosted Glass Dark Lite:
         --slider-track-color: var(--frosted-glass-slider-track);
       }
 
+      /* Room Summary already paints its own corner reflections. */
+      :where(:host(room-summary-card)) ha-card {
+        --ha-card-box-shadow: var(--frosted-glass-card-depth-shadow);
+      }
+
       /* Leave both pseudo-elements available for Mushroom template artwork. */
       :host(mushroom-template-card) ha-card {
         background: transparent !important;
-        box-shadow: var(--ha-card-box-shadow), var(--ha-card-glass-inset-shadow), var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent);
+        box-shadow: var(--frosted-glass-entity-light-glow, 0 0 0 0 transparent), var(--ha-card-box-shadow);
 
       }
 
@@ -226,15 +251,15 @@ Frosted Glass Dark Lite:
 
       /* Active-state feedback uses attributes exposed by HA, or Bubble's icon/state
          classes. It never infers an entity's state from a displayed color. */
-      ha-card:has(ha-state-icon[data-domain="light"][data-state="on"]),
-      ha-card:has(ha-tile-icon[data-domain="light"][data-state="on"]),
-      ha-card:has(.light-button.state-on) {
+      ha-card:where(:has(ha-state-icon[data-domain="light"][data-state="on"]),
+                    :has(ha-tile-icon[data-domain="light"][data-state="on"]),
+                    :has(.light-button.state-on)) {
         border-color: var(--frosted-glass-light-border-color);
-        box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-light-glow);
+        box-shadow: var(--frosted-glass-light-glow), var(--ha-card-box-shadow);
       }
-      ha-card.is-on .bubble-container:has(.bubble-main-icon[icon^="mdi:lightbulb"]) {
+      :where(ha-card.is-on) .bubble-container:where(:has(.bubble-main-icon[icon^="mdi:lightbulb"])) {
         border-color: var(--frosted-glass-light-border-color);
-        box-shadow: var(--bubble-box-shadow), var(--frosted-glass-light-glow);
+        box-shadow: var(--frosted-glass-light-glow), var(--bubble-box-shadow);
       }
       ha-state-icon[data-domain="light"][data-state="on"],
       ha-tile-icon[data-domain="light"][data-state="on"] ha-state-icon,
@@ -249,6 +274,7 @@ Frosted Glass Dark Lite:
       ha-state-icon[data-domain="fan"][data-state="on"],
       ha-tile-icon[data-domain="fan"][data-state="on"] ha-state-icon,
       ha-card.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -273,14 +299,33 @@ Frosted Glass Dark Lite:
         }
       }
 
+    ha-tile-icon $: |
+      /* Older Tile layouts render their fallback icon inside this shadow root. */
+      @keyframes frosted-glass-fan-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      :host([data-domain="fan"][data-state="on"]) ::slotted(ha-state-icon),
+      :host([data-domain="fan"][data-state="on"]) .container ha-icon,
+      :host([data-domain="fan"][data-state="on"]) .container ha-svg-icon {
+        display: inline-flex;
+        animation: frosted-glass-fan-spin 4s linear infinite;
+        transform-origin: center;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::slotted(ha-state-icon), ha-icon, ha-svg-icon {
+          animation: none !important;
+        }
+      }
+
   # Global glass tokens are inherited by dialogs, sidebar and custom cards.
   ha-card-glass-tint: 'transparent'
-  ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset, 0 0 8px 1px rgba(255, 255, 255, 0.06) inset, 0 0 2px 0 rgba(0, 0, 0, 0.18)'
-  frosted-glass-menu-surface: 'rgb(25, 28, 45)'
-  frosted-glass-control-surface: 'rgba(25, 28, 45, 0.48)'
+  ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.20) inset, 0 0 8px 1px rgba(255, 255, 255, 0.06) inset, 0 0 2px 0 rgba(0, 0, 0, 0.18)'
+  frosted-glass-menu-surface: 'rgb(2, 6, 11)'
+  frosted-glass-control-surface: 'rgba(2, 6, 11, 0.48)'
   frosted-glass-badge-shadow: '0 3px 10px rgba(0, 0, 0, 0.22)'
-  frosted-glass-light-border-color: 'rgba(255, 211, 96, 0.28)'
-  frosted-glass-light-glow: '0 0 22px rgba(255, 202, 74, 0.16)'
+  frosted-glass-light-border-color: 'rgba(255, 165, 0, 0.10)'
+  frosted-glass-light-glow: '0 0 10px 2px rgba(255, 165, 0, 0.30)'
   frosted-glass-light-icon-glow: '0 0 8px rgba(255, 211, 96, 0.38)'
   ha-card-backdrop-filter: 'none'
   frosted-glass-navbar-background: 'var(--navbar-background-color)'
@@ -306,14 +351,56 @@ Frosted Glass Dark Lite:
   card-mod-more-info-yaml: |
     $:
       .: |
-        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
-           filter their ancestor instead, so they keep the opaque fallback. */
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
           --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
         }
       ha-dialog $: |
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
@@ -329,14 +416,56 @@ Frosted Glass Dark Lite:
   card-mod-dialog-yaml: |
     $:
       .: |
-        /* Only the modern dialog has this sibling backdrop. Legacy MWC dialogs
-           filter their ancestor instead, so they keep the opaque fallback. */
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
           --mdc-dialog-scrim-color: var(--frosted-glass-popup-scrim);
         }
       ha-dialog $: |
+        /* Blur belongs to a separate painted layer. Filtering the surface
+           itself would displace legacy fixed-position HACS dropdowns. */
+        .mdc-dialog .mdc-dialog__scrim {
+          background: var(--frosted-glass-popup-scrim);
+        }
+        .mdc-dialog .mdc-dialog__surface {
+          background: transparent !important;
+          position: var(--dialog-surface-position, relative);
+          isolation: isolate;
+          box-shadow: var(--dialog-box-shadow), var(--ha-card-glass-inset-shadow);
+        }
+        .mdc-dialog__surface::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          border-radius: inherit;
+          background: var(--frosted-glass-popup-surface);
+          backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+          -webkit-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
+        }
         wa-dialog {
           --ha-dialog-surface-background: var(--frosted-glass-popup-surface);
           --ha-dialog-scrim-backdrop-filter: var(--frosted-glass-popup-backdrop-filter);
@@ -409,6 +538,7 @@ Frosted Glass Dark Lite:
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -423,6 +553,7 @@ Frosted Glass Dark Lite:
         to { transform: rotate(360deg); }
       }
       ha-state-icon[data-domain="fan"][data-state="on"] {
+        display: inline-flex;
         animation: frosted-glass-fan-spin 4s linear infinite;
         transform-origin: center;
       }
@@ -439,7 +570,7 @@ Frosted Glass Dark Lite:
       /* Glass system tokens (new, dark-tuned) */
 
       /* Tokens - match structure to Light theme for consistency */
-      --token-rgb-primary: 106, 116, 211;
+      --token-rgb-primary: 122, 162, 190;
       --token-rgb-black: 0, 0, 0;
       --token-rgb-white: 234, 235, 238;
       --token-rgb-purple: 129, 45, 250;
@@ -449,8 +580,8 @@ Frosted Glass Dark Lite:
       --token-rgb-indigo: 48, 63, 159;
       --token-rgb-blue: 33, 150, 243;
       --token-rgb-light-blue: 3, 169, 244;
-      --token-rgb-cyan: 106, 116, 211;
-      --token-rgb-teal: 106, 116, 211;
+      --token-rgb-cyan: 122, 162, 190;
+      --token-rgb-teal: 122, 162, 190;
       --token-rgb-green: 56, 142, 60;
       --token-rgb-light-green: 139, 195, 74;
       --token-rgb-lime: 205, 220, 57;
@@ -459,16 +590,16 @@ Frosted Glass Dark Lite:
       --token-rgb-orange: 255, 158, 0;
       --token-rgb-deep-orange: 255, 87, 34;
       --token-rgb-brown: 121, 85, 72;
-      --token-rgb-grey: 103, 104, 119;
+      --token-rgb-grey: 101, 117, 130;
       --token-rgb-blue-grey: 96, 125, 139;
       --token-rgb-disabled: 189, 189, 189;
       --token-rgb-state-inactive: 176, 190, 197;
 
       --token-color-primary: rgb(var(--token-rgb-primary));
-      --token-color-primary-light: rgb(167 182 199);
+      --token-color-primary-light: rgb(172 196 212);
       --token-color-accent: rgb(var(--token-rgb-teal));
-      --token-color-disabled: rgb(173 176 184);
-      --token-color-feedback-info: rgb(106, 116, 211);
+      --token-color-disabled: rgb(148 165 178);
+      --token-color-feedback-info: rgb(122, 162, 190);
       --token-color-feedback-warning: rgb(255, 219, 117);
       --token-color-feedback-error: rgb(234, 114, 135);
       --token-color-feedback-success: rgb(118, 214, 152);
@@ -483,16 +614,16 @@ Frosted Glass Dark Lite:
       --token-color-text-sidebar: var(--token-color-text-secondary);
       --token-color-text-label-badge: rgba(234, 235, 238, 0.85);
       --token-color-text-chip: rgb(var(--token-rgb-white));
-      --token-color-background-base: rgba(25, 28, 45, 0.8);
-      --token-color-background-secondary: rgba(30, 33, 54, 0.7);
+      --token-color-background-base: rgba(2, 6, 11, 0.8);
+      --token-color-background-secondary: rgba(12, 20, 30, 0.7);
       --token-color-background-sidebar: var(--sidebar-background-color);
-      --token-color-background-input-base: rgba(30, 33, 54, 0.7);
-      --token-color-background-input-disabled: rgba(30, 33, 54, 0.5);
-      --token-color-background-label-badge: rgb(60, 60, 78);
+      --token-color-background-input-base: rgba(12, 20, 30, 0.7);
+      --token-color-background-input-disabled: rgba(12, 20, 30, 0.5);
+      --token-color-background-label-badge: rgb(28, 40, 54);
       --token-color-background-card: var(--ha-card-glass-tint);
       --token-color-background-skrim: rgba(0, 0, 0, 0.7);
-      --token-color-background-divider: rgba(84, 84, 98, 0.28);
-      --token-color-background-scrollbar-thumb: rgb(68, 68, 88);
+      --token-color-background-divider: rgba(90, 111, 128, 0.28);
+      --token-color-background-scrollbar-thumb: rgb(53, 70, 84);
       --token-color-background-label-badge-red: var(--token-color-feedback-error);
       --token-color-background-label-badge-blue: var(--token-color-feedback-info);
       --token-color-background-label-badge-green: rgb(78, 183, 128);
@@ -600,30 +731,30 @@ Frosted Glass Dark Lite:
   # COLORS & MISCELLANEOUS
   # =========================
   # 1.2.1 - change add HA 2025.8 primary color scale aligned to theme
-  ha-color-primary-05: '#0D0E19'
-  ha-color-primary-10: '#131526'
-  ha-color-primary-20: '#20233F'
-  ha-color-primary-30: '#30345F'
-  ha-color-primary-40: '#40467F'
-  ha-color-primary-50: '#6A74D3'   # base theme primary (kept)
-  ha-color-primary-60: '#8F97DE'
-  ha-color-primary-70: '#ADB3E7'
-  ha-color-primary-80: '#D2D5F2'
-  ha-color-primary-90: '#EAECF9'
-  ha-color-primary-95: '#F6F7FC'
+  ha-color-primary-05: '#0A1115'
+  ha-color-primary-10: '#14212A'
+  ha-color-primary-20: '#294254'
+  ha-color-primary-30: '#3D637E'
+  ha-color-primary-40: '#5284A8'
+  ha-color-primary-50: '#7AA2BE'   # base theme primary (kept)
+  ha-color-primary-60: '#95B5CB'
+  ha-color-primary-70: '#AFC7D8'
+  ha-color-primary-80: '#CADAE5'
+  ha-color-primary-90: '#E4ECF2'
+  ha-color-primary-95: '#F2F6F8'
 
   # 1.2.1 - change add aliases for compatibility (some threads reference --color-primary-xx)
-  color-primary-05: '#0D0E19'
-  color-primary-10: '#131526'
-  color-primary-20: '#20233F'
-  color-primary-30: '#30345F'
-  color-primary-40: '#40467F'
-  color-primary-50: '#6A74D3'
-  color-primary-60: '#8F97DE'
-  color-primary-70: '#ADB3E7'
-  color-primary-80: '#D2D5F2'
-  color-primary-90: '#EAECF9'
-  color-primary-95: '#F6F7FC'
+  color-primary-05: '#0A1115'
+  color-primary-10: '#14212A'
+  color-primary-20: '#294254'
+  color-primary-30: '#3D637E'
+  color-primary-40: '#5284A8'
+  color-primary-50: '#7AA2BE'
+  color-primary-60: '#95B5CB'
+  color-primary-70: '#AFC7D8'
+  color-primary-80: '#CADAE5'
+  color-primary-90: '#E4ECF2'
+  color-primary-95: '#F2F6F8'
   primary-text-color: 'rgba(234, 235, 238, 0.98)'
   secondary-text-color: 'rgba(234, 235, 238, 0.8)'
   text-primary-color: 'rgba(234, 235, 238, 0.98)'
@@ -636,28 +767,28 @@ Frosted Glass Dark Lite:
   state-off-color: 'rgb(234, 114, 135)'
   label-badge-text-color: 'rgba(234, 235, 238, 0.85)'
   label-badge-red: 'rgb(234, 114, 135)'
-  label-badge-blue: 'rgb(106, 116, 211)'
+  label-badge-blue: 'rgb(122, 162, 190)'
   label-badge-green: 'rgb(78, 183, 128)'
   label-badge-yellow: 'rgb(255, 219, 117)'
   label-badge-grey: 'rgb(83, 90, 103)'
   ha-chip-text-color: 'rgb(234, 235, 238)'
 
-  primary-color: 'rgb(106, 116, 211)'
-  dark-primary-color: 'rgb(106, 116, 211)'
-  light-primary-color: 'rgb(167, 182, 199)'
-  accent-color: 'rgb(106, 116, 211)'
-  divider-color: 'rgba(84, 84, 98, 0.28)'
-  scrollbar-thumb-color: 'rgb(68, 68, 88)'
-  disabled-color: 'rgb(173, 176, 184)'
-  info-color: 'rgb(106, 116, 211)'
+  primary-color: 'rgb(122, 162, 190)'
+  dark-primary-color: 'rgb(122, 162, 190)'
+  light-primary-color: 'rgb(172, 196, 212)'
+  accent-color: 'rgb(122, 162, 190)'
+  divider-color: 'rgba(90, 111, 128, 0.28)'
+  scrollbar-thumb-color: 'rgb(53, 70, 84)'
+  disabled-color: 'rgb(148, 165, 178)'
+  info-color: 'rgb(122, 162, 190)'
   success-color: 'rgb(118, 214, 152)'
   warning-color: 'rgb(255, 219, 117)'
   error-color: 'rgb(234, 114, 135)'
   background-image: "center / cover no-repeat fixed url('https://cdn.jsdelivr.net/gh/wessamlauf/homeassistant-frosted-glass-themes@refs/heads/main/themes/frosted-glass-dark-background.jpg')"
   lovelace-background: 'var(--background-image)'
-  primary-background-color: 'rgb(25, 28, 45)'
-  secondary-background-color: 'rgba(25, 28, 45, 0.5)'
-  clear-background-color: 'rgba(25, 28, 45, 0.7)'
+  primary-background-color: 'rgb(2, 6, 11)'
+  secondary-background-color: 'rgba(2, 6, 11, 0.5)'
+  clear-background-color: 'rgba(2, 6, 11, 0.7)'
   card-background-color: 'var(--frosted-glass-menu-surface)'
   ha-card-background: 'transparent'
   ha-card-border-radius: '18px'
@@ -665,24 +796,25 @@ Frosted Glass Dark Lite:
   ha-card-border-width: '0.5px'
   ha-card-border-style: 'solid'
   ha-card-border: 'var(--ha-card-border-width) solid var(--ha-card-border-color)'
-  ha-card-box-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), 0 2px 10px rgba(0, 0, 0, 0.24)'
+  frosted-glass-card-depth-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), 0 2px 10px rgba(0, 0, 0, 0.24)'
+  ha-card-box-shadow: 'var(--ha-card-glass-inset-shadow), var(--frosted-glass-card-depth-shadow)'
   ha-view-sections-column-gap: '17px'
   ha-view-sections-column-min-width: 320px
 
   ha-dialog-scrim-backdrop-filter: 'none'
 
-  frosted-glass-popup-surface: 'rgb(25, 28, 45)'
+  frosted-glass-popup-surface: 'rgb(2, 6, 11)'
 
   frosted-glass-popup-backdrop-filter: 'none'
 
   frosted-glass-popup-scrim: 'rgba(0, 0, 0, 0.50)'
 
   # Home Assistant 2026.8 form, shape and switch tokens
-  ha-color-form-background: 'rgba(30, 33, 54, 0.48)'
-  ha-color-form-background-hover: 'rgba(30, 33, 54, 0.60)'
-  ha-color-form-background-disabled: 'rgba(30, 33, 54, 0.30)'
-  mdc-text-field-fill-color: 'rgba(30, 33, 54, 0.48)'
-  mdc-select-fill-color: 'rgba(30, 33, 54, 0.48)'
+  ha-color-form-background: 'rgba(12, 20, 30, 0.48)'
+  ha-color-form-background-hover: 'rgba(12, 20, 30, 0.60)'
+  ha-color-form-background-disabled: 'rgba(12, 20, 30, 0.30)'
+  mdc-text-field-fill-color: 'rgba(12, 20, 30, 0.48)'
+  mdc-select-fill-color: 'rgba(12, 20, 30, 0.48)'
   ha-border-radius-square: '0px'
   ha-border-radius-sm: '8px'
   ha-border-radius-md: '12px'
@@ -702,27 +834,27 @@ Frosted Glass Dark Lite:
   ha-switch-background-color-hover: 'rgba(234, 235, 238, 0.22)'
   ha-switch-thumb-background-color: 'rgba(234, 235, 238, 0.70)'
   ha-switch-thumb-background-color-hover: 'rgba(234, 235, 238, 0.82)'
-  ha-switch-checked-background-color: 'rgba(106, 116, 211, 0.34)'
-  ha-switch-checked-background-color-hover: 'rgba(106, 116, 211, 0.46)'
-  ha-switch-checked-thumb-background-color: 'rgb(106, 116, 211)'
-  ha-switch-checked-thumb-background-color-hover: 'rgb(106, 116, 211)'
+  ha-switch-checked-background-color: 'rgba(122, 162, 190, 0.34)'
+  ha-switch-checked-background-color-hover: 'rgba(122, 162, 190, 0.46)'
+  ha-switch-checked-thumb-background-color: 'rgb(122, 162, 190)'
+  ha-switch-checked-thumb-background-color-hover: 'rgb(122, 162, 190)'
   control-switch-border-radius: '9999px'
   control-button-icon-color: 'rgba(234, 235, 238, 0.95)'
-  control-button-background-color: 'rgb(106, 116, 211)'
+  control-button-background-color: 'rgb(122, 162, 190)'
   control-button-background-opacity: '0.28'
 
   # Sliders, toggles, switches
-  paper-slider-knob-color: 'rgb(106, 116, 211)'
-  paper-slider-knob-start-color: 'rgb(106, 116, 211)'
-  paper-slider-pin-color: 'rgb(106, 116, 211)'
-  paper-slider-active-color: 'rgb(106, 116, 211)'
-  paper-slider-secondary-color: 'rgb(167, 182, 199)'
-  switch-checked-button-color: 'rgb(106, 116, 211)'
-  switch-checked-track-color: 'rgb(106, 116, 211)'
+  paper-slider-knob-color: 'rgb(122, 162, 190)'
+  paper-slider-knob-start-color: 'rgb(122, 162, 190)'
+  paper-slider-pin-color: 'rgb(122, 162, 190)'
+  paper-slider-active-color: 'rgb(122, 162, 190)'
+  paper-slider-secondary-color: 'rgb(172, 196, 212)'
+  switch-checked-button-color: 'rgb(122, 162, 190)'
+  switch-checked-track-color: 'rgb(122, 162, 190)'
   switch-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
   switch-unchecked-track-color: 'rgba(234, 235, 238, 0.18)'
-  paper-toggle-button-checked-button-color: 'rgb(106, 116, 211)'
-  paper-toggle-button-checked-bar-color: 'rgb(106, 116, 211)'
+  paper-toggle-button-checked-button-color: 'rgb(122, 162, 190)'
+  paper-toggle-button-checked-bar-color: 'rgb(122, 162, 190)'
   paper-toggle-button-unchecked-button-color: 'rgba(234, 235, 238, 0.3)'
   paper-toggle-button-unchecked-bar-color: 'rgba(234, 235, 238, 0.18)'
   mdc-checkbox-unchecked-color: 'rgba(234, 235, 238, 0.75)'
@@ -730,17 +862,17 @@ Frosted Glass Dark Lite:
   mdc-ripple-hover-opacity: '0.1'
 
   # Inputs
-  input-background-color: 'rgba(50, 50, 50, 0.1)'
-  input-background-token-color-disabled: 'rgba(50, 50, 50, 0.1)'
+  input-background-color: 'rgba(12, 20, 30, 0.1)'
+  input-background-token-color-disabled: 'rgba(12, 20, 30, 0.1)'
   input-fill-color: 'rgba(50,50, 50, 0.1)'
   input-ink-color: 'rgba(234, 235, 238, 0.98)'
   input-label-ink-color: 'rgba(234, 235, 238, 0.98)'
-  input-disabled-fill-color: 'rgba(30, 33, 54, 0.5)'
+  input-disabled-fill-color: 'rgba(12, 20, 30, 0.5)'
   input-disabled-ink-color: 'rgba(234, 235, 238, 0.45)'
   input-disabled-label-ink-color: 'rgba(234, 235, 238, 0.45)'
   input-idle-line-color: 'transparent'
   input-dropdown-icon-color: 'rgba(234, 235, 238, 0.8)'
-  input-hover-line-color: 'rgb(106, 116, 211)'
+  input-hover-line-color: 'rgb(122, 162, 190)'
   mdc-select-idle-line-color: 'transparent'
   mdc-text-field-idle-line-color: 'transparent'
   mdc-theme-surface: 'var(--frosted-glass-menu-surface)'
@@ -748,18 +880,18 @@ Frosted Glass Dark Lite:
   wa-color-surface-raised: 'var(--frosted-glass-menu-surface)'
 
   # Code Editor & Misc
-  code-editor-background-color: 'rgb(25, 28, 45)'
+  code-editor-background-color: 'rgb(2, 6, 11)'
   codemirror-meta: 'rgba(234, 235, 238, 0.98)'
-  codemirror-property: 'rgb(106, 116, 211)'
-  codemirror-atom: 'rgb(106, 116, 211)'
+  codemirror-property: 'rgb(122, 162, 190)'
+  codemirror-atom: 'rgb(122, 162, 190)'
   codemirror-string: 'rgb(164, 209, 255)'
   codemirror-keyword: 'rgb(148, 182, 255)'
   codemirror-number: 'rgb(255, 171, 64)'
   mcg-title-font-weight: '400'
   mush-title-font-weight: '500'
   mush-title-font-size: 'var(--ha-font-size-2xl)'
-  light-grey-color: 'rgb(103, 104, 119)'
-  mush-rgb-grey: '103, 104, 119'
+  light-grey-color: 'rgb(101, 117, 130)'
+  mush-rgb-grey: '101, 117, 130'
 
   # Misc sizes
   paper-slider-height: '5px'
@@ -772,4 +904,4 @@ Frosted Glass Dark Lite:
   # Variables stay at the top level so card-mod and UIX can use this theme as an engine.
   modes:
     dark:
-      app-theme-color: 'rgb(0, 0, 0)'                                                      # 1.2 Glass – header theme color hint for browsers
+      app-theme-color: 'rgb(2, 6, 11)'                                                      # 1.2 Glass – header theme color hint for browsers
