@@ -30,6 +30,21 @@ jobs:
       - name: Validate YAML and embedded CSS
         run: python scripts/validate_themes.py
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install browser check dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Check CSS rendering and legacy dropdown geometry
+        run: npm test
+
   validate-hacs:
     runs-on: "ubuntu-latest"
     steps:

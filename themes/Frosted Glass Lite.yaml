@@ -1,5 +1,5 @@
-# Frosted Glass Light Lite
-# ver. 1.4.0 - (2026-08-26)
+# Frosted Glass Lite
+# ver. 1.5.0 - (2026-09-30)
 
 Frosted Glass Lite:
   modes:
@@ -10,7 +10,7 @@ Frosted Glass Lite:
       # =========================
       # HEADER (Top Bar)
       # =========================
-      app-header-background-color: 'rgba(234, 235, 238, 0.1)'
+      app-header-background-color: 'rgba(246, 248, 252, 0.96)'
       app-header-text-color: 'rgba(19, 21, 54, 0.95)'
       app-header-edit-background-color: 'rgba(255, 255, 255, 0.8)'
       app-header-edit-text-color: 'rgba(19, 21, 54, 0.98)'
@@ -19,128 +19,357 @@ Frosted Glass Lite:
       # =========================
       # SIDEBAR / DRAWER
       # =========================
-      sidebar-background-color: 'rgba(254, 244, 242, 0.7)'
+      sidebar-background-color: 'rgba(246, 248, 252, 0.94)'
+      sidebar-backdrop-filter: 'none'
+      sidebar-border-color: 'rgba(255, 255, 255, 0.42)'
       sidebar-icon-color: 'rgba(19, 21, 54, 0.6)'
       sidebar-text-color: 'rgba(19, 21, 54, 0.8)'
       sidebar-selected-icon-color: 'rgba(19, 21, 54, 0.95)'
       sidebar-selected-text-color: 'rgba(19, 21, 54, 0.98)'
 
-      # Sidebar blur (card-mod-root section at end handles blur effect!)
-
       # =========================
       # DIALOGS
       # =========================
-      ha-dialog-surface-background: 'rgba(234, 235, 238, 0.9)'
-      dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'                                                     # 1.2 Glass – fix: remove stray quotes inside rgba
-      paper-dialog-background-color: 'rgba(234, 235, 238, 0.9)'
-      mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.9)'
+      ha-dialog-surface-backdrop-filter: 'none'
+      ha-dialog-surface-background: 'rgba(242, 244, 249, 0.98)'
+      dialog-box-shadow: '0 24px 60px rgba(21, 25, 45, 0.22), 0 4px 16px rgba(21, 25, 45, 0.10)'
+      paper-dialog-background-color: 'rgba(242, 244, 249, 0.98)'
+      mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.65)'
+
+      # =========================
+      # THIRD-PARTY CARD CONTRACTS
+      # =========================
+      bubble-border-radius: '18px'
+      bubble-main-background-color: 'var(--ha-card-glass-tint)'
+      bubble-secondary-background-color: 'rgba(255, 255, 255, 0.76)'
+      bubble-accent-color: 'rgb(106, 116, 211)'
+      bubble-icon-border-radius: '14px'
+      bubble-icon-background-color: 'rgba(255, 255, 255, 0.82)'
+      bubble-sub-button-border-radius: '12px'
+      bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.80)'
+      bubble-box-shadow: '0 10px 30px rgba(21, 25, 45, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.60)'
+      bubble-border: '0.5px solid rgba(255, 255, 255, 0.48)'
+      bubble-pop-up-border-radius: '28px'
+      bubble-pop-up-main-background-color: 'rgba(242, 244, 249, 0.98)'
+      bubble-pop-up-background-color: 'rgba(242, 244, 249, 0.98)'
+      bubble-backdrop-background-color: 'rgba(10, 12, 24, 0.36)'
+      bubble-select-list-border-radius: '14px'
+      bubble-select-list-background-color: 'rgba(247, 248, 252, 1)'
+      bubble-select-list-item-accent-color: 'rgba(106, 116, 211, 0.20)'
+      bubble-horizontal-buttons-stack-border-radius: '18px'
+      bubble-horizontal-buttons-stack-background-color: 'rgba(246, 248, 252, 0.98)'
+      navbar-background-color: 'rgba(246, 248, 252, 0.96)'
+      navbar-primary-color: 'rgb(106, 116, 211)'
+      navbar-border-radius: '18px'
+      navbar-box-shadow: '0 -1px 0 rgba(255, 255, 255, 0.56), 0 -10px 30px rgba(21, 25, 45, 0.12)'
+      navbar-box-shadow-desktop: '0 14px 38px rgba(21, 25, 45, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.60)'
+      navbar-box-shadow-mobile-floating: '0 14px 38px rgba(21, 25, 45, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.60)'
+      navbar-backdrop-filter: 'none'
+      simple-swipe-card-pagination-background: 'rgba(246, 248, 252, 0.94)'
+      simple-swipe-card-pagination-dot-inactive-color: 'rgba(19, 21, 54, 0.30)'
+      simple-swipe-card-pagination-dot-active-color: 'rgb(106, 116, 211)'
+      simple-swipe-card-pagination-dot-active-box-shadow: '0 0 10px rgba(106, 116, 211, 0.24)'
+      btn-bg-color-off: 'rgba(255, 255, 255, 0.82)'
+      btn-bg-color-on: 'rgba(106, 116, 211, 0.20)'
+      slider-track-color: 'rgba(19, 21, 54, 0.16)'
 
       # =========================
       # CARDS / CARD-MOD
       # =========================
-      card-mod-card: |
-        /* Base reset */
-        ha-card {
-          background: transparent;
-          position: relative;
-          isolation: isolate;
+      card-mod-card-yaml: |
+        .: |+
+          /* Keep fixed-position menus in the viewport coordinate system. */
+          ha-card {
+            background: transparent;
+
+            position: relative;
+            isolation: isolate;
+            transition: box-shadow 220ms ease, border-color 220ms ease;
+          }
+
+          /* Low specificity lets per-card artwork override the glass layer. */
+          :where(:host(:not(mushroom-template-card):not(room-summary-card))) ha-card::before {
+            content: var(--frosted-glass-card-layer-content, '');
+            position: absolute;
+            inset: 0;
+            background: var(--ha-card-glass-tint);
+
+            z-index: -1;
+            pointer-events: none;
+            border-radius: inherit;
+            box-shadow: var(--ha-card-glass-inset-shadow);
+          }
+
+          /* Containers and text-only cards leave their content's surface intact. */
+          :host(hui-heading-card) ha-card,
+          :host(.text-only) ha-card,
+          ha-card.text-only,
+          :host(mushroom-title-card) ha-card,
+          :host(mushroom-chips-card) ha-card {
+            background: none !important;
+
+            box-shadow: none !important;
+            border: none !important;
+          }
+          :host(hui-heading-card) ha-card::before,
+          :host(.text-only) ha-card::before,
+          ha-card.text-only::before,
+          :host(mushroom-title-card) ha-card::before,
+          :host(mushroom-chips-card) ha-card::before {
+            content: none !important;
+          }
+
+          /* Bubble owns its rounded surface. Its blur layer cannot trap fixed menus. */
+          :host(bubble-card) ha-card,
+          :host(.type-custom-bubble-card) ha-card,
+          ha-card:has(.bubble-container) {
+            background: none !important;
+
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+          }
+          :host(bubble-card) ha-card::before,
+          :host(.type-custom-bubble-card) ha-card::before,
+          ha-card:has(.bubble-container)::before {
+            content: none !important;
+          }
+
+
+          /* Hue calculates foreground contrast from its own light-colored background. */
+          :host(hue-like-light-card) ha-card,
+          :host(.type-custom-hue-like-light-card) ha-card {
+            --frosted-glass-card-layer-content: none;
+            background: var(--hue-background, var(--ha-card-background));
+          }
+
+          /* These cards declare defaults on :host, so inherited public variables alone
+             cannot override them. Aliases preserve the selected theme's values. */
+          :host(:where(navbar-card, .type-custom-navbar-card)) {
+            --navbar-background-color: var(--frosted-glass-navbar-background);
+            --navbar-primary-color: var(--frosted-glass-navbar-primary);
+            --navbar-border-radius: var(--frosted-glass-navbar-radius);
+            --navbar-box-shadow: var(--frosted-glass-navbar-shadow);
+            --navbar-box-shadow-desktop: var(--frosted-glass-navbar-shadow-desktop);
+            --navbar-box-shadow-mobile-floating: var(--frosted-glass-navbar-shadow-floating);
+          }
+          :host(navbar-card) ha-card,
+          :host(.type-custom-navbar-card) ha-card {
+            --frosted-glass-card-layer-content: none;
+            background: var(--navbar-background-color);
+
+            border: var(--ha-card-border);
+          }
+          :host(navbar-card) .popup-item .button {
+
+            border: var(--ha-card-border);
+          }
+
+          :host(:where(slider-button-card, .type-custom-slider-button-card)) {
+            --btn-bg-color-off: var(--frosted-glass-slider-button-off);
+            --btn-bg-color-on: var(--frosted-glass-slider-button-on);
+            --slider-track-color: var(--frosted-glass-slider-track);
+          }
+
+          /* Leave both pseudo-elements available for Mushroom template artwork. */
+          :host(mushroom-template-card) ha-card {
+            background: var(--ha-card-glass-tint);
+
+          }
+
+          /* stack-in-card writes this inline only when keep.background is false and
+             --keep-background is not true. Honor that decision instead of hiding every
+             descendant, including those whose background was explicitly kept. */
+          ha-card[style*="background: transparent"] {
+            --ha-card-backdrop-filter: none;
+
+            border: none;
+          }
+          ha-card[style*="background: transparent"]::before {
+            content: none !important;
+          }
+
+          .mdc-data-table {
+            background: none !important;
+          }
+          .mdc-data-table__header-cell {
+            background: var(--frosted-glass-control-surface);
+          }
+
+          /* Active-state feedback uses attributes exposed by HA, or Bubble's icon/state
+             classes. It never infers an entity's state from a displayed color. */
+          ha-card:has(ha-state-icon[data-domain="light"][data-state="on"]),
+          ha-card:has(ha-tile-icon[data-domain="light"][data-state="on"]),
+          ha-card:has(.light-button.state-on) {
+            border-color: var(--frosted-glass-light-border-color);
+            box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-light-glow);
+          }
+          .bubble-container:has(.bubble-wrapper.is-on .bubble-main-icon[icon^="mdi:lightbulb"]) {
+            border-color: var(--frosted-glass-light-border-color);
+            box-shadow: var(--bubble-box-shadow), var(--frosted-glass-light-glow);
+          }
+          ha-state-icon[data-domain="light"][data-state="on"],
+          ha-tile-icon[data-domain="light"][data-state="on"] ha-state-icon,
+          .light-button.state-on ha-state-icon {
+            filter: drop-shadow(var(--frosted-glass-light-icon-glow));
+          }
+
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"],
+          ha-tile-icon[data-domain="fan"][data-state="on"] ha-state-icon,
+          .bubble-wrapper.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+
+          /* State remains inside Mushroom's shape shadow root. Inherited variables
+             carry it through the slot without a backend template or polling. */
+          :host(mushroom-fan-card) ha-state-icon {
+            animation: var(--frosted-glass-fan-animation, none);
+            transform-origin: center;
+          }
+          :host(mushroom-light-card) ha-state-icon {
+            filter: var(--frosted-glass-mushroom-light-filter, none);
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            ha-card {
+              transition: none;
+            }
+            ha-state-icon,
+            .bubble-main-icon {
+              animation: none !important;
+            }
+          }
+
+
+        mushroom-shape-icon $: |
+          .shape {
+            --frosted-glass-fan-animation: none;
+            --frosted-glass-mushroom-light-filter: none;
+          }
+          .shape:not(.disabled) {
+            --frosted-glass-fan-animation: frosted-glass-fan-spin 4s linear infinite;
+            --frosted-glass-mushroom-light-filter: drop-shadow(var(--frosted-glass-light-icon-glow));
+          }
+
+      # Global glass tokens are inherited by dialogs, sidebar and custom cards.
+      ha-card-glass-tint: 'rgba(246, 248, 252, 0.96)'
+      ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset, 0 0 8px 1px rgba(255, 255, 255, 0.10) inset, 0 0 2px 0 rgba(0, 0, 0, 0.10)'
+      frosted-glass-menu-surface: 'rgba(247, 248, 252, 1)'
+      frosted-glass-control-surface: 'rgba(246, 248, 252, 0.96)'
+      frosted-glass-badge-shadow: '0 3px 10px rgba(21, 25, 45, 0.10)'
+      frosted-glass-light-border-color: 'rgba(255, 210, 92, 0.32)'
+      frosted-glass-light-glow: '0 0 20px rgba(255, 202, 74, 0.14)'
+      frosted-glass-light-icon-glow: '0 0 7px rgba(255, 202, 74, 0.30)'
+      ha-card-backdrop-filter: 'none'
+      frosted-glass-navbar-background: 'var(--navbar-background-color)'
+      frosted-glass-navbar-primary: 'var(--navbar-primary-color)'
+      frosted-glass-navbar-radius: 'var(--navbar-border-radius)'
+      frosted-glass-navbar-shadow: 'var(--navbar-box-shadow)'
+      frosted-glass-navbar-shadow-desktop: 'var(--navbar-box-shadow-desktop)'
+      frosted-glass-navbar-shadow-floating: 'var(--navbar-box-shadow-mobile-floating)'
+      frosted-glass-slider-button-off: 'var(--btn-bg-color-off)'
+      frosted-glass-slider-button-on: 'var(--btn-bg-color-on)'
+      frosted-glass-slider-track: 'var(--slider-track-color)'
+
+      card-mod-badge: |
+        ha-badge,
+        .badge {
+          --ha-card-box-shadow: var(--frosted-glass-badge-shadow);
+        }
+        ha-badge {
+          backdrop-filter: var(--ha-card-backdrop-filter, none);
+          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, none);
         }
 
-        /* Glass layer */
-        ha-card::before {                                                                                      /* 1.2 Glass – glass overlay */
+      card-mod-sidebar: |
+        :host {
+          position: relative;
+          isolation: isolate;
+          background: transparent;
+        }
+        :host::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: var(--ha-card-glass-tint, rgba(255, 255, 255, 0.08));                                    /* 1.2 Glass – subtle tint */
           z-index: -1;
           pointer-events: none;
-          border-radius: inherit;
-          box-shadow: var(--ha-card-glass-inset-shadow,                                                         /* 1.2 Glass – inner bevel/glow */
-            3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset,
-            -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset,
-            0 0 8px 1px rgba(255, 255, 255, 0.10) inset,
-            0 0 2px 0 rgba(0, 0, 0, 0.10)
-          );
+          background: var(--sidebar-background-color);
+          backdrop-filter: var(--sidebar-backdrop-filter, none);
+          -webkit-backdrop-filter: var(--sidebar-backdrop-filter, none);
+          box-shadow: inset -1px 0 0 var(--sidebar-border-color);
+        }
+        .menu {
+          background: transparent;
         }
 
-        /* Heading cards are intentionally background-free. */
-        :host(hui-heading-card) ha-card {
-          background: none !important;
+      card-mod-drawer: |
+        /* Put the same wallpaper behind the sidebar's glass, including on
+           configuration panels. A pseudo-element on the sidebar owns its blur. */
+        .sidebar-shell,
+        .mdc-drawer {
+          background: var(--lovelace-background, var(--background-image));
+          border-inline-end: 0.5px solid var(--sidebar-border-color);
         }
-        :host(hui-heading-card) ha-card::before {
-          content: none !important;
+        .mdc-drawer__content {
+          background: transparent;
         }
-
-        /* IMPORTANT: Allow normal Markdown cards to be glassy; only exclude text-only variant */
-        /* (Fix) Removed global :host(hui-markdown-card) exclusion you had before                     # 1.2 Glass – bugfix
-           so standard Markdown gets the glass. The text-only variant remains excluded below. */
-
-        /* Data tables */
-        .mdc-data-table {
-          background: none !important;
+        wa-drawer::part(dialog) {
+          background: var(--lovelace-background, var(--background-image));
+          border-inline-end: 0.5px solid var(--sidebar-border-color);
         }
-        .mdc-data-table__header-cell {
-          background: rgba(255, 255, 255, 0.1) !important;
-          box-shadow: var(--ha-card-glass-inset-shadow) !important;                                           /* 1.2 Glass – consistent bevel */
+        :host {
+          --mdc-drawer-scrim-color: var(--mdc-dialog-scrim-color);
         }
 
-        /* Markdown card with text_only: no background or blur. */
-        :host(.text-only) ha-card,
-        :host(.text-only) ha-card::before,
-        ha-card.text-only,
-        ha-card.text-only::before {                                                                           /* 1.2 Glass – add ha-card.text-only for compatibility */
-          background: none !important;
-          box-shadow: none !important;
-          content: none !important;
-        }
+      card-mod-row-yaml: |
+        hui-generic-entity-row $:
+          state-badge $: |
+            @keyframes frosted-glass-fan-spin {
+              to { transform: rotate(360deg); }
+            }
+            ha-state-icon[data-domain="fan"][data-state="on"] {
+              animation: frosted-glass-fan-spin 4s linear infinite;
+              transform-origin: center;
+            }
+            @media (prefers-reduced-motion: reduce) {
+              ha-state-icon { animation: none !important; }
+            }
+        state-badge $: |
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"] {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            ha-state-icon { animation: none !important; }
+          }
 
-        /* Mushroom title card (no background or blur) */
-        :host(mushroom-title-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;                                                                         /* 1.2 Glass – ensure no bevel */
-        }
-        :host(mushroom-title-card) ha-card::before {
-          content: none !important;
-        }
-
-        /* Prevent frosted glass from applying to bubble cards. */
-        :host(.type-custom-bubble-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;
-          border-radius: 0px !important;
-        }
-        :host(.type-custom-bubble-card) ha-card::before {
-          content: none !important;
-          background: none !important;
-        }
-
-        /* Prevent frosted glass on the mushroom-chips-card outer container. */
-        :host(mushroom-chips-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;
-        }
-        :host(mushroom-chips-card) ha-card::before {
-          content: none !important;
-          background: none !important;
-        }
+      card-mod-glance-yaml: |
+        state-badge $: |
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"] {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            ha-state-icon { animation: none !important; }
+          }
 
       # =========================
       # CARD-MOD-ROOT GLOBAL CSS
       # =========================
       card-mod-root: |
-       :host {
-        --ha-card-background: rgba(242, 245, 255, 0.1);
-        --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-        --ha-card-border-width: 0.5px;
-        --ha-card-border-color: rgba(255, 255, 255, 0.3);
+        :host {
 
-        /* Glass system tokens (new) */
-        --ha-card-glass-tint: rgba(255, 255, 255, 0.08);
-        --ha-card-glass-inset-shadow:
-          3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset,
-          -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset,
-          0 0 8px 1px rgba(255, 255, 255, 0.10) inset,
-          0 0 2px 0 rgba(0, 0, 0, 0.10);
+
           /* Tokens used throughout cards and UI. */
           --token-rgb-primary: 106, 116, 211;
           --token-rgb-black: 0, 0, 0;
@@ -188,11 +417,11 @@ Frosted Glass Lite:
           --token-color-text-chip: rgb(var(--token-rgb-black));
           --token-color-background-base: rgba(234, 235, 238, 0.6);
           --token-color-background-secondary: rgba(245, 245, 245, 0.5);
-          --token-color-background-sidebar: var(--token-color-background-base);
+          --token-color-background-sidebar: var(--sidebar-background-color);
           --token-color-background-input-base: rgba(255, 255, 255, 0.7);
           --token-color-background-input-disabled: rgba(245, 245, 245, 0.6);
           --token-color-background-label-badge: rgb(230, 230, 230);
-          --token-color-background-card: rgba(255, 255, 255, 0.85);
+          --token-color-background-card: var(--ha-card-glass-tint);
           --token-color-background-skrim: rgba(0, 0, 0, 0.6);
           --token-color-background-divider: rgba(224, 224, 224, 0.3);
           --token-color-background-scrollbar-thumb: rgb(180, 180, 180);
@@ -208,7 +437,7 @@ Frosted Glass Lite:
           --token-color-codemirror-string: rgb(0, 77, 153);
           --token-color-codemirror-keyword: rgb(70, 112, 216);
           --token-color-codemirror-number: rgb(204, 85, 0);
-          --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.15);
+          --token-shadow-card-medium: 0 10px 32px rgba(21, 25, 45, 0.12), 0 2px 8px rgba(21, 25, 45, 0.08);
           --token-size-radius-small: 10px;
           --token-size-radius-medium: 14px;
           --token-size-radius-large: 18px;
@@ -256,61 +485,12 @@ Frosted Glass Lite:
           --token-color-light-blue: rgb(var(--token-rgb-light-blue));
         }
 
-        /* Custom text divider row size fix. */
-        custom-text-divider-row .text-divider-content {
-          background: #fff !important;
-          opacity: 1 !important;
-          box-shadow: none !important;
-          border-radius: 10px !important;
-          padding: 0 8px !important;
-          --text-divider-font-size: 16px !important;
-          --text-divider-line-size: 1px;
-          --text-divider-color: rgba(19, 21, 54, 1) !important;
-        }
-
-        /* SIDEBAR BLUR */
-        .mdc-drawer .mdc-drawer__content {
-          background: rgba(234, 235, 238, 0.7) !important;
-          box-shadow: var(--ha-card-glass-inset-shadow) !important;                                          /* 1.2 Glass – subtle inner edge for consistency */
-        }
-
-        /* CARDS RADIUS */
-        ha-card {
-          border-radius: var(--token-size-radius-large);
-          border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));       /* 1.2 Glass – ensure border follows tokens */
-          box-shadow: var(--ha-card-box-shadow);
-        }
-        ha-card ha-card {
-          --ha-card-border-width: 0px;
-        }
-
-        /* DRAWER SCRIM */
-        ha-drawer {
-          --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.6) !important;
-        }
-
-        /* LABEL BADGE */
-        ha-label-badge {
-          --label-badge-background-color: rgba(230, 230, 230, 0.2) !important;
-          --label-badge-text-color: rgba(19, 21, 54, 0.9) !important;
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05) !important;
-          border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
-        }
-
-        /* INPUTS */
-        input, ha-textfield, ha-select {
-          background: rgba(255, 255, 255, 0.7) !important;
-          border-radius: var(--token-size-radius-small);
-          border: none !important;
-          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        }
-
       # =========================
       # TYPOGRAPHY
       # =========================
       ha-font-family-body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       ha-font-family-heading: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-      ha-font-family-code: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      ha-font-family-code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace'
       ha-font-family-longform: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       ha-card-header-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       mdc-typography-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
@@ -318,7 +498,7 @@ Frosted Glass Lite:
       mdc-typography-body1-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       md-list-item-label-text-font: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-common-base_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-      paper-font-common-code_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      paper-font-common-code_-_font-family: 'var(--ha-font-family-code)'
       paper-font-body1_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-subhead_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-headline_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
@@ -332,7 +512,7 @@ Frosted Glass Lite:
       ha-font-weight-heading: '500'
       ha-font-weight-action: '500'
       mdc-typography-button-font-weight: '500'
-      title-font-weight: 'var(--token-weight-font-title-card)'
+      title-font-weight: '500'
 
       ha-font-size-xs: '10px'
       ha-font-size-s: '12px'
@@ -344,7 +524,7 @@ Frosted Glass Lite:
       ha-font-size-4xl: '33px'
       ha-font-size-5xl: '42px'
       title-font-size: '20px'
-      ha-heading-card-title-font-size: 'var(--token-size-font-l)'
+      ha-heading-card-title-font-size: 'var(--ha-font-size-l)'
       ha-heading-card-title-font-weight: '500'
       ha-font-smoothing: 'antialiased'
 
@@ -412,14 +592,14 @@ Frosted Glass Lite:
       primary-background-color: 'rgba(254, 244, 242, 1)'
       secondary-background-color: 'rgba(245, 245, 245, 0.5)'
       clear-background-color: 'rgba(254, 244, 242, 0.9)'
-      card-background-color: 'rgba(254, 244, 242, 0.9)'
-      ha-card-background: 'rgba(254, 244, 242, 0.9)'
+      card-background-color: 'var(--frosted-glass-menu-surface)'
+      ha-card-background: 'var(--ha-card-glass-tint)'
       ha-card-border-radius: '18px'
       ha-card-border-color: 'rgba(255, 255, 255, 0.3)'
       ha-card-border-width: '0.5px'
       ha-card-border-style: 'solid'
-      ha-card-border: '0.5px solid rgba(255, 255, 255, 0.3)'
-      ha-card-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.15)'
+      ha-card-border: 'var(--ha-card-border-width) solid var(--ha-card-border-color)'
+      ha-card-box-shadow: '0 10px 32px rgba(21, 25, 45, 0.12), 0 2px 8px rgba(21, 25, 45, 0.08)'
       ha-view-sections-column-gap: '17px'
       ha-view-sections-column-min-width: 320px
 
@@ -489,6 +669,9 @@ Frosted Glass Lite:
       input-hover-line-color: 'rgb(106, 116, 211)'
       mdc-select-idle-line-color: 'transparent'
       mdc-text-field-idle-line-color: 'transparent'
+      mdc-theme-surface: 'rgba(247, 248, 252, 1)'
+      md-menu-container-color: 'rgba(247, 248, 252, 1)'
+      wa-color-surface-raised: 'rgba(247, 248, 252, 1)'
 
       # Code Editor & Misc
       code-editor-background-color: 'rgba(234, 235, 238, 1)'
@@ -500,7 +683,7 @@ Frosted Glass Lite:
       codemirror-number: 'rgb(204, 85, 0)'
       mcg-title-font-weight: '400'
       mush-title-font-weight: '500'
-      mush-title-font-size: 'var(--token-size-font-2xl)'
+      mush-title-font-size: 'var(--ha-font-size-2xl)'
       light-grey-color: 'rgb(103, 104, 119)'
       mush-rgb-grey: '103, 104, 119'
 
@@ -515,7 +698,7 @@ Frosted Glass Lite:
       # =========================
       # HEADER (Top Bar)
       # =========================
-      app-header-background-color: 'rgba(30, 30, 30, 0.01)'
+      app-header-background-color: 'rgba(28, 31, 40, 0.98)'
       app-header-text-color: 'rgba(240, 243, 255, 0.95)'
       app-header-edit-background-color: 'rgba(30, 33, 54, 0.8)'
       app-header-edit-text-color: 'rgba(234, 235, 238, 0.98)'
@@ -524,7 +707,9 @@ Frosted Glass Lite:
       # =========================
       # SIDEBAR / DRAWER
       # =========================
-      sidebar-background-color: 'rgba(30, 30, 30, 0.8)'
+      sidebar-background-color: 'rgba(24, 26, 34, 0.96)'
+      sidebar-backdrop-filter: 'none'
+      sidebar-border-color: 'rgba(255, 255, 255, 0.12)'
       sidebar-icon-color: 'rgba(234, 235, 238, 0.6)'
       sidebar-text-color: 'rgba(234, 235, 238, 0.8)'
       sidebar-selected-icon-color: 'rgba(234, 235, 238, 0.95)'
@@ -533,118 +718,346 @@ Frosted Glass Lite:
       # =========================
       # DIALOGS
       # =========================
-      ha-dialog-surface-background: 'rgba(30, 30, 30, 0.9)'
-      dialog-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.25)'
-      paper-dialog-background-color: 'rgba(30, 30, 30, 0.9)'
-      mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.9)'
+      ha-dialog-surface-backdrop-filter: 'none'
+      ha-dialog-surface-background: 'rgba(24, 26, 34, 0.98)'
+      dialog-box-shadow: '0 24px 64px rgba(0, 0, 0, 0.48), 0 4px 18px rgba(0, 0, 0, 0.28)'
+      paper-dialog-background-color: 'rgba(24, 26, 34, 0.98)'
+      mdc-dialog-scrim-color: 'rgba(0, 0, 0, 0.82)'
+
+      # =========================
+      # THIRD-PARTY CARD CONTRACTS
+      # =========================
+      bubble-border-radius: '18px'
+      bubble-main-background-color: 'var(--ha-card-glass-tint)'
+      bubble-secondary-background-color: 'rgba(255, 255, 255, 0.10)'
+      bubble-accent-color: 'rgb(106, 116, 211)'
+      bubble-icon-border-radius: '14px'
+      bubble-icon-background-color: 'rgba(255, 255, 255, 0.12)'
+      bubble-sub-button-border-radius: '12px'
+      bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.11)'
+      bubble-box-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+      bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
+      bubble-pop-up-border-radius: '28px'
+      bubble-pop-up-main-background-color: 'rgba(24, 26, 34, 0.98)'
+      bubble-pop-up-background-color: 'rgba(24, 26, 34, 0.98)'
+      bubble-backdrop-background-color: 'rgba(0, 0, 0, 0.62)'
+      bubble-select-list-border-radius: '14px'
+      bubble-select-list-background-color: 'rgba(30, 32, 42, 1)'
+      bubble-select-list-item-accent-color: 'rgba(106, 116, 211, 0.24)'
+      bubble-horizontal-buttons-stack-border-radius: '18px'
+      bubble-horizontal-buttons-stack-background-color: 'rgba(24, 27, 36, 0.98)'
+      navbar-background-color: 'rgba(20, 22, 30, 0.98)'
+      navbar-primary-color: 'rgb(106, 116, 211)'
+      navbar-border-radius: '18px'
+      navbar-box-shadow: '0 -1px 0 rgba(255, 255, 255, 0.10), 0 -12px 34px rgba(0, 0, 0, 0.34)'
+      navbar-box-shadow-desktop: '0 18px 46px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+      navbar-box-shadow-mobile-floating: '0 18px 46px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+      navbar-backdrop-filter: 'none'
+      simple-swipe-card-pagination-background: 'rgba(20, 22, 30, 0.96)'
+      simple-swipe-card-pagination-dot-inactive-color: 'rgba(234, 235, 238, 0.34)'
+      simple-swipe-card-pagination-dot-active-color: 'rgb(106, 116, 211)'
+      simple-swipe-card-pagination-dot-active-box-shadow: '0 0 12px rgba(106, 116, 211, 0.30)'
+      btn-bg-color-off: 'rgba(255, 255, 255, 0.09)'
+      btn-bg-color-on: 'rgba(106, 116, 211, 0.22)'
+      slider-track-color: 'rgba(234, 235, 238, 0.16)'
 
       # =========================
       # CARDS / CARD-MOD
       # =========================
-      card-mod-card: |
-        /* Base reset */
-        ha-card {
-          background: transparent;
-          position: relative;
-          isolation: isolate;
+      card-mod-card-yaml: |
+        .: |+
+          /* Keep fixed-position menus in the viewport coordinate system. */
+          ha-card {
+            background: transparent;
+
+            position: relative;
+            isolation: isolate;
+            transition: box-shadow 220ms ease, border-color 220ms ease;
+          }
+
+          /* Low specificity lets per-card artwork override the glass layer. */
+          :where(:host(:not(mushroom-template-card):not(room-summary-card))) ha-card::before {
+            content: var(--frosted-glass-card-layer-content, '');
+            position: absolute;
+            inset: 0;
+            background: var(--ha-card-glass-tint);
+
+            z-index: -1;
+            pointer-events: none;
+            border-radius: inherit;
+            box-shadow: var(--ha-card-glass-inset-shadow);
+          }
+
+          /* Containers and text-only cards leave their content's surface intact. */
+          :host(hui-heading-card) ha-card,
+          :host(.text-only) ha-card,
+          ha-card.text-only,
+          :host(mushroom-title-card) ha-card,
+          :host(mushroom-chips-card) ha-card {
+            background: none !important;
+
+            box-shadow: none !important;
+            border: none !important;
+          }
+          :host(hui-heading-card) ha-card::before,
+          :host(.text-only) ha-card::before,
+          ha-card.text-only::before,
+          :host(mushroom-title-card) ha-card::before,
+          :host(mushroom-chips-card) ha-card::before {
+            content: none !important;
+          }
+
+          /* Bubble owns its rounded surface. Its blur layer cannot trap fixed menus. */
+          :host(bubble-card) ha-card,
+          :host(.type-custom-bubble-card) ha-card,
+          ha-card:has(.bubble-container) {
+            background: none !important;
+
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+          }
+          :host(bubble-card) ha-card::before,
+          :host(.type-custom-bubble-card) ha-card::before,
+          ha-card:has(.bubble-container)::before {
+            content: none !important;
+          }
+
+
+          /* Hue calculates foreground contrast from its own light-colored background. */
+          :host(hue-like-light-card) ha-card,
+          :host(.type-custom-hue-like-light-card) ha-card {
+            --frosted-glass-card-layer-content: none;
+            background: var(--hue-background, var(--ha-card-background));
+          }
+
+          /* These cards declare defaults on :host, so inherited public variables alone
+             cannot override them. Aliases preserve the selected theme's values. */
+          :host(:where(navbar-card, .type-custom-navbar-card)) {
+            --navbar-background-color: var(--frosted-glass-navbar-background);
+            --navbar-primary-color: var(--frosted-glass-navbar-primary);
+            --navbar-border-radius: var(--frosted-glass-navbar-radius);
+            --navbar-box-shadow: var(--frosted-glass-navbar-shadow);
+            --navbar-box-shadow-desktop: var(--frosted-glass-navbar-shadow-desktop);
+            --navbar-box-shadow-mobile-floating: var(--frosted-glass-navbar-shadow-floating);
+          }
+          :host(navbar-card) ha-card,
+          :host(.type-custom-navbar-card) ha-card {
+            --frosted-glass-card-layer-content: none;
+            background: var(--navbar-background-color);
+
+            border: var(--ha-card-border);
+          }
+          :host(navbar-card) .popup-item .button {
+
+            border: var(--ha-card-border);
+          }
+
+          :host(:where(slider-button-card, .type-custom-slider-button-card)) {
+            --btn-bg-color-off: var(--frosted-glass-slider-button-off);
+            --btn-bg-color-on: var(--frosted-glass-slider-button-on);
+            --slider-track-color: var(--frosted-glass-slider-track);
+          }
+
+          /* Leave both pseudo-elements available for Mushroom template artwork. */
+          :host(mushroom-template-card) ha-card {
+            background: var(--ha-card-glass-tint);
+
+          }
+
+          /* stack-in-card writes this inline only when keep.background is false and
+             --keep-background is not true. Honor that decision instead of hiding every
+             descendant, including those whose background was explicitly kept. */
+          ha-card[style*="background: transparent"] {
+            --ha-card-backdrop-filter: none;
+
+            border: none;
+          }
+          ha-card[style*="background: transparent"]::before {
+            content: none !important;
+          }
+
+          .mdc-data-table {
+            background: none !important;
+          }
+          .mdc-data-table__header-cell {
+            background: var(--frosted-glass-control-surface);
+          }
+
+          /* Active-state feedback uses attributes exposed by HA, or Bubble's icon/state
+             classes. It never infers an entity's state from a displayed color. */
+          ha-card:has(ha-state-icon[data-domain="light"][data-state="on"]),
+          ha-card:has(ha-tile-icon[data-domain="light"][data-state="on"]),
+          ha-card:has(.light-button.state-on) {
+            border-color: var(--frosted-glass-light-border-color);
+            box-shadow: var(--ha-card-box-shadow), var(--frosted-glass-light-glow);
+          }
+          .bubble-container:has(.bubble-wrapper.is-on .bubble-main-icon[icon^="mdi:lightbulb"]) {
+            border-color: var(--frosted-glass-light-border-color);
+            box-shadow: var(--bubble-box-shadow), var(--frosted-glass-light-glow);
+          }
+          ha-state-icon[data-domain="light"][data-state="on"],
+          ha-tile-icon[data-domain="light"][data-state="on"] ha-state-icon,
+          .light-button.state-on ha-state-icon {
+            filter: drop-shadow(var(--frosted-glass-light-icon-glow));
+          }
+
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"],
+          ha-tile-icon[data-domain="fan"][data-state="on"] ha-state-icon,
+          .bubble-wrapper.is-on .bubble-main-icon:is([icon="mdi:fan"], [icon^="mdi:fan-speed-"]) {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+
+          /* State remains inside Mushroom's shape shadow root. Inherited variables
+             carry it through the slot without a backend template or polling. */
+          :host(mushroom-fan-card) ha-state-icon {
+            animation: var(--frosted-glass-fan-animation, none);
+            transform-origin: center;
+          }
+          :host(mushroom-light-card) ha-state-icon {
+            filter: var(--frosted-glass-mushroom-light-filter, none);
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            ha-card {
+              transition: none;
+            }
+            ha-state-icon,
+            .bubble-main-icon {
+              animation: none !important;
+            }
+          }
+
+
+        mushroom-shape-icon $: |
+          .shape {
+            --frosted-glass-fan-animation: none;
+            --frosted-glass-mushroom-light-filter: none;
+          }
+          .shape:not(.disabled) {
+            --frosted-glass-fan-animation: frosted-glass-fan-spin 4s linear infinite;
+            --frosted-glass-mushroom-light-filter: drop-shadow(var(--frosted-glass-light-icon-glow));
+          }
+
+      # Global glass tokens are inherited by dialogs, sidebar and custom cards.
+      ha-card-glass-tint: 'rgba(28, 31, 40, 0.98)'
+      ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset, 0 0 8px 1px rgba(255, 255, 255, 0.06) inset, 0 0 2px 0 rgba(0, 0, 0, 0.18)'
+      frosted-glass-menu-surface: 'rgba(30, 32, 42, 1)'
+      frosted-glass-control-surface: 'rgba(24, 27, 36, 0.98)'
+      frosted-glass-badge-shadow: '0 3px 10px rgba(0, 0, 0, 0.22)'
+      frosted-glass-light-border-color: 'rgba(255, 211, 96, 0.28)'
+      frosted-glass-light-glow: '0 0 22px rgba(255, 202, 74, 0.16)'
+      frosted-glass-light-icon-glow: '0 0 8px rgba(255, 211, 96, 0.38)'
+      ha-card-backdrop-filter: 'none'
+      frosted-glass-navbar-background: 'var(--navbar-background-color)'
+      frosted-glass-navbar-primary: 'var(--navbar-primary-color)'
+      frosted-glass-navbar-radius: 'var(--navbar-border-radius)'
+      frosted-glass-navbar-shadow: 'var(--navbar-box-shadow)'
+      frosted-glass-navbar-shadow-desktop: 'var(--navbar-box-shadow-desktop)'
+      frosted-glass-navbar-shadow-floating: 'var(--navbar-box-shadow-mobile-floating)'
+      frosted-glass-slider-button-off: 'var(--btn-bg-color-off)'
+      frosted-glass-slider-button-on: 'var(--btn-bg-color-on)'
+      frosted-glass-slider-track: 'var(--slider-track-color)'
+
+      card-mod-badge: |
+        ha-badge,
+        .badge {
+          --ha-card-box-shadow: var(--frosted-glass-badge-shadow);
+        }
+        ha-badge {
+          backdrop-filter: var(--ha-card-backdrop-filter, none);
+          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, none);
         }
 
-        /* Glass layer (variable-driven, matches Light) */
-        ha-card::before {                                                                   /* 1.2 Glass – glass overlay */
+      card-mod-sidebar: |
+        :host {
+          position: relative;
+          isolation: isolate;
+          background: transparent;
+        }
+        :host::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: var(--ha-card-glass-tint, rgba(28, 29, 33, 0.18));                    /* 1.2 Glass – subtle dark tint */
           z-index: -1;
           pointer-events: none;
-          border-radius: inherit;
-          box-shadow: var(--ha-card-glass-inset-shadow,                                     /* 1.2 Glass – inner bevel/glow */
-            3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.22) inset,
-            -2px -2px 0.5px -2px rgba(255, 255, 255, 0.18) inset,
-            0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
-            0 0 2px 0 rgba(0, 0, 0, 0.18)
-          );
+          background: var(--sidebar-background-color);
+          backdrop-filter: var(--sidebar-backdrop-filter, none);
+          -webkit-backdrop-filter: var(--sidebar-backdrop-filter, none);
+          box-shadow: inset -1px 0 0 var(--sidebar-border-color);
+        }
+        .menu {
+          background: transparent;
         }
 
-        /* Heading cards are intentionally background-free. */
-        :host(hui-heading-card) ha-card {
-          background: none !important;
+      card-mod-drawer: |
+        /* Put the same wallpaper behind the sidebar's glass, including on
+           configuration panels. A pseudo-element on the sidebar owns its blur. */
+        .sidebar-shell,
+        .mdc-drawer {
+          background: var(--lovelace-background, var(--background-image));
+          border-inline-end: 0.5px solid var(--sidebar-border-color);
         }
-        :host(hui-heading-card) ha-card::before {
-          content: none !important;
+        .mdc-drawer__content {
+          background: transparent;
         }
-
-        /* IMPORTANT: Allow normal Markdown to be glassy; only exclude text-only */
-        /* (Fix) Removed global :host(hui-markdown-card) exclusion so standard Markdown gets glass. */
-
-        /* Data tables */
-        .mdc-data-table {
-          background: none !important;
+        wa-drawer::part(dialog) {
+          background: var(--lovelace-background, var(--background-image));
+          border-inline-end: 0.5px solid var(--sidebar-border-color);
         }
-        .mdc-data-table__header-cell {
-          background: rgba(30, 33, 54, 0.18) !important;
-          box-shadow: var(--ha-card-glass-inset-shadow) !important;                         /* 1.2 Glass – consistent bevel */
-        }
-
-        /* Markdown card with text_only: no background or blur. */
-        :host(.text-only) ha-card,
-        :host(.text-only) ha-card::before,
-        ha-card.text-only,
-        ha-card.text-only::before {                                                         /* 1.2 Glass – add ha-card.text-only for compatibility */
-          background: none !important;
-          box-shadow: none !important;
-          content: none !important;
+        :host {
+          --mdc-drawer-scrim-color: var(--mdc-dialog-scrim-color);
         }
 
-        /* Mushroom title card (no background or blur) */
-        :host(mushroom-title-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;                                                      /* 1.2 Glass – ensure no bevel */
-        }
-        :host(mushroom-title-card) ha-card::before {
-          content: none !important;
-        }
+      card-mod-row-yaml: |
+        hui-generic-entity-row $:
+          state-badge $: |
+            @keyframes frosted-glass-fan-spin {
+              to { transform: rotate(360deg); }
+            }
+            ha-state-icon[data-domain="fan"][data-state="on"] {
+              animation: frosted-glass-fan-spin 4s linear infinite;
+              transform-origin: center;
+            }
+            @media (prefers-reduced-motion: reduce) {
+              ha-state-icon { animation: none !important; }
+            }
+        state-badge $: |
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"] {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            ha-state-icon { animation: none !important; }
+          }
 
-        /* Prevent frosted glass from applying to bubble cards. */
-        :host(.type-custom-bubble-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;
-          border-radius: 0px !important;
-        }
-        :host(.type-custom-bubble-card) ha-card::before {
-          content: none !important;
-          background: none !important;
-        }
-
-        /* Prevent frosted glass on the mushroom-chips-card outer container. */
-        :host(mushroom-chips-card) ha-card {
-          background: none !important;
-          box-shadow: none !important;
-        }
-        :host(mushroom-chips-card) ha-card::before {
-          content: none !important;
-          background: none !important;
-        }
-
-        /* Bubble button container styling is omitted to avoid conflicts. */
+      card-mod-glance-yaml: |
+        state-badge $: |
+          @keyframes frosted-glass-fan-spin {
+            to { transform: rotate(360deg); }
+          }
+          ha-state-icon[data-domain="fan"][data-state="on"] {
+            animation: frosted-glass-fan-spin 4s linear infinite;
+            transform-origin: center;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            ha-state-icon { animation: none !important; }
+          }
 
       # =========================
       # CARD-MOD-ROOT GLOBAL CSS
       # =========================
       card-mod-root: |
         :host {
-          --ha-card-background: rgba(30, 30, 30, 0.1);
-          --ha-card-box-shadow: 0 12px 20px rgba(0, 0, 0, 0.28);
-          --ha-card-border-width: 0.5px;
-          --ha-card-border-color: rgba(234, 235, 238, 0.1);
 
           /* Glass system tokens (new, dark-tuned) */
-          --ha-card-glass-tint: rgba(28, 29, 33, 0.18);
-          --ha-card-glass-inset-shadow:
-            3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset,
-            -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset,
-            0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
-            0 0 2px 0 rgba(0, 0, 0, 0.18);
 
           /* Tokens - match structure to Light theme for consistency */
           --token-rgb-primary: 106, 116, 211;
@@ -693,11 +1106,11 @@ Frosted Glass Lite:
           --token-color-text-chip: rgb(var(--token-rgb-white));
           --token-color-background-base: rgba(25, 28, 45, 0.8);
           --token-color-background-secondary: rgba(30, 33, 54, 0.7);
-          --token-color-background-sidebar: var(--token-color-background-base);
+          --token-color-background-sidebar: var(--sidebar-background-color);
           --token-color-background-input-base: rgba(30, 33, 54, 0.7);
           --token-color-background-input-disabled: rgba(30, 33, 54, 0.5);
           --token-color-background-label-badge: rgb(60, 60, 78);
-          --token-color-background-card: rgba(28, 29, 33, 0.85);
+          --token-color-background-card: var(--ha-card-glass-tint);
           --token-color-background-skrim: rgba(0, 0, 0, 0.7);
           --token-color-background-divider: rgba(84, 84, 98, 0.28);
           --token-color-background-scrollbar-thumb: rgb(68, 68, 88);
@@ -713,7 +1126,7 @@ Frosted Glass Lite:
           --token-color-codemirror-string: rgb(164, 209, 255);
           --token-color-codemirror-keyword: rgb(148, 182, 255);
           --token-color-codemirror-number: rgb(255, 171, 64);
-          --token-shadow-card-medium: 0 12px 20px rgba(0, 0, 0, 0.28);
+          --token-shadow-card-medium: 0 14px 38px rgba(0, 0, 0, 0.34), 0 2px 10px rgba(0, 0, 0, 0.24);
           --token-size-radius-small: 10px;
           --token-size-radius-medium: 14px;
           --token-size-radius-large: 18px;
@@ -761,61 +1174,12 @@ Frosted Glass Lite:
           --token-color-light-blue: rgb(var(--token-rgb-light-blue));
         }
 
-        /* SIDEBAR BLUR */
-        .mdc-drawer .mdc-drawer__content {
-          background: rgba(25, 28, 45, 0.8) !important;
-          box-shadow: var(--ha-card-glass-inset-shadow) !important;
-        }
-
-        /* CARDS RADIUS */
-        ha-card {
-          border-radius: var(--token-size-radius-large);
-          border: var(--ha-card-border, var(--ha-card-border-width) solid var(--ha-card-border-color));
-          box-shadow: var(--ha-card-box-shadow);
-        }
-        ha-card ha-card {
-          --ha-card-border-width: 0px;
-        }
-
-        /* DRAWER SCRIM */
-        ha-drawer {
-          --mdc-drawer-scrim-color: rgba(0, 0, 0, 0.8) !important;
-        }
-
-        /* LABEL BADGE */
-        ha-label-badge {
-          --label-badge-background-color: rgba(60, 60, 78, 0.28) !important;
-          --label-badge-text-color: rgba(234, 235, 238, 0.9) !important;
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.10) !important;
-          border: 0.5px solid rgba(234, 235, 238, 0.22) !important;
-        }
-
-        /* INPUTS */
-        input, ha-textfield, ha-select {
-          background: rgba(30, 33, 54, 0.7) !important;
-          border-radius: var(--token-size-radius-small);
-          border: none !important;
-          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.09) !important;
-        }
-
-        /* Custom text divider row size fix */
-        custom-text-divider-row .text-divider-content {
-          background: #181929 !important;
-          opacity: 1 !important;
-          box-shadow: none !important;
-          border-radius: 10px !important;
-          padding: 0 8px !important;
-          --text-divider-font-size: 16px !important;
-          --text-divider-line-size: 1px;
-          --text-divider-color: rgba(234, 235, 238, 1) !important;
-        }
-
       # =========================
       # TYPOGRAPHY
       # =========================
       ha-font-family-body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       ha-font-family-heading: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-      ha-font-family-code: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      ha-font-family-code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace'
       ha-font-family-longform: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       ha-card-header-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       mdc-typography-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
@@ -823,7 +1187,7 @@ Frosted Glass Lite:
       mdc-typography-body1-font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       md-list-item-label-text-font: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-common-base_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-      paper-font-common-code_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      paper-font-common-code_-_font-family: 'var(--ha-font-family-code)'
       paper-font-body1_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-subhead_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
       paper-font-headline_-_font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
@@ -837,7 +1201,7 @@ Frosted Glass Lite:
       ha-font-weight-heading: '500'
       ha-font-weight-action: '500'
       mdc-typography-button-font-weight: '500'
-      title-font-weight: 'var(--token-weight-font-title-card)'
+      title-font-weight: '500'
 
       ha-font-size-xs: '10px'
       ha-font-size-s: '12px'
@@ -849,7 +1213,7 @@ Frosted Glass Lite:
       ha-font-size-4xl: '33px'
       ha-font-size-5xl: '42px'
       title-font-size: '20px'
-      ha-heading-card-title-font-size: 'var(--token-size-font-l)'
+      ha-heading-card-title-font-size: 'var(--ha-font-size-l)'
       ha-heading-card-title-font-weight: '500'
       ha-font-smoothing: 'antialiased'
 
@@ -915,14 +1279,14 @@ Frosted Glass Lite:
       primary-background-color: 'rgba(30, 30, 30, 1)'                                      # 1.2 change - improved background color for a darker feel
       secondary-background-color: 'rgba(30, 33, 54, 0.6)'
       clear-background-color: 'rgba(30, 33, 54, 0.7)'
-      card-background-color: 'rgba(30, 30, 30, 0.85)'
-      ha-card-background: 'rgba(30, 30, 30, 0.9)'
+      card-background-color: 'var(--frosted-glass-menu-surface)'
+      ha-card-background: 'var(--ha-card-glass-tint)'
       ha-card-border-radius: '18px'
       ha-card-border-color: 'rgba(234, 235, 238, 0.22)'
       ha-card-border-width: '0.5px'
       ha-card-border-style: 'solid'
-      ha-card-border: '0.5px solid rgba(234, 235, 238, 0.1)'
-      ha-card-box-shadow: '0 12px 20px rgba(0, 0, 0, 0.28)'
+      ha-card-border: 'var(--ha-card-border-width) solid var(--ha-card-border-color)'
+      ha-card-box-shadow: '0 14px 38px rgba(0, 0, 0, 0.34), 0 2px 10px rgba(0, 0, 0, 0.24)'
       ha-view-sections-column-gap: '17px'
       ha-view-sections-column-min-width: 320px
 
@@ -992,6 +1356,9 @@ Frosted Glass Lite:
       input-hover-line-color: 'rgb(106, 116, 211)'
       mdc-select-idle-line-color: 'transparent'
       mdc-text-field-idle-line-color: 'transparent'
+      mdc-theme-surface: 'rgba(30, 32, 42, 1)'
+      md-menu-container-color: 'rgba(30, 32, 42, 1)'
+      wa-color-surface-raised: 'rgba(30, 32, 42, 1)'
 
       # Code Editor & Misc
       code-editor-background-color: 'rgba(25, 28, 45, 1)'
@@ -1003,7 +1370,7 @@ Frosted Glass Lite:
       codemirror-number: 'rgb(255, 171, 64)'
       mcg-title-font-weight: '400'
       mush-title-font-weight: '500'
-      mush-title-font-size: 'var(--token-size-font-2xl)'
+      mush-title-font-size: 'var(--ha-font-size-2xl)'
       light-grey-color: 'rgb(103, 104, 119)'
       mush-rgb-grey: '103, 104, 119'
 

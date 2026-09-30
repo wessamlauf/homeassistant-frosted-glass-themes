@@ -10,8 +10,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 THEMES_DIR = ROOT / "themes"
-VERSION = "1.4.0"
-RELEASE_DATE = "2026-08-26"
+VERSION = "1.5.0"
+RELEASE_DATE = "2026-09-30"
 
 SOURCES = {
     "Frosted Glass.yaml": {
@@ -84,7 +84,9 @@ def main() -> None:
                 if output_path.read_text(encoding="utf-8") != output:
                     stale.append(output_filename)
             else:
-                output_path.write_text(output, encoding="utf-8")
+                # Theme YAML in this repository uses CRLF; preserve it so
+                # regeneration stays deterministic on every development OS.
+                output_path.write_text(output, encoding="utf-8", newline="\r\n")
 
     if stale:
         raise SystemExit(

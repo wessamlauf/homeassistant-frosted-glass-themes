@@ -1,0 +1,10 @@
+{
+  "name": "frosted-glass-theme-checks",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/test_theme_rendering.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
