@@ -26,7 +26,7 @@ result=[]
 for filename in ('Frosted Glass.yaml','Frosted Glass Lite.yaml'):
     theme=next(iter(yaml.safe_load((Path('themes')/filename).read_text()).values()))
     for mode,v in theme['modes'].items():
-        template=Environment(undefined=StrictUndefined).from_string(yaml.safe_load(v['card-mod-card-yaml'])['.'])
+        template=Environment(undefined=StrictUndefined).from_string(v['card-mod-card'])
         styles={}
         for domain in ('fan','light'):
             for state in ('on','off'):
@@ -187,24 +187,10 @@ print(json.dumps(result))
             !fan.icon.hasAttribute("data-state"),
             "native Mushroom icon has no synthetic state",
           );
-          const animation = fan.icon
-            .getAnimations()
-            .find((a) => a.animationName === "frosted-glass-fan-spin");
           check(
-            Boolean(animation),
-            "native Mushroom fan has a running animation with icon_animation false",
+            css(fan.icon, "animation-name") === "none",
+            "theme honors disabled native Mushroom animation",
           );
-          if (animation) {
-            animation.pause();
-            animation.currentTime = 0;
-            const start = css(fan.icon, "transform");
-            animation.currentTime = 1000;
-            check(
-              css(fan.icon, "transform") !== start,
-              "native Mushroom fan actually rotates",
-            );
-            animation.play();
-          }
           check(
             css(fan.surface, "background-color") === "rgba(0, 0, 0, 0)",
             "native Mushroom fan card transparent",
@@ -221,8 +207,8 @@ print(json.dumps(result))
           light.surface.style.transition = "none";
           const onShadow = css(light.surface, "box-shadow");
           check(
-            css(light.icon, "filter").startsWith("drop-shadow"),
-            "native Mushroom light icon glow",
+            css(light.icon, "filter") === "none",
+            "native Mushroom light has no theme filter",
           );
           check(
             css(light.surface, "background-color") === "rgba(0, 0, 0, 0)",
@@ -233,12 +219,12 @@ print(json.dumps(result))
           await light.e.updateComplete;
           light.style.textContent = styles.light_off;
           check(
-            css(light.surface, "box-shadow") !== onShadow,
-            "native Mushroom light card on/off glow",
+            css(light.surface, "box-shadow") === onShadow,
+            "native Mushroom shadow does not change with light state",
           );
           check(
             css(light.icon, "filter") === "none",
-            "native Mushroom off light clears icon glow",
+            "native Mushroom off light has no theme filter",
           );
           // Bubble's actual JavaScript attaches is-on to ha-card and sets an
           // active native background. Explicit icons avoid a HA icon API request.
@@ -285,33 +271,9 @@ print(json.dumps(result))
             "native Bubble marks ha-card on",
           );
           check(
-            css(bubbleFan.icon, "animation-name") === "frosted-glass-fan-spin",
+            css(bubbleFan.icon, "animation-name") === "none",
             "native Bubble fan animation",
           );
-          const bubbleAnimation = bubbleFan.icon
-            .getAnimations()
-            .find((a) => a.animationName === "frosted-glass-fan-spin");
-          check(
-            Boolean(bubbleAnimation),
-            "native Bubble has a real fan animation: " +
-              JSON.stringify({
-                display: css(bubbleFan.icon, "display"),
-                host: css(bubbleFan.e, "display"),
-                rect: bubbleFan.icon.getBoundingClientRect().toJSON(),
-                html: bubbleFan.icon.outerHTML,
-              }),
-          );
-          if (bubbleAnimation) {
-            bubbleAnimation.pause();
-            bubbleAnimation.currentTime = 0;
-            const start = css(bubbleFan.icon, "transform");
-            bubbleAnimation.currentTime = 1000;
-            check(
-              css(bubbleFan.icon, "transform") !== start,
-              "native Bubble fan actually rotates",
-            );
-            bubbleAnimation.play();
-          }
           check(
             css(bubbleFan.surface, "background-color") === "rgba(0, 0, 0, 0)",
             "native Bubble surface transparent",
@@ -370,9 +332,36 @@ print(json.dumps(result))
           )
             await new Promise((r) => requestAnimationFrame(r));
           check(
-            css(bubbleLight.surface, "box-shadow") !== bubbleOnShadow,
-            "native Bubble light surface on/off glow",
+            css(bubbleLight.surface, "box-shadow") === bubbleOnShadow,
+            "native Bubble light shadow is independent of state",
           );
+          const manual = document.createElement("style");
+          manual.textContent =
+            "ha-card{box-shadow:0 0 10px 2px rgba(255,165,0,.3)!important;border:1px solid rgba(255,165,0,.1)!important}";
+          bubbleLight.e.shadowRoot.append(manual);
+          const outerLight = bubbleLight.e.shadowRoot.querySelector("ha-card");
+          check(
+            css(outerLight, "box-shadow") ===
+              "rgba(255, 165, 0, 0.3) 0px 0px 10px 2px",
+            "Bubble accepts manual glow overriding its native inline reset",
+          );
+          check(
+            css(outerLight, "border-top-color") === "rgba(255, 165, 0, 0.1)",
+            "Bubble accepts manual border overriding its native inline reset",
+          );
+          manual.textContent =
+            ".bubble-container{box-shadow:0 0 10px 2px rgba(255,165,0,.3);border:1px solid rgba(255,165,0,.1)}";
+          check(
+            css(bubbleLight.surface, "box-shadow") ===
+              "rgba(255, 165, 0, 0.3) 0px 0px 10px 2px",
+            "Bubble inner surface accepts normal manual glow",
+          );
+          check(
+            css(bubbleLight.surface, "border-top-color") ===
+              "rgba(255, 165, 0, 0.1)",
+            "Bubble inner surface accepts normal manual border",
+          );
+          manual.remove();
           window.qaFan = fan;
           hass.states["fan.qa"] = state("fan", true);
           fan.e.hass = { ...hass };

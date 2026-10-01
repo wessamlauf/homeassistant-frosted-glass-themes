@@ -27,6 +27,7 @@ for p in sorted(pathlib.Path(os.environ.get('FROSTED_GLASS_THEMES_DIR', 'themes'
             for key, value in list(values.items()):
                 if key.startswith('card-mod-') and key.endswith('-yaml'):
                     values[key] = yaml.safe_load(value)
+            values['card-mod-card-yaml'] = {'.': values.pop('card-mod-card')}
             template = Environment(undefined=StrictUndefined).from_string(values['card-mod-card-yaml']['.'])
             state_styles = {}
             for entity, state in (('', ''), ('fan.test', 'on'), ('fan.test', 'off'), ('light.test', 'on'), ('light.test', 'off'), ('light.test', 'unavailable')):
@@ -66,16 +67,6 @@ async function run() {
         const addStyle = (where, text) => {
           const style = document.createElement('style'); style.textContent = text; where.append(style);
           return style;
-        };
-        const checkRotation = (el, message) => {
-          const animation = el.getAnimations().find(a => a.animationName === 'frosted-glass-fan-spin');
-          check(Boolean(animation), `${message}: a real animation must exist`);
-          if (!animation) return;
-          animation.pause(); animation.currentTime = 0;
-          const initial = css(el, 'transform');
-          animation.currentTime = 1000;
-          check(css(el, 'transform') !== initial, `${message}: transform must rotate (${initial} -> ${css(el, 'transform')}; ${css(el, 'display')}; ${JSON.stringify(animation.effect.getKeyframes())})`);
-          animation.play();
         };
         // Validate every embedded CSS leaf with the browser's parser. A dropped
         // rule changes this count, including nested media and keyframe rules.
@@ -123,8 +114,8 @@ async function run() {
         check(css(normal, 'box-shadow').includes('inset'), 'standard card keeps original corner highlights on its visible surface');
         check(css(normal, 'backdrop-filter') === 'none', 'standard card must not trap fixed menus');
         check((css(normal, 'backdrop-filter', '::before') === 'none') === lite, 'standard glass/Lite filter');
-        check(css(fan, 'animation-name') === 'frosted-glass-fan-spin', 'fan on animation');
-        checkRotation(fan, 'standard fan');
+        check(css(fan, 'animation-name') === 'none', 'theme does not animate an active fan');
+
         fan.dataset.state = 'off';
         check(css(fan, 'animation-name') === 'none', 'fan off must stop');
         fan.dataset.state = 'on';
@@ -134,7 +125,7 @@ async function run() {
         lightCard.style.transition = 'none';
         const inactiveShadow = css(lightCard, 'box-shadow');
         lightIcon.dataset.state = 'on';
-        check(css(lightCard, 'box-shadow') !== inactiveShadow, 'active light card glow');
+        check(css(lightCard, 'box-shadow') === inactiveShadow, 'active light has no automatic glow');
         lightIcon.dataset.state = 'off';
         check(css(lightCard, 'box-shadow') === inactiveShadow, 'inactive light clears glow');
         lightIcon.dataset.state = 'on';
@@ -155,8 +146,8 @@ async function run() {
         check(css(bubbleSurface, 'box-shadow').includes('inset'), 'Bubble has original glass highlights on its visible surface');
         check(css(bubbleSurface, 'backdrop-filter') === 'none', 'Bubble surface must not trap fixed menus');
         check((css(bubbleSurface, 'backdrop-filter', '::before') === 'none') === lite, 'Bubble glass/Lite filter');
-        check(css(bubbleIcon, 'animation-name') === 'frosted-glass-fan-spin', 'Bubble fan on animation');
-        checkRotation(bubbleIcon, 'Bubble fan');
+        check(css(bubbleIcon, 'animation-name') === 'none', 'Bubble fan on animation');
+
         bubbleCard.className = 'is-off';
         check(css(bubbleIcon, 'animation-name') === 'none', 'Bubble fan off must stop');
         bubbleCard.className = 'is-on';
@@ -167,9 +158,9 @@ async function run() {
         check(css(bubbleLight.shadowRoot.querySelector('.bubble-background'), 'transition-property') === 'none', 'Bubble background transition cannot override transparency');
         const onBubbleShadow = css(bubbleLightSurface, 'box-shadow');
         bubbleLight.shadowRoot.querySelector('ha-card').className = 'is-off';
-        check(css(bubbleLightSurface, 'box-shadow') !== onBubbleShadow, 'Bubble light on/off surface glow');
+        check(css(bubbleLightSurface, 'box-shadow') === onBubbleShadow, 'Bubble light has no theme state shadow');
 
-        const navbarNative = ':host{--navbar-background-color:var(--card-background-color);--navbar-border-radius:var(--ha-card-border-radius,12px);--navbar-primary-color:var(--primary-color);--navbar-box-shadow:0 -1px 4px #0002;--navbar-box-shadow-mobile-floating:0 2px 4px #0002}.navbar{position:fixed;bottom:18px;left:260px;right:24px}.navbar-card{display:flex;gap:30px;min-height:60px}.navbar-card.mobile.floating{box-shadow:var(--navbar-box-shadow-mobile-floating)!important;border-radius:var(--navbar-border-radius)!important}.navbar-popup{position:fixed;top:110px;left:310px;z-index:901}.popup-item .button{background:var(--navbar-background-color)}';
+        const navbarNative = ':host{--navbar-background-color:var(--card-background-color);--navbar-border-radius:var(--ha-card-border-radius,12px);--navbar-primary-color:var(--primary-color);--navbar-box-shadow:0 -1px 4px #0002;--navbar-box-shadow-mobile-floating:var(--material-shadow-elevation-2dp)}ha-card{background:var(--navbar-background-color)}.navbar{position:fixed;bottom:18px;left:260px;right:24px}.navbar-card{display:flex;gap:30px;min-height:60px}.navbar-card.mobile.floating{box-shadow:var(--navbar-box-shadow-mobile-floating)!important;border-radius:var(--navbar-border-radius)!important}.navbar-popup{position:fixed;top:110px;left:310px;z-index:901}.popup-item .button{background:var(--navbar-background-color)}';
         const navbar = card('navbar-card', '<div class="navbar"><ha-card class="navbar-card mobile floating">Home　　Lights　　Climate</ha-card><ha-card class="media-player">Media player</ha-card></div><div class="navbar-popup"><div class="popup-item"><div class="button">Popup</div></div></div>', navbarNative);
         const navCard = navbar.shadowRoot.querySelector('.navbar-card');
         check(css(navCard, 'background-color') === color(v['navbar-background-color']), 'Navbar host defaults overridden');
@@ -226,22 +217,8 @@ async function run() {
         check(css(badgeRoot.querySelector('.badge'), '--ha-card-box-shadow') === v['frosted-glass-badge-shadow'], 'Mushroom badge gets same shadow');
         check((css(badge, 'backdrop-filter') === 'none') === lite, 'native badge glass/Lite filter');
 
-        const row = document.createElement('hui-fan-entity-row'); grid.append(row);
-        const rowRoot = row.attachShadow({mode:'open'});
-        rowRoot.innerHTML = '<hui-generic-entity-row></hui-generic-entity-row>';
-        const genericRoot = rowRoot.firstChild.attachShadow({mode:'open'});
-        genericRoot.innerHTML = '<state-badge></state-badge>Fan entity row';
-        const stateRoot = genericRoot.firstChild.attachShadow({mode:'open'});
-        stateRoot.innerHTML = '<ha-state-icon data-domain="fan" data-state="on">✣</ha-state-icon>';
-        addStyle(stateRoot, v['card-mod-row-yaml']['hui-generic-entity-row $']['state-badge $']);
-        const rowIcon = stateRoot.firstChild;
-        check(css(rowIcon, 'animation-name') === 'frosted-glass-fan-spin', 'entity-row fan crosses both shadow boundaries');
-        rowIcon.dataset.state = 'off';
-        check(css(rowIcon, 'animation-name') === 'none', 'entity-row off fan stops');
-        rowIcon.dataset.state = 'on';
-
         // Native Mushroom stateObj/disabled properties are not DOM attributes.
-        // Theme templates use the engine's config.entity subscription instead.
+        // The theme must leave native animation settings and manual CSS in control.
         function mushroom(tag, state) {
           const host = card(tag, '<ha-card><mushroom-card><mushroom-state-item><mushroom-shape-icon slot="icon"><ha-state-icon>✣</ha-state-icon></mushroom-shape-icon></mushroom-state-item></mushroom-card>Mushroom</ha-card>', 'ha-state-icon{animation:none;transform:translateZ(0)}.spin ha-state-icon{animation:spin 1s linear infinite}', state);
           const shapeHost = host.shadowRoot.querySelector('mushroom-shape-icon');
@@ -250,8 +227,8 @@ async function run() {
           return { host, shape:shapeShadow.querySelector('.shape'), icon:host.shadowRoot.querySelector('ha-state-icon') };
         }
         const mushFan = mushroom('mushroom-fan-card', 'fan_on');
-        check(css(mushFan.icon, 'animation-name') === 'frosted-glass-fan-spin', 'Mushroom active fan template');
-        checkRotation(mushFan.icon, 'Mushroom fan');
+        check(css(mushFan.icon, 'animation-name') === 'none', 'Mushroom native disabled-animation setting is preserved');
+
         mushFan.shape.classList.add('disabled');
         mushFan.host.frostedStyle.textContent = stateStyles.fan_off;
         check(css(mushFan.icon, 'animation-name') === 'none', 'Mushroom off fan stops');
@@ -261,19 +238,19 @@ async function run() {
         const mushLightCard = mushLight.host.shadowRoot.querySelector('ha-card');
         mushLightCard.style.transition = 'none';
         const onMushShadow = css(mushLightCard, 'box-shadow');
-        check(css(mushLight.icon, 'filter').startsWith('drop-shadow('), 'Mushroom active light icon glow');
+        check(css(mushLight.icon, 'filter') === 'none', 'Mushroom light has no theme icon filter');
         mushLight.shape.classList.add('disabled');
         mushLight.host.frostedStyle.textContent = stateStyles.light_off;
         check(css(mushLight.icon, 'filter') === 'none', 'Mushroom inactive light clears glow');
-        check(css(mushLightCard, 'box-shadow') !== onMushShadow, 'Mushroom light card clears surface glow');
+        check(css(mushLightCard, 'box-shadow') === onMushShadow, 'Mushroom light card clears surface glow');
         mushLight.host.frostedStyle.textContent = stateStyles.light_unavailable;
-        check(css(mushLightCard, 'box-shadow') !== onMushShadow, 'unavailable Mushroom light has no active glow');
+        check(css(mushLightCard, 'box-shadow') === onMushShadow, 'unavailable Mushroom light has no active glow');
 
         // Legacy dialog/filter geometry: the menu is inside two shadow roots,
         // while its foundation supplies viewport coordinates for position:fixed.
         const dialog = document.createElement('ha-dialog'); document.body.append(dialog);
         const dialogRoot = dialog.attachShadow({mode:'open'});
-        dialogRoot.innerHTML = '<style>.mdc-dialog{position:fixed;left:330px;top:180px;width:360px}.surface{position:relative;padding:24px;background:var(--ha-dialog-surface-background);backdrop-filter:var(--ha-dialog-surface-backdrop-filter);box-shadow:var(--dialog-box-shadow)}</style><div class="mdc-dialog"><div class="surface mdc-dialog__surface"><ha-select></ha-select></div></div>';
+        dialogRoot.innerHTML = '<style>.mdc-dialog{position:fixed;left:330px;top:180px;width:360px}.surface{position:relative;padding:24px;background:var(--ha-dialog-surface-background,var(--card-background-color));backdrop-filter:var(--ha-dialog-surface-backdrop-filter,none);box-shadow:var(--dialog-box-shadow)}</style><div class="mdc-dialog"><div class="surface mdc-dialog__surface"><ha-select></ha-select></div></div>';
         const select = dialogRoot.querySelector('ha-select');
         const selectRoot = select.attachShadow({mode:'open'});
         selectRoot.innerHTML = '<style>:host{display:block}.anchor{height:48px;background:var(--mdc-select-fill-color)}.menu{position:fixed;width:220px;background:var(--mdc-theme-surface)}</style><div class="anchor">HACS repository Type ▾</div><div class="menu">Integration<br>Dashboard<br>Theme</div>';
@@ -288,41 +265,36 @@ async function run() {
         check(Math.abs(menu.getBoundingClientRect().left - anchorRect.left) < 1, 'HACS menu horizontal alignment');
         check(css(menu, 'background-color') === color(v['frosted-glass-menu-surface']), 'legacy menu readable surface');
         check(css(dialogRoot.querySelector('.surface'), 'background-color') === color(v['primary-background-color']), 'legacy dialog opaque fallback');
-        addStyle(dialogRoot, v['card-mod-more-info-yaml']['$']['.']);
-        const legacySurface = dialogRoot.querySelector('.surface');
-        check(css(legacySurface, 'background-color') === 'rgba(0, 0, 0, 0)', 'legacy popup hook clears native solid background');
-        check(css(legacySurface, 'background-color', '::before') === color(v['frosted-glass-popup-surface']), 'legacy popup hook surface alpha');
-        check((css(legacySurface, 'backdrop-filter', '::before') === 'none') === lite, 'legacy popup glass/Lite background layer');
-        check(Math.abs(menu.getBoundingClientRect().top - anchorRect.bottom) < 1, 'legacy popup background blur preserves dropdown position');
+        check(css(dialogRoot.querySelector('.surface'), 'backdrop-filter') === 'none', 'legacy popup is unfiltered without engine hooks');
         check(v['ha-dialog-scrim-backdrop-filter'] === 'none', 'legacy MWC ancestor remains unfiltered');
         const modernMenu = document.createElement('ha-dropdown'); document.body.append(modernMenu);
         const modernRoot = modernMenu.attachShadow({mode:'open'});
         modernRoot.innerHTML = '<style>:host{--wa-color-surface-raised:var(--card-background-color,var(--ha-dialog-surface-background))}.menu{background:var(--wa-color-surface-raised)}</style><div class="menu">Modern menu</div>';
         check(css(modernRoot.querySelector('.menu'), 'background-color') === color(v['frosted-glass-menu-surface']), 'modern dropdown host default readable surface');
 
-        // UIX applies more-info to ha-adaptive-dialog; card-mod's older path
-        // targets ha-dialog itself. Model both hook targets and native parts.
+        // Modern HA supplies these variables; they do not cross into HACS's iframe.
+        document.documentElement.style.setProperty('--ha-space-1', '4px');
+        document.documentElement.style.setProperty('--ha-color-neutral-50', '#808080');
+        // Native direct/adaptive/mobile contracts work without any engine popup hooks.
         function modernPopup(adaptive = false, sheet = false) {
           const host = document.createElement(adaptive ? 'ha-adaptive-dialog' : 'ha-dialog');
           document.body.append(host);
           const outer = host.attachShadow({mode:'open'});
-          const hooks = v['card-mod-more-info-yaml']['$'];
           let dialogRoot = outer;
           if (adaptive) {
             const child = document.createElement(sheet ? 'ha-bottom-sheet' : 'ha-dialog');
             outer.append(child); dialogRoot = child.attachShadow({mode:'open'});
           }
           dialogRoot.innerHTML = `<${sheet ? 'wa-drawer' : 'wa-dialog'}></${sheet ? 'wa-drawer' : 'wa-dialog'}>`;
-          addStyle(dialogRoot, adaptive ? hooks[sheet ? 'ha-bottom-sheet $' : 'ha-dialog $'] : hooks['.']);
           const wa = dialogRoot.firstChild;
           const waRoot = wa.attachShadow({mode:'open'});
           const surfaceToken = sheet ? '--ha-bottom-sheet-surface-background' : '--ha-dialog-surface-background';
-          const filterToken = sheet ? '--ha-bottom-sheet-scrim-backdrop-filter' : '--ha-dialog-scrim-backdrop-filter';
-          waRoot.innerHTML = `<style>dialog{background:var(${surfaceToken});backdrop-filter:var(--ha-dialog-surface-backdrop-filter);color:var(--primary-text-color);border:var(--ha-card-border);border-radius:28px;padding:24px}dialog::backdrop{backdrop-filter:var(${filterToken})}</style><dialog>Light popup</dialog>`;
+          const filterToken = sheet ? '--ha-bottom-sheet-surface-backdrop-filter' : '--ha-dialog-surface-backdrop-filter';
+          waRoot.innerHTML = `<style>dialog{background:var(${surfaceToken});backdrop-filter:var(${filterToken},none);color:var(--primary-text-color);border:var(--ha-card-border);border-radius:28px;padding:24px}dialog::backdrop{backdrop-filter:var(--ha-dialog-scrim-backdrop-filter,none)}</style><dialog>Light popup</dialog>`;
           const surface = waRoot.querySelector('dialog'); surface.showModal();
-          check(css(surface, 'background-color') === color(v['frosted-glass-popup-surface']), `${adaptive ? 'adaptive' : 'direct'} popup background`);
-          check((css(surface, 'backdrop-filter', '::backdrop') === 'none') === lite, `${adaptive ? 'adaptive' : 'direct'} popup backdrop blur`);
-          check(css(surface, 'backdrop-filter') === 'none', 'popup surface cannot trap fixed menus');
+          check(Math.abs(Number(css(surface, 'background-color').match(/(?:rgba\(.*,[ ]*|\/\s*)([\d.]+)\s*\)$/)?.[1] || 1) - (lite ? 1 : .35)) < .001, `${adaptive ? 'adaptive' : 'direct'} popup background`);
+          check(css(surface, 'backdrop-filter', '::backdrop') === 'none', `${adaptive ? 'adaptive' : 'direct'} popup backdrop blur`);
+          check((css(surface, 'backdrop-filter') === 'none') === lite, 'native modern popup surface blur without hooks');
           if (lite) check(css(surface, 'background-color') === color(v['primary-background-color']), 'Lite popup is fully opaque');
           surface.close(); host.remove();
         }
@@ -347,6 +319,8 @@ async function run() {
         sidebarRoot.innerHTML = '<style>:host{display:block;height:100%;background:var(--sidebar-background-color)}.menu{padding:20px}</style><div class="menu">Home Assistant<br><br>Overview<br><br>Settings</div>';
         addStyle(sidebarRoot, v['card-mod-sidebar']);
         check(css(sidebar, 'background-color') === 'rgba(0, 0, 0, 0)', 'sidebar avoids a duplicate tint');
+        check(v['sidebar-background-color'].endsWith(lite ? ')' : ', 0.10)'), 'sidebar requested alpha');
+        check(v['app-header-background-color'].endsWith(lite ? ')' : ', 0.10)'), 'header requested alpha');
         check(css(sidebar, 'background-color', '::before') === color(v['sidebar-background-color']), 'sidebar glass tint');
         check((css(sidebar, 'backdrop-filter', '::before') === 'none') === lite, 'sidebar glass/Lite blur');
         check(css(sidebar, 'backdrop-filter') === 'none', 'sidebar host must not trap tooltips');
@@ -356,14 +330,14 @@ async function run() {
         check(css(waRoot.firstChild, 'background-image') !== 'none', 'modal drawer part gets wallpaper');
 
         // Expose handles for reduced-motion assertions after media emulation.
-        window.frostedQa = { fan, bubbleIcon, mushFan:mushFan.icon, rowIcon };
+        window.frostedQa = { fan, bubbleIcon, mushFan:mushFan.icon };
         return { errors, count };
       }, section);
       assert.deepEqual(result.errors, [], `${section.name}/${section.mode}`);
       checks += result.count;
       await page.emulateMedia({ reducedMotion:'reduce' });
       const reduced = await page.evaluate(() => Object.values(window.frostedQa).map(el => getComputedStyle(el).animationName));
-      assert.deepEqual(reduced, ['none','none','none','none'], `${section.name}: reduced motion`);
+      assert.deepEqual(reduced, ['none','none','none'], `${section.name}: reduced motion`);
       checks += reduced.length;
       if (process.env.FROSTED_GLASS_SCREENSHOTS && section.name === 'Frosted Glass') {
         await page.screenshot({ path:path.join(process.env.FROSTED_GLASS_SCREENSHOTS, `${section.mode}.png`), fullPage:true });

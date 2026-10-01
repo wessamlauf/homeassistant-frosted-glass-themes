@@ -56,17 +56,27 @@ const mocks = {
   "src/data/icons.ts": `export const DEFAULT_DOMAIN_ICON='M12 2L16 9L22 12L16 15L12 22L8 15L2 12L8 9Z'; export const FALLBACK_DOMAIN_ICONS={fan:DEFAULT_DOMAIN_ICON,light:DEFAULT_DOMAIN_ICON}; export const entityIcon=async()=> 'mdi:fan';export const attributeIcon=async()=> 'mdi:fan';`,
   "src/data/context.ts": `import {createContext} from '@lit/context'; export const configContext=createContext('config');export const connectionContext=createContext('connection');export const entitiesContext=createContext('entities');export const formattersContext=createContext('formatters');export const internationalizationContext=createContext('internationalization');export const statesContext=createContext('states');`,
 };
+let modernDialogs = false;
 const plugin = {
   name: "ha-source",
   setup(build) {
-    build.onResolve({ filter: /^@home-assistant\/webawesome/ }, () => ({
-      path: "webawesome",
-      namespace: "mock",
-    }));
+    build.onResolve({ filter: /^@home-assistant\/webawesome/ }, (args) =>
+      modernDialogs
+        ? {
+            path: require.resolve(
+              args.path.endsWith(".js") ? args.path : args.path + ".js",
+              { paths: [path.dirname(dependencies)] },
+            ),
+          }
+        : {
+            path: "webawesome",
+            namespace: "mock",
+          },
+    );
     build.onLoad({ filter: /.*/, namespace: "mock" }, () => ({
       contents: "export {};",
     }));
-    build.onResolve({ filter: /^lit\// }, (args) =>
+    build.onResolve({ filter: /^(?:lit|@lit-labs\/observers)\// }, (args) =>
       args.path.endsWith(".js")
         ? undefined
         : {
@@ -163,14 +173,16 @@ const options = {
       {
         name: "mdc-services",
         setup(build) {
-          build.onResolve({ filter: /^lit\// }, (args) =>
-            args.path.endsWith(".js")
-              ? undefined
-              : {
-                  path: require.resolve(args.path + ".js", {
-                    paths: [path.dirname(dependencies)],
-                  }),
-                },
+          build.onResolve(
+            { filter: /^(?:lit|@lit-labs\/observers)\// },
+            (args) =>
+              args.path.endsWith(".js")
+                ? undefined
+                : {
+                    path: require.resolve(args.path + ".js", {
+                      paths: [path.dirname(dependencies)],
+                    }),
+                  },
           );
           build.onResolve(
             { filter: /make-dialog-manager|\/ha-icon-button$/ },
@@ -186,6 +198,20 @@ const options = {
     ],
     outfile: path.join(cwd, "qa-native-mdc.js"),
   });
+  if (process.env.FROSTED_GLASS_BUILD_MODERN_DIALOGS) {
+    // Actual HA + Web Awesome surfaces and floating dropdown placement. Only
+    // HA's icon registry/context services are fixtures, as in the card bundle.
+    modernDialogs = true;
+    await esbuild.build({
+      ...options,
+      stdin: {
+        contents: `import 'ha-source:src/components/ha-adaptive-dialog.ts';import 'ha-source:src/components/ha-dropdown.ts';import 'ha-source:src/components/ha-dropdown-item.ts';`,
+        resolveDir: cwd,
+      },
+      plugins: [plugin],
+      outfile: path.join(cwd, "qa-native-modern-dialogs.js"),
+    });
+  }
   console.log(
     "Built actual HA Tile/Heading/ha-card and Navbar components; HA actions, features, icon registry and editor services are mocked.",
   );

@@ -351,11 +351,6 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
           window.qaCards.fan.shadowRoot.append(fallback);
           window.qaFallback = fallback;
         });
-        await page.waitForFunction(() =>
-          window.qaFallback.shadowRoot
-            .querySelector("card-mod,uix-node")
-            ?.textContent.includes("frosted-glass-fan-spin"),
-        );
         await page.evaluate(() => {
           // Model the native style order used by builds that adopt their defaults.
           // Adopted sheets follow ordinary <style> nodes, even those added by an engine.
@@ -380,8 +375,8 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               window.qaCards[key].shadowRoot.querySelector("ha-card");
             const glow = css(card("light"), "box-shadow");
             check(
-              glow.includes("255, 165, 0"),
-              "native Tile automatic light glow: " + glow,
+              !glow.includes("255, 165, 0"),
+              "native Tile has no automatic light glow: " + glow,
             );
             check(
               css(card("manualLight"), "box-shadow") ===
@@ -438,41 +433,22 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
             );
             const icon =
               window.qaCards.fan.shadowRoot.querySelector("ha-state-icon");
-            const animation = icon
-              .getAnimations()
-              .find((a) => a.animationName === "frosted-glass-fan-spin");
-            check(Boolean(animation), "actual Tile fan has animation");
-            if (animation) {
-              animation.pause();
-              animation.currentTime = 0;
-              const start = css(icon, "transform");
-              animation.currentTime = 1000;
-              check(
-                css(icon, "transform") !== start,
-                "actual Tile fan rotates",
-              );
-              animation.play();
-            }
+            check(
+              css(icon, "animation-name") === "none",
+              "theme leaves active Tile fan still",
+            );
             const fallback =
               window.qaFallback.shadowRoot.querySelector(".container ha-icon");
-            const fallbackAnimation = fallback
-              .getAnimations()
-              .find((a) => a.animationName === "frosted-glass-fan-spin");
             check(
-              Boolean(fallbackAnimation),
-              "actual Tile internal fallback fan has animation",
+              css(fallback, "animation-name") === "none",
+              "theme leaves fallback icon still",
             );
-            if (fallbackAnimation) {
-              fallbackAnimation.pause();
-              fallbackAnimation.currentTime = 0;
-              const start = css(fallback, "transform");
-              fallbackAnimation.currentTime = 1000;
-              check(
-                css(fallback, "transform") !== start,
-                "actual Tile internal fallback rotates",
-              );
-              fallbackAnimation.play();
-            }
+            check(
+              window.qaSubscriptions
+                .filter((s) => s.message.type === "render_template")
+                .every((s) => !s.message.template.includes("{% set")),
+              "only user-provided CSS uses backend templates",
+            );
             return { count, failures };
           },
           { lite: section.name.includes("Lite") },
@@ -522,25 +498,8 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               '<style>:host{display:block}.anchor{width:200px;height:36px;background:var(--mdc-select-fill-color)}.menu{position:fixed;width:200px;height:90px;background:var(--frosted-glass-menu-surface)}</style><div class="anchor">Repository Type</div><div class="menu">Integration<br>Dashboard<br>Theme</div>';
             document.body.append(dialog);
             await dialog.updateComplete;
-            const api = customElements.get(
-              engine === "card-mod" ? "card-mod" : "uix-node",
-            ).applyToElement;
-            await api(
-              dialog,
-              "more-info",
-              undefined,
-              { config: { entityId: "light.lsc_moodlight" } },
-              false,
-            );
             window.qaDialog = dialog;
           }, engine);
-          await page.waitForFunction(() =>
-            [
-              ...window.qaDialog.shadowRoot.querySelectorAll(
-                "card-mod,uix-node",
-              ),
-            ].some((m) => m.textContent.includes(".mdc-dialog__surface")),
-          );
           await page.waitForTimeout(350);
           const popup = await page.evaluate((lite) => {
             const failures = [];
@@ -555,26 +514,20 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
             const css = (p, pseudo) =>
               getComputedStyle(surface, pseudo).getPropertyValue(p).trim();
             check(
-              css("background-color") === "rgba(0, 0, 0, 0)",
-              "native MWC surface is transparent",
+              css("background-color") ===
+                getComputedStyle(document.documentElement)
+                  .getPropertyValue("--primary-background-color")
+                  .trim(),
+              "native HACS MWC fallback is opaque without hooks",
             );
             check(
               css("backdrop-filter") === "none",
               "native MWC surface remains unfiltered",
             );
             check(
-              (css("backdrop-filter", "::before") === "none") === lite,
-              "native MWC glass/Lite layer",
+              css("backdrop-filter", "::before") === "none",
+              "native legacy MWC has no blur layer",
             );
-            const probe = document.createElement("div");
-            probe.style.backgroundColor = "var(--frosted-glass-popup-surface)";
-            document.body.append(probe);
-            check(
-              css("background-color", "::before") ===
-                getComputedStyle(probe).backgroundColor,
-              "native MWC popup surface alpha",
-            );
-            probe.remove();
             const root = window.qaDialog.querySelector("ha-select").shadowRoot;
             const anchor = root.querySelector(".anchor");
             const menu = root.querySelector(".menu");
@@ -661,10 +614,19 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
                 window.qaCards.light.shadowRoot.querySelector("ha-card"),
               ).boxShadow.includes("255, 165, 0"),
           ),
-          "Tile glow turns off",
+          "theme has no automatic light glow",
         );
         checks++;
-        await page.emulateMedia({ reducedMotion: "reduce" });
+        assert(
+          await page.evaluate(
+            () =>
+              !getComputedStyle(
+                window.qaCards.manualLight.shadowRoot.querySelector("ha-card"),
+              ).boxShadow.includes("255, 165, 0"),
+          ),
+          "manual Jinja glow clears when off",
+        );
+        checks++;
         await page.close();
       }
   } finally {

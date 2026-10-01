@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 THEMES_DIR = ROOT / "themes"
 MODE_NAMES = {"light", "dark"}
 EXPECTED_VERSION = "1.5.0"
-EXPECTED_RELEASE_DATE = "2026-09-30"
+EXPECTED_RELEASE_DATE = "2026-10-01"
 
 REQUIRED_COMPATIBILITY_KEYS = {
     "bubble-main-background-color",
@@ -34,13 +34,9 @@ REQUIRED_COMPATIBILITY_KEYS = {
     "ha-card-glass-inset-shadow",
     "card-mod-sidebar",
     "card-mod-drawer",
-    "card-mod-row-yaml",
-    "card-mod-glance-yaml",
-    "card-mod-card-yaml",
+    "card-mod-card",
     "card-mod-root",
     "card-mod-badge",
-    "card-mod-more-info-yaml",
-    "card-mod-dialog-yaml",
     "frosted-glass-badge-shadow",
 }
 
@@ -232,16 +228,26 @@ def _validate_compatibility(path: Path, name: str, values: dict) -> list[str]:
         except yaml.YAMLError:
             # Reported with its location by _validate_style.
             continue
-        card_css = styling.get(".") if isinstance(styling, dict) else None
+        card_css = section.get("card-mod-card") or (
+            styling.get(".") if isinstance(styling, dict) else None
+        )
         root_css = section.get("card-mod-root")
         if not isinstance(card_css, str) or not isinstance(root_css, str):
             continue
 
-        if section.get("ha-dialog-surface-backdrop-filter") != "none":
-            errors.append(
-                f"{path.name}: {name} must keep dialog backdrop-filter disabled "
-                "for fixed-position legacy dropdowns"
-            )
+        if any(
+            token in card_css
+            for token in ("{{", "{%", "frosted-glass-fan-spin", "frosted-glass-light-glow")
+        ):
+            errors.append(f"{path.name}: {name} must not contain theme state effects or templates")
+        if "Lite" not in name:
+            if "var(--ha-space-1)" not in section.get("ha-dialog-surface-backdrop-filter", ""):
+                errors.append(f"{path.name}: {name} modern popup blur must be gated for legacy HACS")
+            if "var(--ha-color-neutral-50)" not in section.get("ha-dialog-surface-background", ""):
+                errors.append(f"{path.name}: {name} modern popup tint must be gated for legacy HACS")
+            for key in ("app-header-background-color", "sidebar-background-color"):
+                if not section[key].endswith(", 0.10)"):
+                    errors.append(f"{path.name}: {name} Full {key} must use alpha 0.1")
         if section.get("ha-dialog-scrim-backdrop-filter") != "none":
             errors.append(f"{path.name}: {name} must not filter the legacy dialog ancestor")
         for key in (
@@ -261,9 +267,18 @@ def _validate_compatibility(path: Path, name: str, values: dict) -> list[str]:
             )
 
         if "Lite" in name:
-            for key in ("ha-card-backdrop-filter", "sidebar-backdrop-filter", "navbar-backdrop-filter"):
+            for key in (
+                "ha-card-backdrop-filter", "sidebar-backdrop-filter", "navbar-backdrop-filter",
+                "app-header-backdrop-filter", "ha-dialog-surface-backdrop-filter",
+            ):
                 if section.get(key) != "none":
                     errors.append(f"{path.name}: {name} Lite {key} must be none")
+            for key in (
+                "app-header-background-color", "sidebar-background-color",
+                "ha-dialog-surface-background",
+            ):
+                if section[key] != section["primary-background-color"]:
+                    errors.append(f"{path.name}: {name} Lite {key} must be opaque")
             if section.get("frosted-glass-popup-backdrop-filter") != "none":
                 errors.append(f"{path.name}: {name} Lite popup blur must be none")
             if section.get("frosted-glass-popup-surface") != section.get("primary-background-color"):
