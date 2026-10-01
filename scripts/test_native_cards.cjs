@@ -279,7 +279,7 @@ print(json.dumps(result))
             "native Bubble surface transparent",
           );
           check(
-            css(bubbleFan.surface, "box-shadow").includes("inset"),
+            css(bubbleFan.surface, "box-shadow", v["ha-card-backdrop-filter"] === "none" ? undefined : "::before").includes("inset"),
             "native Bubble corner highlights",
           );
           hass.states["fan.qa"] = state("fan", false);

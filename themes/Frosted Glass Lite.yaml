@@ -11,16 +11,16 @@ Frosted Glass Lite:
       # HEADER (Top Bar)
       # =========================
       app-header-backdrop-filter: 'none'
-      app-header-background-color: 'rgb(254, 244, 242)'
+      app-header-background-color: 'transparent'
       app-header-text-color: 'rgba(19, 21, 54, 0.95)'
-      app-header-edit-background-color: 'rgb(254, 244, 242)'
+      app-header-edit-background-color: 'var(--app-header-background-color)'
       app-header-edit-text-color: 'rgba(19, 21, 54, 0.98)'
       app-theme-color: 'rgb(91, 138, 168)'                                                                   # 1.2 Glass – header theme color hint for browsers
 
       # =========================
       # SIDEBAR / DRAWER
       # =========================
-      sidebar-background-color: 'rgb(254, 244, 242)'
+      sidebar-background-color: 'transparent'
       sidebar-backdrop-filter: 'none'
       sidebar-border-color: 'rgba(255, 255, 255, 0.42)'
       sidebar-icon-color: 'rgba(19, 21, 54, 0.6)'
@@ -235,7 +235,7 @@ Frosted Glass Lite:
       ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.30) inset, 0 0 8px 1px rgba(255, 255, 255, 0.10) inset, 0 0 2px 0 rgba(0, 0, 0, 0.10)'
       frosted-glass-menu-surface: 'rgb(254, 244, 242)'
       frosted-glass-control-surface: 'rgba(254, 244, 242, 0.48)'
-      frosted-glass-badge-shadow: '0 3px 10px rgba(21, 25, 45, 0.10)'
+      frosted-glass-badge-shadow: 'var(--ha-card-glass-inset-shadow), 0 3px 10px rgba(21, 25, 45, 0.10)'
       ha-card-backdrop-filter: 'none'
       frosted-glass-slider-button-off: 'var(--btn-bg-color-off)'
       frosted-glass-slider-button-on: 'var(--btn-bg-color-on)'
@@ -245,10 +245,6 @@ Frosted Glass Lite:
         ha-badge,
         .badge {
           --ha-card-box-shadow: var(--frosted-glass-badge-shadow);
-        }
-        ha-badge {
-          backdrop-filter: var(--ha-card-backdrop-filter, none);
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, none);
         }
 
       card-mod-sidebar: |
@@ -640,16 +636,16 @@ Frosted Glass Lite:
       # HEADER (Top Bar)
       # =========================
       app-header-backdrop-filter: 'none'
-      app-header-background-color: 'rgb(2, 6, 11)'
+      app-header-background-color: 'transparent'
       app-header-text-color: 'rgba(240, 243, 255, 0.95)'
-      app-header-edit-background-color: 'rgb(2, 6, 11)'
+      app-header-edit-background-color: 'var(--app-header-background-color)'
       app-header-edit-text-color: 'rgba(234, 235, 238, 0.98)'
       app-theme-color: 'rgb(2, 6, 11)'                                                      # 1.2 Glass – header theme color hint for browsers
 
       # =========================
       # SIDEBAR / DRAWER
       # =========================
-      sidebar-background-color: 'rgb(2, 6, 11)'
+      sidebar-background-color: 'transparent'
       sidebar-backdrop-filter: 'none'
       sidebar-border-color: 'rgba(255, 255, 255, 0.12)'
       sidebar-icon-color: 'rgba(234, 235, 238, 0.6)'
@@ -864,7 +860,7 @@ Frosted Glass Lite:
       ha-card-glass-inset-shadow: '3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.30) inset, -2px -2px 0.5px -2px rgba(255, 255, 255, 0.20) inset, 0 0 8px 1px rgba(255, 255, 255, 0.06) inset, 0 0 2px 0 rgba(0, 0, 0, 0.18)'
       frosted-glass-menu-surface: 'rgb(2, 6, 11)'
       frosted-glass-control-surface: 'rgba(2, 6, 11, 0.48)'
-      frosted-glass-badge-shadow: '0 3px 10px rgba(0, 0, 0, 0.22)'
+      frosted-glass-badge-shadow: 'var(--ha-card-glass-inset-shadow), 0 3px 10px rgba(0, 0, 0, 0.22)'
       ha-card-backdrop-filter: 'none'
       frosted-glass-slider-button-off: 'var(--btn-bg-color-off)'
       frosted-glass-slider-button-on: 'var(--btn-bg-color-on)'
@@ -874,10 +870,6 @@ Frosted Glass Lite:
         ha-badge,
         .badge {
           --ha-card-box-shadow: var(--frosted-glass-badge-shadow);
-        }
-        ha-badge {
-          backdrop-filter: var(--ha-card-backdrop-filter, none);
-          -webkit-backdrop-filter: var(--ha-card-backdrop-filter, none);
         }
 
       card-mod-sidebar: |

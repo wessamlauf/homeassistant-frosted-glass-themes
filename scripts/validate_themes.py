@@ -273,12 +273,11 @@ def _validate_compatibility(path: Path, name: str, values: dict) -> list[str]:
             ):
                 if section.get(key) != "none":
                     errors.append(f"{path.name}: {name} Lite {key} must be none")
-            for key in (
-                "app-header-background-color", "sidebar-background-color",
-                "ha-dialog-surface-background",
-            ):
-                if section[key] != section["primary-background-color"]:
-                    errors.append(f"{path.name}: {name} Lite {key} must be opaque")
+            for key in ("app-header-background-color", "sidebar-background-color"):
+                if section[key] != "transparent":
+                    errors.append(f"{path.name}: {name} Lite {key} must be transparent")
+            if section["ha-dialog-surface-background"] != section["primary-background-color"]:
+                errors.append(f"{path.name}: {name} Lite dialog surface must be opaque")
             if section.get("frosted-glass-popup-backdrop-filter") != "none":
                 errors.append(f"{path.name}: {name} Lite popup blur must be none")
             if section.get("frosted-glass-popup-surface") != section.get("primary-background-color"):

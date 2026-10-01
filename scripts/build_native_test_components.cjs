@@ -133,7 +133,7 @@ const options = {
   await esbuild.build({
     ...options,
     stdin: {
-      contents: `import 'ha-source:src/panels/lovelace/cards/hui-tile-card.ts';import 'ha-source:src/panels/lovelace/cards/hui-heading-card.ts';import {load} from 'js-yaml';window.qaParseYaml=load;`,
+      contents: `import 'ha-source:src/panels/lovelace/cards/hui-tile-card.ts';import 'ha-source:src/panels/lovelace/cards/hui-heading-card.ts';import 'ha-source:src/panels/lovelace/badges/hui-entity-badge.ts';import {load} from 'js-yaml';window.qaParseYaml=load;`,
       resolveDir: cwd,
     },
     plugins: [plugin],

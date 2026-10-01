@@ -111,7 +111,7 @@ async function run() {
         const fan = button.shadowRoot.querySelector('ha-state-icon');
         check(css(normal, 'background-color', '::before') === color(v['ha-card-glass-tint']), 'standard card tint');
         check(css(normal, 'background-color') === 'rgba(0, 0, 0, 0)', 'standard card has no opaque base');
-        check(css(normal, 'box-shadow').includes('inset'), 'standard card keeps original corner highlights on its visible surface');
+        check(css(normal, 'box-shadow', lite ? undefined : '::before').includes('inset'), 'standard card keeps corner highlights on its rendered layer');
         check(css(normal, 'backdrop-filter') === 'none', 'standard card must not trap fixed menus');
         check((css(normal, 'backdrop-filter', '::before') === 'none') === lite, 'standard glass/Lite filter');
         check(css(fan, 'animation-name') === 'none', 'theme does not animate an active fan');
@@ -143,7 +143,7 @@ async function run() {
         check(css(bubbleCard, 'content', '::before') === 'none', 'Bubble outer layer disabled');
         check(css(bubbleCard, 'border-top-style') === 'none', 'Bubble outer border disabled');
         check(css(bubbleSurface, 'background-color') === color(v['ha-card-glass-tint']), 'Bubble native tint');
-        check(css(bubbleSurface, 'box-shadow').includes('inset'), 'Bubble has original glass highlights on its visible surface');
+        check(css(bubbleSurface, 'box-shadow', lite ? undefined : '::before').includes('inset'), 'Bubble has glass highlights on its rendered layer');
         check(css(bubbleSurface, 'backdrop-filter') === 'none', 'Bubble surface must not trap fixed menus');
         check((css(bubbleSurface, 'backdrop-filter', '::before') === 'none') === lite, 'Bubble glass/Lite filter');
         check(css(bubbleIcon, 'animation-name') === 'none', 'Bubble fan on animation');
@@ -222,10 +222,12 @@ async function run() {
         addStyle(badgeRoot, v['card-mod-badge']);
         const badge = badgeRoot.querySelector('ha-badge');
         const badgeContent = badge.attachShadow({mode:'open'});
-        badgeContent.innerHTML = '<style>.badge{box-shadow:var(--ha-card-box-shadow);background:var(--ha-card-background);padding:8px;border-radius:18px}</style><div class="badge">Entity badge</div>';
-        check(css(badge, '--ha-card-box-shadow') === v['frosted-glass-badge-shadow'], 'native badge gets restrained shadow');
-        check(css(badgeRoot.querySelector('.badge'), '--ha-card-box-shadow') === v['frosted-glass-badge-shadow'], 'Mushroom badge gets same shadow');
-        check((css(badge, 'backdrop-filter') === 'none') === lite, 'native badge glass/Lite filter');
+        badgeContent.innerHTML = '<style>.badge{box-shadow:var(--ha-card-box-shadow);background:var(--ha-card-background);backdrop-filter:var(--ha-card-backdrop-filter);padding:8px;border-radius:18px}</style><div class="badge">Entity badge</div>';
+        check(css(badge, '--ha-card-box-shadow') === css(badge, '--frosted-glass-badge-shadow'), 'native badge gets glass and restrained depth shadow');
+        check(css(badgeRoot.querySelector('.badge'), '--ha-card-box-shadow') === css(badge, '--frosted-glass-badge-shadow'), 'Mushroom badge gets same shadow');
+        check(css(badge, 'backdrop-filter') === 'none', 'native badge has no duplicate host filter');
+        check((css(badgeContent.querySelector('.badge'), 'backdrop-filter') === 'none') === lite, 'native badge surface glass/Lite filter');
+        check(css(badgeContent.querySelector('.badge'), 'box-shadow').includes('inset'), 'native badge profile includes glass highlights');
 
         // Native Mushroom stateObj/disabled properties are not DOM attributes.
         // The theme must leave native animation settings and manual CSS in control.
@@ -314,8 +316,9 @@ async function run() {
         const settingsRoot = settings.attachShadow({mode:'open'});
         settingsRoot.innerHTML = '<style>:host{background:var(--primary-background-color);display:block}.toolbar{background:var(--app-header-background-color)}</style><div class="toolbar">Settings</div>';
         const channelPrefix = value => color(value).match(/^[^(]+\((\d+), (\d+), (\d+)/).slice(1).join(',');
-        check(channelPrefix(v['primary-background-color']) === channelPrefix(v['sidebar-background-color']), 'Settings and sidebar share their mode palette');
-        check(channelPrefix(v['primary-background-color']) === channelPrefix(v['app-header-background-color']), 'Settings and topbar share their mode palette');
+        check(lite ? color(v['sidebar-background-color']) === 'rgba(0, 0, 0, 0)' : channelPrefix(v['primary-background-color']) === channelPrefix(v['sidebar-background-color']), 'sidebar is Lite transparent / Full mode palette');
+        check(lite ? color(v['app-header-background-color']) === 'rgba(0, 0, 0, 0)' : channelPrefix(v['primary-background-color']) === channelPrefix(v['app-header-background-color']), 'topbar is Lite transparent / Full mode palette');
+        check(css(settingsRoot.querySelector('.toolbar'), 'background-color') === color(v['app-header-background-color']), 'rendered toolbar matches the requested alpha');
         check(css(settings, 'background-color') === color(v['primary-background-color']), 'Settings background token reaches host');
 
         // Dedicated engine sidebar/drawer hooks, rather than unreachable hui-root
@@ -329,8 +332,8 @@ async function run() {
         sidebarRoot.innerHTML = '<style>:host{display:block;height:100%;background:var(--sidebar-background-color)}.menu{padding:20px}</style><div class="menu">Home Assistant<br><br>Overview<br><br>Settings</div>';
         addStyle(sidebarRoot, v['card-mod-sidebar']);
         check(css(sidebar, 'background-color') === 'rgba(0, 0, 0, 0)', 'sidebar avoids a duplicate tint');
-        check(v['sidebar-background-color'].endsWith(lite ? ')' : ', 0.10)'), 'sidebar requested alpha');
-        check(v['app-header-background-color'].endsWith(lite ? ')' : ', 0.10)'), 'header requested alpha');
+        check(lite ? v['sidebar-background-color'] === 'transparent' : v['sidebar-background-color'].endsWith(', 0.10)'), 'sidebar requested alpha');
+        check(lite ? v['app-header-background-color'] === 'transparent' : v['app-header-background-color'].endsWith(', 0.10)'), 'header requested alpha');
         check(css(sidebar, 'background-color', '::before') === color(v['sidebar-background-color']), 'sidebar glass tint');
         check((css(sidebar, 'backdrop-filter', '::before') === 'none') === lite, 'sidebar glass/Lite blur');
         check(css(sidebar, 'backdrop-filter') === 'none', 'sidebar host must not trap tooltips');

@@ -2,7 +2,7 @@
   "name": "frosted-glass-theme-checks",
   "private": true,
   "scripts": {
-    "test": "node scripts/test_theme_rendering.cjs"
+    "test": "node scripts/test_theme_rendering.cjs && node scripts/test_glass_pixels.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

@@ -1,5 +1,5 @@
 /* Integration checks with unmodified card-mod/UIX bundles and the audited HA
- * Tile/Heading/ha-card and Navbar sources. HA backend/actions/icon registry and
+ * Tile/Heading/Entity Badge/ha-card and Navbar sources. HA backend/actions/icon registry and
  * feature services are fixtures; this is not a live Home Assistant session. */
 const assert = require("node:assert/strict");
 const { execFileSync } = require("node:child_process");
@@ -190,6 +190,12 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               }
             },
           );
+          customElements.define(
+            "hui-badge",
+            class extends HTMLElement {
+              _loadElement() { this.append(this._element); }
+            },
+          );
           window.qaGrid = document.createElement("div");
           window.qaGrid.style.cssText =
             "display:grid;grid-template-columns:repeat(2,400px);gap:24px;padding:32px";
@@ -231,11 +237,11 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               "light.lsc_moodlight": state("light.lsc_moodlight", "on"),
             };
             window.qaCards = {};
-            const add = (key, tag, config) => {
+            const add = (key, tag, config, wrapperTag = "hui-card") => {
               const card = document.createElement(tag);
               card.setConfig(config);
               card.hass = window.qaHass;
-              const wrapper = document.createElement("hui-card");
+              const wrapper = document.createElement(wrapperTag);
               wrapper.config = config;
               wrapper._element = card;
               window.qaGrid.append(wrapper);
@@ -257,6 +263,9 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               vertical: false,
               name: "Moodlight",
             });
+            add("badge", "hui-entity-badge", {
+              type: "entity", entity: "light.lsc_moodlight",
+            }, "hui-badge");
             add("manualLight", "hui-tile-card", {
               type: "tile",
               entity: "light.lsc_moodlight",
@@ -327,7 +336,7 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
                           type: cm.type,
                         })),
                         css: getComputedStyle(
-                          c.shadowRoot.querySelector("ha-card"),
+                          c.shadowRoot.querySelector("ha-card,ha-badge"),
                         ).boxShadow,
                       },
                     ]),
@@ -428,9 +437,14 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               "Navbar native styles public variable is preserved",
             );
             check(
-              css(card("light"), "box-shadow").includes("inset"),
-              "corner highlights on card surface",
+              css(card("light"), "box-shadow", lite ? undefined : "::before").includes("inset"),
+              "corner highlights on the rendered card layer",
             );
+            const badge = window.qaCards.badge.shadowRoot.querySelector("ha-badge");
+            const badgeSurface = badge.shadowRoot.querySelector(".badge");
+            check(css(badgeSurface, "box-shadow").includes("inset"), "native badge glass reflections survive the engine hook");
+            check(css(badge, "backdrop-filter") === "none", "badge host avoids a duplicate blur");
+            check((css(badgeSurface, "backdrop-filter") === "none") === lite, "native badge surface owns Full blur / Lite none");
             const icon =
               window.qaCards.fan.shadowRoot.querySelector("ha-state-icon");
             check(
