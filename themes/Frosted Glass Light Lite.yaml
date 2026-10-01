@@ -49,9 +49,10 @@ Frosted Glass Light Lite:
   bubble-box-shadow: 'var(--ha-card-box-shadow)'
   bubble-border: '0.5px solid rgba(255, 255, 255, 0.48)'
   bubble-pop-up-border-radius: '28px'
-  bubble-pop-up-main-background-color: 'rgb(254, 244, 242)'
-  bubble-pop-up-background-color: 'rgb(254, 244, 242)'
+  bubble-pop-up-main-background-color: 'var(--frosted-glass-popup-surface)'
+  bubble-pop-up-background-color: 'var(--frosted-glass-popup-surface)'
   bubble-backdrop-background-color: 'rgba(10, 12, 24, 0.36)'
+  bubble-backdrop-filter: 'none'
   bubble-select-list-border-radius: '14px'
   bubble-select-list-background-color: 'var(--frosted-glass-menu-surface)'
   bubble-select-list-item-accent-color: 'rgba(106, 116, 211, 0.20)'
@@ -153,6 +154,12 @@ Frosted Glass Light Lite:
       inset: 0;
       pointer-events: none;
       border-radius: inherit;
+    }
+
+    /* Lite also disables Bubble's own inline popup blur defaults. */
+    :host(bubble-card) .bubble-pop-up,
+    :host(.type-custom-bubble-card) .bubble-pop-up {
+      --custom-popup-filter: none !important;
     }
 
     /* Transparent Hue surfaces need the theme's matching foreground. */

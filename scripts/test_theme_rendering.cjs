@@ -160,6 +160,16 @@ async function run() {
         bubbleLight.shadowRoot.querySelector('ha-card').className = 'is-off';
         check(css(bubbleLightSurface, 'box-shadow') === onBubbleShadow, 'Bubble light has no theme state shadow');
 
+        // Bubble paints its popup separately and writes a native inline blur.
+        const bubblePopup = document.createElement('div');
+        bubblePopup.className = 'bubble-pop-up';
+        bubblePopup.style.setProperty('--custom-popup-filter', 'blur(10px)');
+        bubblePopup.innerHTML = '<div class="bubble-pop-up-background"></div>';
+        bubble.shadowRoot.append(bubblePopup);
+        addStyle(bubble.shadowRoot, '.bubble-pop-up{backdrop-filter:var(--custom-popup-filter)}.bubble-pop-up-background{background:var(--bubble-pop-up-main-background-color,var(--bubble-pop-up-background-color))}');
+        check(css(bubblePopup.firstElementChild, 'background-color') === color(v['frosted-glass-popup-surface']), 'Bubble popup uses the Full translucent / Lite opaque surface');
+        check((css(bubblePopup, 'backdrop-filter') === 'none') === lite, 'Bubble native popup blur obeys Full/Lite');
+
         const navbarNative = ':host{--navbar-background-color:var(--card-background-color);--navbar-border-radius:var(--ha-card-border-radius,12px);--navbar-primary-color:var(--primary-color);--navbar-box-shadow:0 -1px 4px #0002;--navbar-box-shadow-mobile-floating:var(--material-shadow-elevation-2dp)}ha-card{background:var(--navbar-background-color)}.navbar{position:fixed;bottom:18px;left:260px;right:24px}.navbar-card{display:flex;gap:30px;min-height:60px}.navbar-card.mobile.floating{box-shadow:var(--navbar-box-shadow-mobile-floating)!important;border-radius:var(--navbar-border-radius)!important}.navbar-popup{position:fixed;top:110px;left:310px;z-index:901}.popup-item .button{background:var(--navbar-background-color)}';
         const navbar = card('navbar-card', '<div class="navbar"><ha-card class="navbar-card mobile floating">Home　　Lights　　Climate</ha-card><ha-card class="media-player">Media player</ha-card></div><div class="navbar-popup"><div class="popup-item"><div class="button">Popup</div></div></div>', navbarNative);
         const navCard = navbar.shadowRoot.querySelector('.navbar-card');

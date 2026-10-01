@@ -362,6 +362,84 @@ print(json.dumps(result))
             "Bubble inner surface accepts normal manual border",
           );
           manual.remove();
+          // The real standalone popup is a sibling of ha-card. Its own native
+          // background and inline blur defaults must obey the Full/Lite split.
+          const lite = v["frosted-glass-popup-backdrop-filter"] === "none";
+          const popupCard = document.createElement("bubble-card");
+          const popupConfig = {
+            type: "custom:bubble-card",
+            card_type: "pop-up",
+            hash: "#qa-popup",
+            name: "Native Bubble popup",
+            icon: "mdi:lightbulb",
+            cards: [],
+            background_update: true,
+          };
+          popupCard.setConfig(popupConfig);
+          document.body.append(popupCard);
+          popupCard.hass = { ...hass };
+          const popupStyle = document.createElement("style");
+          popupStyle.textContent = styles.light_on;
+          popupCard.shadowRoot.append(popupStyle);
+          location.hash = "qa-popup";
+          const popupBackground = () =>
+            popupCard.shadowRoot.querySelector(".bubble-pop-up-background");
+          for (let i = 0; i < 90; i++) {
+            if (
+              popupBackground() &&
+              popupCard.shadowRoot
+                .querySelector(".bubble-pop-up")
+                ?.classList.contains("is-popup-opened")
+            )
+              break;
+            await new Promise((r) => requestAnimationFrame(r));
+          }
+          const popup = popupCard.shadowRoot.querySelector(".bubble-pop-up");
+          check(!!popupBackground(), "native standalone Bubble popup renders");
+          const popupTint = css(popupBackground(), "background-color");
+          check(
+            lite
+              ? popupTint === v["primary-background-color"]
+              : popupTint.endsWith(", 0.35)"),
+            "native Bubble popup has requested alpha: " + popupTint,
+          );
+          check(
+            (css(popup, "backdrop-filter") === "none") === lite,
+            "native Bubble popup has Full blur / Lite none: " +
+              css(popup, "backdrop-filter"),
+          );
+          check(
+            popup.parentElement?.tagName !== "HA-CARD",
+            "Bubble popup remains outside the card blur layer",
+          );
+          popupCard.remove();
+          const backdropCard = document.createElement("bubble-card");
+          backdropCard.setConfig({
+            ...popupConfig,
+            hash: "#qa-backdrop",
+            backdrop_blur: 20,
+          });
+          document.body.append(backdropCard);
+          backdropCard.hass = { ...hass };
+          backdropCard.shadowRoot.append(popupStyle.cloneNode(true));
+          location.hash = "qa-backdrop";
+          const backdrop = () =>
+            document.querySelector(".bubble-backdrop-host")?.shadowRoot
+              .querySelector(".bubble-backdrop");
+          for (let i = 0; i < 90; i++) {
+            if (backdrop()?.style.getPropertyValue("--custom-backdrop-filter"))
+              break;
+            await new Promise((r) => requestAnimationFrame(r));
+          }
+          check(
+            css(backdrop(), "backdrop-filter") === (lite ? "none" : "blur(20px)"),
+            "Lite suppresses native configured Bubble backdrop blur; Full honors it: " +
+              JSON.stringify({
+                actual: css(backdrop(), "backdrop-filter"),
+                inline: backdrop().getAttribute("style"),
+              }),
+          );
+          backdropCard.remove();
           window.qaFan = fan;
           hass.states["fan.qa"] = state("fan", true);
           fan.e.hass = { ...hass };

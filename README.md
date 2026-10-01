@@ -107,7 +107,7 @@ The sidebar has a dedicated theme-engine hook. Its wallpaper and tint match the 
 
 Full modern dialogs use Home Assistant's native surface variables directly, including adaptive desktop dialogs and mobile bottom sheets. Their surface has 35% opacity and `blur(18px) saturate(1.2)`, without waiting for an engine to traverse popup shadow roots. Lite dialogs remain fully opaque with no blur.
 
-The native popup approach was informed by [Nezz's Liquid Glass theme](https://github.com/Nezz/homeassistant-visionos-theme). Modern-only HA variables gate both tint and blur: HACS's legacy iframe lacks those variables and falls back to an opaque, unfiltered dialog. Its fixed-position dropdowns remain aligned. The scrim never blurs the legacy dialog ancestor. Modern menus also retain an opaque, readable surface. Bubble's own popup blur remains controlled by its card configuration.
+The native popup approach was informed by [Nezz's Liquid Glass theme](https://github.com/Nezz/homeassistant-visionos-theme). Modern-only HA variables gate both tint and blur: HACS's legacy iframe lacks those variables and falls back to an opaque, unfiltered dialog. Its fixed-position dropdowns remain aligned. The scrim never blurs the legacy dialog ancestor. Modern menus also retain an opaque, readable surface. Bubble popups inherit the same Full translucent / Lite opaque surface. Full retains Bubble's native blur configuration; Lite also disables its native popup and backdrop blur.
 
 Settings, sidebar and topbar share the warm light palette (`254, 244, 242`) or the nearly black blue dark base (`2, 6, 11`, `#02060B`). Dark controls, menus, editor surfaces and tonal accents use the matching cool blue/slate palette.
 
