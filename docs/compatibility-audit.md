@@ -1,4 +1,4 @@
-# Frosted Glass 1.5.0 compatibility audit
+# Frosted Glass 1.4.0 compatibility audit
 
 Reviewed on 2026-10-01. The audit covers the custom cards identified in this repository's reports, plus Home Assistant, the legacy frontend used by HACS, and both styling engines. It does not claim compatibility with every HACS card.
 
