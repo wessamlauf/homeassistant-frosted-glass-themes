@@ -15,7 +15,7 @@ from yaml.resolver import BaseResolver
 ROOT = Path(__file__).resolve().parents[1]
 THEMES_DIR = ROOT / "themes"
 MODE_NAMES = {"light", "dark"}
-EXPECTED_VERSION = "1.5.0"
+EXPECTED_VERSION = "1.4.0"
 EXPECTED_RELEASE_DATE = "2026-10-01"
 
 REQUIRED_COMPATIBILITY_KEYS = {
