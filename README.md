@@ -8,12 +8,17 @@
 
 <img alt="Frosted Glass logo" src="https://github.com/user-attachments/assets/f1fd71d5-f5bb-451e-862c-cc668d987f66" />
 
+### Apple made it liquid. I made it frosted. 😎
 
+**Frosted Glass** is a **Liquid Glass theme for Home Assistant**, built around transparent cards, soft blur, subtle reflections, and a little more depth for your dashboard.
+
+Choose **Light or Dark**, or go **Lite** for the same glassmorphism style without blur. With native **Bubble Card** and **Navbar Card** support, matching dialogs, and easy installation through **HACS**, the glass look follows you across Home Assistant.
 
 ### Bring depth and elegance to your dashboard with blurred glass panels and soft UI touches. ☀️
 
 
 This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboard, combining transparency with elegant blurring effects to create a truly unique and contemporary look. Designed for both visual appeal and comfortable usability, the Frosted Glass Theme transforms your Home Assistant interface into a work of art. 🖼️
+
 
 ## ✨ Features
 
