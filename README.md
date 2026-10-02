@@ -25,7 +25,6 @@ This theme brings a sophisticated "**Frosted Glass**" aesthetic to your dashboar
 - **Home Assistant 2026.8 Ready**: Uses the current form, switch and border-radius theme tokens, with validated single-mode declarations.
 - **Two Styling Engines**: Works with UIX and remains compatible with card-mod.
 - **Native Custom-Card Profiles**: Bubble Card, Navbar Card, stack-in-card, Mushroom, Simple Swipe Card and other common HACS cards inherit deliberate theme contracts instead of generic overrides.
-- **Manual Effects Stay in Your Control**: The theme does not add fan rotation or light glow. Native card options and your own `card_mod` CSS remain available.
 - **Want to Customize? (New!)**: Install Frosted Glass Theme Manager to choose your own color&background! 🎨
 
 ## 🚀 Quick Installation Guide
@@ -47,7 +46,7 @@ For sidebar and drawer styling on Settings and other panels, load the selected e
 **Step 3: Restart Home Assistant**
 
 **Step 4: Activate Theme**
-- Go to your profile (bottom-left corner of Home Assistant UI), and select **Frosted Glass**, **Frosted Glass Light** or **Frosted Glass Dark** from the theme dropdown.
+- Go to your profile (bottom-left corner of Home Assistant UI), and select **Frosted Glass** or **Frosted Glass Lite** from the theme dropdown.
 
 -----
 
