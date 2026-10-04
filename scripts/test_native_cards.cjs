@@ -401,6 +401,34 @@ print(json.dumps(result))
           check(css(variableBubble.surface, "box-shadow") === "rgb(12, 34, 56) 0px 2px 4px 0px", "native Bubble card-type custom shadow variable wins");
           check(css(variableBubble.e.shadowRoot.querySelector(".bubble-icon-container"), "border-top-left-radius") === "6px", "native Bubble custom icon radius wins");
           check(css(variableBubble.surface, "content", "::after") === '"module"', "native Bubble module-style pseudo-element overrides theme default");
+          const orangeBubble = await bubble("fan", {
+            styles: ":host{--bubble-accent-color:rgb(255,149,0)!important}.bubble-container{background:rgba(28,29,33,.18)!important;border-radius:18px!important}.bubble-button-background{box-shadow:none!important;border:none!important}",
+          });
+          const orangeBackground = orangeBubble.e.shadowRoot.querySelector(".bubble-button-background");
+          await settleBackground(orangeBackground);
+          check(css(orangeBackground, "background-color") === "rgb(255, 149, 0)", "native Bubble module orange accent owns the switch on-state");
+          check(css(orangeBubble.surface, "background-color") === "rgba(28, 29, 33, 0.18)", "native Bubble module background survives theme");
+          orangeBubble.e.hass = { ...hass, states: { ...hass.states, "fan.qa": state("fan", false) } };
+          for (let i = 0; i < 20 && !orangeBubble.e.shadowRoot.querySelector("ha-card").classList.contains("is-off"); i++)
+            await new Promise((r) => requestAnimationFrame(r));
+          await settleBackground(orangeBackground);
+          check(css(orangeBackground, "background-color") === "rgba(0, 0, 0, 0)", "native Bubble orange module lets the switch clear its off-state");
+          const separator = document.createElement("bubble-card");
+          separator.setConfig({ type: "custom:bubble-card", card_type: "separator", name: "Rooms", icon: "mdi:home" });
+          document.body.append(separator); separator.hass = { ...hass };
+          for (let i = 0; i < 20 && !(separator.shadowRoot?.querySelector(".bubble-line")?.getBoundingClientRect().height > 0); i++)
+            await new Promise((r) => requestAnimationFrame(r));
+          const separatorStyle = document.createElement("style"); separatorStyle.textContent = styles.light_on;
+          separator.shadowRoot.append(separatorStyle);
+          const separatorSurface = separator.shadowRoot.querySelector(".bubble-container");
+          check(separatorSurface.classList.contains("bubble-separator"), "native Bubble separator uses the audited container class");
+          check(css(separatorSurface, "content", "::before") === "none", "native Bubble separator has no theme blur panel");
+          check(css(separatorSurface, "content", "::after") === "none", "native Bubble separator has no theme reflection panel");
+          check(css(separatorSurface, "background-color") === "rgba(0, 0, 0, 0)", "native Bubble separator remains transparent");
+          check(css(separatorSurface, "box-shadow") === "none", "native Bubble separator has no panel shadow");
+          check(css(separatorSurface, "border-top-style") === "none", "native Bubble separator has no panel border");
+          check(css(separatorSurface, "border-top-left-radius") === "0px", "native Bubble separator has no panel rounding");
+          check(separator.shadowRoot.querySelector(".bubble-line").getBoundingClientRect().height > 0, "native Bubble separator keeps its line");
           // The real standalone popup is a sibling of ha-card. Its own native
           // background and inline blur defaults must obey the Full/Lite split.
           const lite = v["frosted-glass-popup-backdrop-filter"] === "none";

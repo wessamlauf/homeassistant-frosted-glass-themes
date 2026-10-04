@@ -39,6 +39,8 @@ Frosted Glass Light Lite:
   # THIRD-PARTY CARD CONTRACTS
   # =========================
   bubble-border-radius: '18px'
+  bubble-separator-border-radius: '0px'
+  bubble-separator-box-shadow: 'none'
   bubble-main-background-color: 'transparent'
   bubble-secondary-background-color: 'rgba(255, 255, 255, 0.76)'
   bubble-accent-color: 'rgb(106, 116, 211)'
@@ -79,7 +81,6 @@ Frosted Glass Light Lite:
   card-mod-card: |
     /* Keep fixed-position menus in the viewport coordinate system. */
     ha-card {
-      background: transparent;
 
       position: relative;
       isolation: isolate;
@@ -140,10 +141,15 @@ Frosted Glass Light Lite:
       box-shadow: none;
       border: none;
     }
+    /* Separators remain icon, text and line rather than glass panels. */
+    :where(.bubble-container.bubble-separator, :host(.bubble-separator) .bubble-container) {
+      --frosted-glass-card-layer-content: none;
+    }
+
     /* Bubble owns all surface/state colors and their transitions.
        Paint reflections above the state fill without adding blur. */
     :where(.bubble-container)::after {
-      content: '';
+      content: var(--frosted-glass-card-layer-content, '');
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -156,14 +162,6 @@ Frosted Glass Light Lite:
     :host(bubble-card) .bubble-pop-up,
     :host(.type-custom-bubble-card) .bubble-pop-up {
       --custom-popup-filter: none !important;
-    }
-
-    /* Transparent Hue surfaces need the theme's matching foreground. */
-    :host(hue-like-light-card) ha-card,
-    :host(.type-custom-hue-like-light-card) ha-card {
-      --hue-text-color: var(--primary-text-color);
-      background: transparent !important;
-      color: var(--primary-text-color) !important;
     }
 
     /* Navbar resolves its native background against card-background-color.
@@ -199,22 +197,15 @@ Frosted Glass Light Lite:
       --ha-card-box-shadow: var(--frosted-glass-card-depth-shadow);
     }
 
-    /* Leave both pseudo-elements available for Mushroom template artwork. */
-    :host(mushroom-template-card) ha-card {
-      background: transparent !important;
-
+    /* Only a real stack-in-card can flatten its transparent children.
+       Other cards may use an inline transparent background for an off state. */
+    :where(:host(stack-in-card), :host(.type-custom-stack-in-card)) ha-card {
+      --frosted-glass-stack-child-layer-content: none;
+      --frosted-glass-stack-child-border: none;
     }
-
-    /* stack-in-card writes this inline only when keep.background is false and
-       --keep-background is not true. Honor that decision instead of hiding every
-       descendant, including those whose background was explicitly kept. */
-    ha-card[style*="background: transparent"] {
-      --ha-card-backdrop-filter: none;
-
-      border: none;
-    }
-    ha-card[style*="background: transparent"]::before {
-      content: none !important;
+    :where(ha-card[style*="background: transparent"]) {
+      --frosted-glass-card-layer-content: var(--frosted-glass-stack-child-layer-content, '');
+      border: var(--frosted-glass-stack-child-border, var(--ha-card-border, none));
     }
 
     .mdc-data-table {

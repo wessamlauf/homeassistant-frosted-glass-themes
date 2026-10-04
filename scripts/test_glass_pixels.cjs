@@ -78,7 +78,7 @@ async function textureRange(page, screenshot, width, kind) {
   const check = (ok, label) => { count++; if (!ok) failures.push(label); };
   try {
     for (const section of sections) {
-      const page = await browser.newPage({ viewport: { width: 460, height: 400 }, deviceScaleFactor: 2 });
+      const page = await browser.newPage({ viewport: { width: 460, height: 560 }, deviceScaleFactor: 2 });
       await page.route("**/*", r => r.abort());
       await page.setContent('<body style="margin:0;background:#35465a;color:white;font:14px system-ui"><qa-glass-host style="display:block;padding:32px"></qa-glass-host></body>');
       if (process.env.FROSTED_GLASS_HA_BUNDLE)
@@ -105,14 +105,21 @@ async function textureRange(page, screenshot, width, kind) {
         const bubbleStyle = document.createElement("style"); bubbleStyle.textContent = v["card-mod-card"];
         bubbleRoot.append(bubbleStyle); shadow.append(bubble);
         const bubbleSurface = bubbleRoot.querySelector(".bubble-container");
+        const stateHost = document.createElement("qa-state-card");
+        stateHost.style.cssText = "display:block;margin-top:24px;--custom-state-color:rgb(255,149,0)";
+        const stateRoot = stateHost.attachShadow({ mode: "open" });
+        stateRoot.innerHTML = '<style>ha-card{width:320px;height:140px;padding:40px;box-sizing:border-box;transition:none;background:var(--custom-state-color)}</style><ha-card>Custom state color</ha-card>';
+        const stateStyle = document.createElement("style"); stateStyle.textContent = v["card-mod-card"];
+        stateRoot.append(stateStyle); shadow.append(stateHost);
+        const stateCard = stateRoot.querySelector("ha-card");
         await card.updateComplete; await badge.updateComplete;
         badge.shadowRoot.querySelector(".badge").style.transition = "none";
-        window.qaGlass = { shadow, card, badge, bubbleRoot, bubbleSurface };
+        window.qaGlass = { shadow, card, badge, bubbleRoot, bubbleSurface, stateRoot, stateCard };
         await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
       }, section);
       const boxes = await page.evaluate(() => {
         const rect = e => { const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
-        return [rect(window.qaGlass.card), rect(window.qaGlass.badge.shadowRoot.querySelector(".badge")), rect(window.qaGlass.bubbleSurface)];
+        return [rect(window.qaGlass.card), rect(window.qaGlass.badge.shadowRoot.querySelector(".badge")), rect(window.qaGlass.bubbleSurface), rect(window.qaGlass.stateCard)];
       });
       const painted = [];
       for (const clip of boxes) painted.push(await page.screenshot({ clip }));
@@ -123,16 +130,22 @@ async function textureRange(page, screenshot, width, kind) {
         const bubbleOff = document.createElement("style");
         bubbleOff.textContent = '.bubble-container::after{box-shadow:none}';
         window.qaGlass.bubbleRoot.append(bubbleOff);
+        const stateOff = document.createElement("style");
+        stateOff.textContent = 'ha-card{box-shadow:var(--frosted-glass-card-depth-shadow)}ha-card::before{box-shadow:none}';
+        window.qaGlass.stateRoot.append(stateOff);
       });
       const plain = [];
       for (const clip of boxes) plain.push(await page.screenshot({ clip }));
       const gains = [];
       for (let i = 0; i < boxes.length; i++) gains.push(await reflections(page, painted[i], plain[i], boxes[i].width, boxes[i].height));
       const label = section.name + "/" + section.mode;
-      const kinds = ["card", "badge", "bubble"];
+      const kinds = ["card", "badge", "bubble", "state-card"];
       for (let i = 0; i < gains.length; i++) {
-        check(gains[i][0] >= 4, label + " " + kinds[i] + " top-left glass is actually visible: " + gains[i][0].toFixed(2));
-        check(gains[i][1] >= 4, label + " " + kinds[i] + " bottom-right glass is actually visible: " + gains[i][1].toFixed(2));
+        // The saturated orange fill already clips the red channel, leaving
+        // less RGB headroom for the same white highlight than the other surfaces.
+        const minimumGain = kinds[i] === "state-card" ? 3 : 4;
+        check(gains[i][0] >= minimumGain, label + " " + kinds[i] + " top-left glass is actually visible: " + gains[i][0].toFixed(2));
+        check(gains[i][1] >= minimumGain, label + " " + kinds[i] + " bottom-right glass is actually visible: " + gains[i][1].toFixed(2));
       }
       strengths.push({ name: section.name, mode: section.mode, gains });
       // A pixel pattern must actually blur in Full and stay sharp in Lite.
@@ -140,11 +153,15 @@ async function textureRange(page, screenshot, width, kind) {
         document.querySelector("qa-glass-host").style.setProperty("--ha-card-glass-inset-shadow", "0 0 0 0 transparent");
         document.body.style.background = "repeating-linear-gradient(90deg,#224a65 0 3px,#9a5172 3px 6px)";
         window.qaGlass.bubbleRoot.querySelector(".bubble-background").style.backgroundColor = "rgba(25,80,130,.4)";
+        window.qaGlass.stateCard.style.setProperty("--custom-state-color", "rgba(255,149,0,.4)");
       });
       for (let i = 0; i < boxes.length; i++) {
         const range = await textureRange(page, await page.screenshot({ clip: boxes[i] }), boxes[i].width, kinds[i]);
         check(section.name.includes("Lite") ? range >= 40 : range <= 12, label + " " + kinds[i] + " actually renders Full blur / sharp Lite texture: " + range);
       }
+      await page.evaluate(() => { window.qaGlass.stateCard.style.background = "transparent"; });
+      const offRange = await textureRange(page, await page.screenshot({ clip: boxes[3] }), boxes[3].width, "state-card");
+      check(section.name.includes("Lite") ? offRange >= 40 : offRange <= 12, label + " custom transparent off state actually retains Full blur / sharp Lite texture: " + offRange);
       if (process.env.FROSTED_GLASS_SCREENSHOTS) {
         fs.mkdirSync(process.env.FROSTED_GLASS_SCREENSHOTS, { recursive: true });
         for (let i = 0; i < painted.length; i++) fs.writeFileSync(path.join(process.env.FROSTED_GLASS_SCREENSHOTS, `${section.name.includes("Lite") ? "lite" : "full"}-${section.mode}-${kinds[i]}.png`), painted[i]);
