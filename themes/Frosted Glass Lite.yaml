@@ -44,11 +44,11 @@ Frosted Glass Lite:
       bubble-main-background-color: 'transparent'
       bubble-secondary-background-color: 'rgba(255, 255, 255, 0.76)'
       bubble-accent-color: 'rgb(106, 116, 211)'
-      bubble-icon-border-radius: '14px'
+      bubble-icon-border-radius: '50%'
       bubble-icon-background-color: 'rgba(255, 255, 255, 0.82)'
-      bubble-sub-button-border-radius: '12px'
+      bubble-sub-button-border-radius: '18px'
       bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.80)'
-      bubble-box-shadow: 'var(--ha-card-box-shadow)'
+      bubble-box-shadow: 'var(--frosted-glass-card-depth-shadow)'
       bubble-border: '0.5px solid rgba(255, 255, 255, 0.48)'
       bubble-pop-up-border-radius: '28px'
       bubble-pop-up-main-background-color: 'var(--frosted-glass-popup-surface)'
@@ -142,20 +142,16 @@ Frosted Glass Lite:
           box-shadow: none;
           border: none;
         }
-        .bubble-container {
-          background: transparent !important;
-          box-shadow: var(--bubble-box-shadow);
-        }
-        .bubble-background {
-          background: transparent !important;
-          transition: none;
-        }
-        .bubble-container::before {
+        /* Bubble owns all surface/state colors and their transitions.
+           Paint reflections above the state fill without adding blur. */
+        :where(.bubble-container)::after {
           content: '';
           position: absolute;
           inset: 0;
           pointer-events: none;
           border-radius: inherit;
+          z-index: 1;
+          box-shadow: var(--ha-card-glass-inset-shadow);
         }
 
         /* Lite also disables Bubble's own inline popup blur defaults. */
@@ -669,11 +665,11 @@ Frosted Glass Lite:
       bubble-main-background-color: 'transparent'
       bubble-secondary-background-color: 'rgba(255, 255, 255, 0.10)'
       bubble-accent-color: 'rgb(122, 162, 190)'
-      bubble-icon-border-radius: '14px'
+      bubble-icon-border-radius: '50%'
       bubble-icon-background-color: 'rgba(255, 255, 255, 0.12)'
-      bubble-sub-button-border-radius: '12px'
+      bubble-sub-button-border-radius: '18px'
       bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.11)'
-      bubble-box-shadow: 'var(--ha-card-box-shadow)'
+      bubble-box-shadow: 'var(--frosted-glass-card-depth-shadow)'
       bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
       bubble-pop-up-border-radius: '28px'
       bubble-pop-up-main-background-color: 'var(--frosted-glass-popup-surface)'
@@ -767,20 +763,16 @@ Frosted Glass Lite:
           box-shadow: none;
           border: none;
         }
-        .bubble-container {
-          background: transparent !important;
-          box-shadow: var(--bubble-box-shadow);
-        }
-        .bubble-background {
-          background: transparent !important;
-          transition: none;
-        }
-        .bubble-container::before {
+        /* Bubble owns all surface/state colors and their transitions.
+           Paint reflections above the state fill without adding blur. */
+        :where(.bubble-container)::after {
           content: '';
           position: absolute;
           inset: 0;
           pointer-events: none;
           border-radius: inherit;
+          z-index: 1;
+          box-shadow: var(--ha-card-glass-inset-shadow);
         }
 
         /* Lite also disables Bubble's own inline popup blur defaults. */

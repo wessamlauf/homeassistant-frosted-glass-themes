@@ -44,9 +44,9 @@ Frosted Glass Dark:
   bubble-main-background-color: 'transparent'
   bubble-secondary-background-color: 'rgba(255, 255, 255, 0.09)'
   bubble-accent-color: 'rgb(122, 162, 190)'
-  bubble-icon-border-radius: '14px'
+  bubble-icon-border-radius: '50%'
   bubble-icon-background-color: 'rgba(255, 255, 255, 0.11)'
-  bubble-sub-button-border-radius: '12px'
+  bubble-sub-button-border-radius: '18px'
   bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.10)'
   bubble-box-shadow: 'var(--frosted-glass-card-depth-shadow)'
   bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
@@ -155,23 +155,26 @@ Frosted Glass Dark:
       box-shadow: none;
       border: none;
     }
-    .bubble-container {
-      background: transparent !important;
-      box-shadow: var(--bubble-box-shadow);
-    }
-    .bubble-background {
-      background: transparent !important;
-      transition: none;
-    }
-    .bubble-container::before {
+    /* Bubble owns all surface/state colors and their transitions. */
+    :where(.bubble-container)::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      box-shadow: var(--ha-card-glass-inset-shadow);
       backdrop-filter: var(--ha-card-backdrop-filter);
       -webkit-backdrop-filter: var(--ha-card-backdrop-filter);
+    }
+    /* Paint reflections above the state fill; leave native/module CSS free
+       to override either pseudo-element with its own artwork. */
+    :where(.bubble-container)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+      box-shadow: var(--ha-card-glass-inset-shadow);
     }
 
     /* Transparent Hue surfaces need the theme's matching foreground. */

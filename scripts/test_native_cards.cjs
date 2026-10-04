@@ -228,7 +228,7 @@ print(json.dumps(result))
           );
           // Bubble's actual JavaScript attaches is-on to ha-card and sets an
           // active native background. Explicit icons avoid a HA icon API request.
-          async function bubble(domain) {
+          async function bubble(domain, overrides = {}) {
             const e = document.createElement("bubble-card");
             e.setConfig({
               type: "custom:bubble-card",
@@ -237,6 +237,7 @@ print(json.dumps(result))
               entity: domain + ".qa",
               icon: domain === "fan" ? "mdi:fan" : "mdi:lightbulb",
               show_state: true,
+              ...overrides,
             });
             hass.states[domain + ".qa"] = state(domain, true);
             document.body.append(e);
@@ -279,9 +280,11 @@ print(json.dumps(result))
             "native Bubble surface transparent",
           );
           check(
-            css(bubbleFan.surface, "box-shadow", v["ha-card-backdrop-filter"] === "none" ? undefined : "::before").includes("inset"),
+            css(bubbleFan.surface, "box-shadow", "::after").includes("inset"),
             "native Bubble corner highlights",
           );
+          const iconContainer = bubbleFan.e.shadowRoot.querySelector(".bubble-icon-container");
+          check(css(iconContainer, "border-top-left-radius") === "50%", "native Bubble icon stays circular");
           hass.states["fan.qa"] = state("fan", false);
           bubbleFan.e.hass = { ...hass };
           bubbleFan.style.textContent = styles.fan_off;
@@ -309,9 +312,15 @@ print(json.dumps(result))
           const bubbleOnShadow = css(bubbleLight.surface, "box-shadow");
           const bg =
             bubbleLight.e.shadowRoot.querySelector(".bubble-background");
+          const settleBackground = async (background) => {
+            await new Promise((r) => requestAnimationFrame(r));
+            getComputedStyle(background).backgroundColor;
+            for (const animation of background.getAnimations()) animation.finish();
+          };
+          await settleBackground(bg);
           check(
-            css(bg, "background-color") === "rgba(0, 0, 0, 0)",
-            "native Bubble active background transparent: " +
+            css(bg, "background-color") !== "rgba(0, 0, 0, 0)",
+            "native Bubble light color remains visible: " +
               JSON.stringify({
                 color: css(bg, "background-color"),
                 html: bg.outerHTML,
@@ -331,6 +340,8 @@ print(json.dumps(result))
             i++
           )
             await new Promise((r) => requestAnimationFrame(r));
+          await settleBackground(bg);
+          check(css(bg, "background-color") === "rgba(0, 0, 0, 0)", "native Bubble light off clears its state fill");
           check(
             css(bubbleLight.surface, "box-shadow") === bubbleOnShadow,
             "native Bubble light shadow is independent of state",
@@ -362,6 +373,34 @@ print(json.dumps(result))
             "Bubble inner surface accepts normal manual border",
           );
           manual.remove();
+          // Use the actual styles: JavaScript template from #148, not a
+          // pre-rendered CSS substitute. The theme is injected after it.
+          const customBubble = await bubble("light", {
+            button_type: "state",
+            sub_button: [{ entity: "light.qa", icon: "mdi:lightbulb" }],
+            styles: ".bubble-button-background{opacity:1!important;background-color:${state === 'off' ? 'rgba(118,196,126,.4)' : 'rgba(196,118,118,.4)'}!important}",
+          });
+          const customBackground = customBubble.e.shadowRoot.querySelector(".bubble-button-background");
+          await settleBackground(customBackground);
+          check(css(customBackground, "background-color") === "rgba(196, 118, 118, 0.4)", "native Bubble custom on-state JS template wins");
+          const subButton = customBubble.e.shadowRoot.querySelector(".bubble-sub-button");
+          check(css(subButton, "border-top-left-radius") === "18px", "native Bubble 36px sub-button stays circular");
+          const customHass = { ...hass, states: { ...hass.states, "light.qa": state("light", false) } };
+          customBubble.e.hass = customHass;
+          for (let i = 0; i < 20 && !customBubble.e.shadowRoot.querySelector("ha-card").classList.contains("is-off"); i++)
+            await new Promise((r) => requestAnimationFrame(r));
+          await settleBackground(customBackground);
+          check(css(customBackground, "background-color") === "rgba(118, 196, 126, 0.4)", "native Bubble custom off-state JS template wins");
+          check(css(customBubble.surface, "box-shadow", "::after").includes("inset"), "native Bubble custom state retains glass reflections");
+          check((css(customBubble.surface, "backdrop-filter", "::before") === "none") === (v["ha-card-backdrop-filter"] === "none"), "native Bubble custom state retains Full blur / Lite no blur");
+          const variableBubble = await bubble("light", {
+            button_type: "state",
+            styles: ".bubble-container{--bubble-button-main-background-color:rgba(12,34,56,.4);--bubble-button-box-shadow:0 2px 4px rgb(12,34,56)}.bubble-icon-container{--bubble-icon-border-radius:6px}.bubble-container::after{content:'module';box-shadow:none}",
+          });
+          check(css(variableBubble.surface, "background-color") === "rgba(12, 34, 56, 0.4)", "native Bubble card-type custom background variable wins");
+          check(css(variableBubble.surface, "box-shadow") === "rgb(12, 34, 56) 0px 2px 4px 0px", "native Bubble card-type custom shadow variable wins");
+          check(css(variableBubble.e.shadowRoot.querySelector(".bubble-icon-container"), "border-top-left-radius") === "6px", "native Bubble custom icon radius wins");
+          check(css(variableBubble.surface, "content", "::after") === '"module"', "native Bubble module-style pseudo-element overrides theme default");
           // The real standalone popup is a sibling of ha-card. Its own native
           // background and inline blur defaults must obey the Full/Lite split.
           const lite = v["frosted-glass-popup-backdrop-filter"] === "none";

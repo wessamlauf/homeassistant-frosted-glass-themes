@@ -54,19 +54,19 @@ async function reflections(page, painted, plain, width, height) {
   }, { painted: painted.toString("base64"), plain: plain.toString("base64"), width, height });
 }
 
-async function textureRange(page, screenshot, width, badge) {
-  return page.evaluate(async ({ data, width, badge }) => {
+async function textureRange(page, screenshot, width, kind) {
+  return page.evaluate(async ({ data, width, kind }) => {
     const image = new Image(); image.src = "data:image/png;base64," + data;
     await image.decode();
     const canvas = document.createElement("canvas"); canvas.width = image.width; canvas.height = image.height;
     const ctx = canvas.getContext("2d"); ctx.drawImage(image, 0, 0);
     const scale = image.width / width;
-    const roi = badge ? [70, 5, 40, 3] : [140, 85, 40, 8];
+    const roi = kind === "bubble" ? [140, 8, 40, 3] : kind === "badge" ? [70, 5, 40, 3] : [140, 85, 40, 8];
     const pixels = ctx.getImageData(...roi.map(x => Math.round(x * scale))).data;
     let low = 255, high = 0;
     for (let i = 0; i < pixels.length; i += 4) { low = Math.min(low, pixels[i]); high = Math.max(high, pixels[i]); }
     return high - low;
-  }, { data: screenshot.toString("base64"), width, badge });
+  }, { data: screenshot.toString("base64"), width, kind });
 }
 
 (async () => {
@@ -78,7 +78,7 @@ async function textureRange(page, screenshot, width, badge) {
   const check = (ok, label) => { count++; if (!ok) failures.push(label); };
   try {
     for (const section of sections) {
-      const page = await browser.newPage({ viewport: { width: 460, height: 300 }, deviceScaleFactor: 2 });
+      const page = await browser.newPage({ viewport: { width: 460, height: 400 }, deviceScaleFactor: 2 });
       await page.route("**/*", r => r.abort());
       await page.setContent('<body style="margin:0;background:#35465a;color:white;font:14px system-ui"><qa-glass-host style="display:block;padding:32px"></qa-glass-host></body>');
       if (process.env.FROSTED_GLASS_HA_BUNDLE)
@@ -98,14 +98,21 @@ async function textureRange(page, screenshot, width, badge) {
         shadow.append(style);
         const card = document.createElement("ha-card"); card.textContent = "Glass card"; shadow.append(card);
         const badge = document.createElement("ha-badge"); badge.textContent = "Living Room"; shadow.append(badge);
+        const bubble = document.createElement("bubble-card");
+        bubble.style.cssText = "display:block;margin-top:24px";
+        const bubbleRoot = bubble.attachShadow({ mode: "open" });
+        bubbleRoot.innerHTML = `<style>.bubble-container{position:relative;box-sizing:border-box;width:320px;height:50px;border:var(--bubble-border);border-radius:var(--bubble-border-radius);box-shadow:var(--bubble-box-shadow);background:var(--bubble-main-background-color);overflow:hidden}.bubble-wrapper{position:absolute;inset:0}.bubble-background{position:absolute;inset:0;opacity:1;background:rgb(25,80,130)}.bubble-name{position:relative;padding:16px}</style><div class="bubble-container"><div class="bubble-wrapper"><div class="bubble-background"></div><div class="bubble-name">Bubble state</div></div></div>`;
+        const bubbleStyle = document.createElement("style"); bubbleStyle.textContent = v["card-mod-card"];
+        bubbleRoot.append(bubbleStyle); shadow.append(bubble);
+        const bubbleSurface = bubbleRoot.querySelector(".bubble-container");
         await card.updateComplete; await badge.updateComplete;
         badge.shadowRoot.querySelector(".badge").style.transition = "none";
-        window.qaGlass = { shadow, card, badge };
+        window.qaGlass = { shadow, card, badge, bubbleRoot, bubbleSurface };
         await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
       }, section);
       const boxes = await page.evaluate(() => {
         const rect = e => { const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
-        return [rect(window.qaGlass.card), rect(window.qaGlass.badge.shadowRoot.querySelector(".badge"))];
+        return [rect(window.qaGlass.card), rect(window.qaGlass.badge.shadowRoot.querySelector(".badge")), rect(window.qaGlass.bubbleSurface)];
       });
       const painted = [];
       for (const clip of boxes) painted.push(await page.screenshot({ clip }));
@@ -113,29 +120,34 @@ async function textureRange(page, screenshot, width, badge) {
         const off = document.createElement("style"); off.id = "qa-no-reflections";
         off.textContent = 'ha-card{box-shadow:var(--frosted-glass-card-depth-shadow)}ha-card::before{box-shadow:none}ha-badge{--ha-card-box-shadow:none}';
         window.qaGlass.shadow.append(off);
+        const bubbleOff = document.createElement("style");
+        bubbleOff.textContent = '.bubble-container::after{box-shadow:none}';
+        window.qaGlass.bubbleRoot.append(bubbleOff);
       });
       const plain = [];
       for (const clip of boxes) plain.push(await page.screenshot({ clip }));
       const gains = [];
       for (let i = 0; i < boxes.length; i++) gains.push(await reflections(page, painted[i], plain[i], boxes[i].width, boxes[i].height));
       const label = section.name + "/" + section.mode;
+      const kinds = ["card", "badge", "bubble"];
       for (let i = 0; i < gains.length; i++) {
-        check(gains[i][0] >= 4, label + (i ? " badge" : " card") + " top-left glass is actually visible: " + gains[i][0].toFixed(2));
-        check(gains[i][1] >= 4, label + (i ? " badge" : " card") + " bottom-right glass is actually visible: " + gains[i][1].toFixed(2));
+        check(gains[i][0] >= 4, label + " " + kinds[i] + " top-left glass is actually visible: " + gains[i][0].toFixed(2));
+        check(gains[i][1] >= 4, label + " " + kinds[i] + " bottom-right glass is actually visible: " + gains[i][1].toFixed(2));
       }
       strengths.push({ name: section.name, mode: section.mode, gains });
       // A pixel pattern must actually blur in Full and stay sharp in Lite.
       await page.evaluate(() => {
         document.querySelector("qa-glass-host").style.setProperty("--ha-card-glass-inset-shadow", "0 0 0 0 transparent");
         document.body.style.background = "repeating-linear-gradient(90deg,#224a65 0 3px,#9a5172 3px 6px)";
+        window.qaGlass.bubbleRoot.querySelector(".bubble-background").style.backgroundColor = "rgba(25,80,130,.4)";
       });
       for (let i = 0; i < boxes.length; i++) {
-        const range = await textureRange(page, await page.screenshot({ clip: boxes[i] }), boxes[i].width, !!i);
-        check(section.name.includes("Lite") ? range >= 40 : range <= 12, label + (i ? " badge" : " card") + " actually renders Full blur / sharp Lite texture: " + range);
+        const range = await textureRange(page, await page.screenshot({ clip: boxes[i] }), boxes[i].width, kinds[i]);
+        check(section.name.includes("Lite") ? range >= 40 : range <= 12, label + " " + kinds[i] + " actually renders Full blur / sharp Lite texture: " + range);
       }
       if (process.env.FROSTED_GLASS_SCREENSHOTS) {
         fs.mkdirSync(process.env.FROSTED_GLASS_SCREENSHOTS, { recursive: true });
-        for (let i = 0; i < painted.length; i++) fs.writeFileSync(path.join(process.env.FROSTED_GLASS_SCREENSHOTS, `${section.name.includes("Lite") ? "lite" : "full"}-${section.mode}-${i ? "badge" : "card"}.png`), painted[i]);
+        for (let i = 0; i < painted.length; i++) fs.writeFileSync(path.join(process.env.FROSTED_GLASS_SCREENSHOTS, `${section.name.includes("Lite") ? "lite" : "full"}-${section.mode}-${kinds[i]}.png`), painted[i]);
       }
       console.log(label, JSON.stringify(gains));
       await page.close();
