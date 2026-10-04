@@ -92,18 +92,20 @@ The theme uses each card's public CSS variables where they exist. This keeps the
 
 | Card / integration | Theme behavior |
 | --- | --- |
-| Bubble Card | Uses official surface, border, shadow, popup and select-menu variables. Blur sits on a background pseudo-element, keeping fixed-position menus out of a filtered containing block. The outer `ha-card` does not add a second border or tint. |
+| Bubble Card | Keeps native state colors, custom `styles:` and public CSS variables. Blur sits behind the color fill; corner reflections sit above it. Icons and 36px sub-buttons are circular by default. Separators remain plain icon, text and line. The outer `ha-card` does not add a second border or tint. |
 | Navbar Card | Uses the official navbar radius and shadow variables on a transparent surface. Standard builds apply blur directly to that surface; Lite builds keep it transparent without blur. |
-| stack-in-card | Suppresses glass and borders on children whose background the card explicitly makes transparent. `keep.background` and individual `--keep-background: true` choices retain their surfaces. |
+| stack-in-card | Suppresses glass and borders on transparent children inside the stack. `keep.background` and individual `--keep-background: true` choices remain available. Standalone cards with a transparent off-state background retain their glass. |
 | Mushroom | Title and chip containers remain transparent. Template cards use a direct glass layer so custom `::before` / `::after` styling remains available. |
 | room-summary-card | Its built-in Frosted Glass detection continues to consume the theme's card tint, filter, border and inset-shadow tokens. |
-| Hue-Like Light Card | Uses transparent glass and the theme's matching text color, including when its native light-color calculation selects a dark foreground. |
+| Hue-Like Light Card | Keeps its native light-color background and matching foreground, together with the theme's glass layer. |
 | Slider Button Card | Public button and slider-track variables follow the light/dark palette. |
 | Simple Swipe Card | Pagination uses the theme palette. For blurred child cards, add `enable_backdrop_filter: true` to the card configuration as required by Simple Swipe Card itself. |
 | config-template-card, auto-entities, layout-card and streamline-card | These are transparent wrappers, so the actual child card receives the theme. Bubble Card nested inside a wrapper is detected by its rendered container to avoid a duplicate layer. |
 | Energy Flow Card Plus and standard `ha-card` custom cards | Inherit the shared radius, border, tint and shadow tokens normally. |
 
-Full and Lite cards have **transparent backgrounds**, including Bubble and Navbar. Full paints the original top-left and bottom-right highlights on the blur layer, with depth on the card, so the filter cannot soften those reflections. Lite keeps the same glass edges and transparency without blur. Badges use these highlights with a smaller depth shadow; their native inner surface owns the filter. Heading, title and chip containers stay plain; the override above also disables native shadow-root variables for text-only cards. Slider fills and icon controls retain their functional colors.
+Full and Lite cards have **transparent backgrounds by default**, including the base surfaces of Bubble and Navbar. Bubble's native state fills and your explicit custom colors remain in control. Full paints the original top-left and bottom-right highlights on the blur layer, with depth on the card, so the filter cannot soften those reflections. Bubble paints its reflections above the state fill so they stay visible on colored cards too. Lite keeps the same glass edges and transparency without blur. Badges use these highlights with a smaller depth shadow; their native inner surface owns the filter. Heading, title and chip containers stay plain; the override above also disables native shadow-root variables for text-only cards. Slider fills and icon controls retain their functional colors.
+
+Custom cards can set a state background on `ha-card` through their native CSS, inline styles or `--ha-card-background`. The theme does not reset that background. Translucent colors let the blurred wallpaper show through in Full; opaque colors cover it while retaining the glass edges. Cards that paint a separate inner surface, replace the glass pseudo-elements or use their own shadow roots may need a card-specific integration.
 
 Fan rotation and automatic light glow are not included. Card styling is static `card-mod-card` CSS: it needs neither a backend template subscription nor a nested styling-YAML parser. Standard card shadows come from `ha-card-box-shadow`, so a normal per-card `ha-card { box-shadow: ...; border: ...; }` can override them. State-based Jinja in your own `card_mod` configuration remains supported by your chosen engine. Mushroom's native animation setting remains in control. Bubble writes its own inline shadow/border reset on the outer `ha-card`: style `.bubble-container` directly, or use `!important` to override that native inline reset.
 
@@ -113,7 +115,32 @@ Full modern dialogs use Home Assistant's native surface variables directly, incl
 
 Settings, sidebar and topbar share the warm light palette (`254, 244, 242`) or the nearly black blue dark base (`2, 6, 11`, `#02060B`). Dark controls, menus, editor surfaces and tonal accents use the matching cool blue/slate palette.
 
-See [the source audit and regression checks](docs/compatibility-audit.md) for the reviewed versions, styling contracts and test scope.
+See the [CSS regression checks](scripts/test_theme_rendering.cjs) and [native-card checks](scripts/test_native_cards.cjs) for the tested styling behavior.
+
+### Bubble Card custom colors
+
+Existing Bubble `styles:` templates and native on/off colors work alongside the glass effect. You do not need extra selector specificity to override the theme. For a colored surface that still shows the blurred wallpaper, use a translucent color:
+
+```yaml
+type: custom:bubble-card
+card_type: button
+button_type: state
+entity: binary_sensor.front_door
+styles: |
+  .bubble-button-background {
+    opacity: 1 !important;
+    background-color: ${state === 'on' ? 'rgba(196, 118, 118, 0.4)' : 'rgba(118, 196, 126, 0.4)'} !important;
+  }
+```
+
+Opaque custom colors remain opaque; the glass edges still render above them. Public variables such as `--bubble-main-background-color`, `--bubble-button-main-background-color`, `--bubble-icon-border-radius` and `--bubble-sub-button-border-radius` also remain configurable per card. Bubble styles and modules can override the glass pseudo-elements with their own artwork.
+
+If your Bubble module already supplies its own blur and reflections, add `:host { --frosted-glass-card-layer-content: none; }` to that module to disable the theme's additional layers. Custom state colors alone do not need this option.
+
+### CSS gradient backgrounds
+
+The YAML `background-image` value also accepts CSS gradients, and `lovelace-background: var(--background-image)` uses them automatically. A dashboard view background takes precedence over the theme. The Theme Manager's background fields currently accept image URLs; they do not provide a gradient editor. Keep direct YAML customizations in a separate theme file to avoid replacing them during a HACS update, or use the Manager for supported color and image settings.
+
 
 -----
 

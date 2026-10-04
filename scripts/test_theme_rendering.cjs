@@ -114,6 +114,21 @@ async function run() {
         check(css(normal, 'box-shadow', lite ? undefined : '::before').includes('inset'), 'standard card keeps corner highlights on its rendered layer');
         check(css(normal, 'backdrop-filter') === 'none', 'standard card must not trap fixed menus');
         check((css(normal, 'backdrop-filter', '::before') === 'none') === lite, 'standard glass/Lite filter');
+        const colored = card('custom-state-card', '<ha-card>Custom state</ha-card>', 'ha-card{background-color:var(--custom-state-color,var(--ha-card-background))}');
+        const coloredCard = colored.shadowRoot.querySelector('ha-card');
+        colored.style.setProperty('--custom-state-color', 'rgba(255,149,0,.4)');
+        check(css(coloredCard, 'background-color') === 'rgba(255, 149, 0, 0.4)', 'custom card native CSS state background survives theme');
+        colored.style.setProperty('--custom-state-color', 'rgba(118,196,126,.4)');
+        check(css(coloredCard, 'background-color') === 'rgba(118, 196, 126, 0.4)', 'custom card native CSS off-state color survives theme');
+        coloredCard.style.background = 'transparent';
+        check(css(coloredCard, 'content', '::before') !== 'none', 'standalone transparent off state keeps glass');
+        check((css(coloredCard, 'backdrop-filter', '::before') === 'none') === lite, 'standalone transparent off state keeps Full blur');
+        check(css(coloredCard, 'box-shadow', lite ? undefined : '::before').includes('inset'), 'standalone transparent off state keeps reflections');
+        check(css(coloredCard, 'border-top-style') !== 'none', 'standalone transparent off state keeps its glass border');
+        coloredCard.style.removeProperty('background');
+        colored.style.setProperty('--ha-card-background', 'rgba(12,34,56,.4)');
+        colored.style.removeProperty('--custom-state-color');
+        check(css(coloredCard, 'background-color') === 'rgba(12, 34, 56, 0.4)', 'custom ha-card background variable survives theme');
         check(css(fan, 'animation-name') === 'none', 'theme does not animate an active fan');
 
         fan.dataset.state = 'off';
@@ -133,8 +148,8 @@ async function run() {
         check(css(lightCard, 'box-shadow') === 'rgba(255, 165, 0, 0.3) 0px 0px 10px 2px', 'normal per-card light shadow takes precedence');
         check(css(lightCard, 'border-top-color') === 'rgba(255, 165, 0, 0.1)', 'normal per-card light border takes precedence');
 
-        const bubbleNative = '.bubble-container{position:relative;height:50px;background:var(--bubble-main-background-color);border:var(--bubble-border);border-radius:var(--bubble-border-radius);box-shadow:var(--bubble-box-shadow)}.bubble-wrapper{position:absolute;inset:0;display:flex;align-items:center;padding:8px;gap:12px}.bubble-background{background-color:var(--bubble-button-background-color);transition:background-color 1.5s}';
-        const bubble = card('bubble-card', '<ha-card><div class="bubble-container"><div class="bubble-wrapper is-on"><ha-icon class="bubble-main-icon" icon="mdi:fan">✣</ha-icon>Bubble fan</div></div></ha-card>', bubbleNative);
+        const bubbleNative = '.bubble-container{position:relative;height:50px;background-color:var(--bubble-button-main-background-color,var(--bubble-main-background-color));border:var(--bubble-border);border-radius:var(--bubble-border-radius);box-shadow:var(--bubble-button-box-shadow,var(--bubble-box-shadow))}.bubble-wrapper{position:absolute;inset:0;display:flex;align-items:center;padding:8px;gap:12px}.bubble-background{position:absolute;inset:0;background-color:var(--bubble-button-background-color);transition:background-color 1.5s}.bubble-icon-container{width:38px;height:38px;border-radius:var(--bubble-icon-border-radius,var(--bubble-border-radius,50%))}.bubble-sub-button{width:36px;height:36px;border-radius:var(--bubble-sub-button-border-radius,var(--bubble-border-radius,18px))}';
+        const bubble = card('bubble-card', '<ha-card><div class="bubble-container"><div class="bubble-wrapper is-on"><div class="bubble-icon-container"><ha-icon class="bubble-main-icon" icon="mdi:fan">✣</ha-icon></div>Bubble fan<div class="bubble-sub-button">☀</div></div></div></ha-card>', bubbleNative);
         const bubbleCard = bubble.shadowRoot.querySelector('ha-card');
         bubbleCard.className = 'is-on';
         bubble.shadowRoot.querySelector('.bubble-wrapper').className = 'bubble-wrapper';
@@ -143,19 +158,48 @@ async function run() {
         check(css(bubbleCard, 'content', '::before') === 'none', 'Bubble outer layer disabled');
         check(css(bubbleCard, 'border-top-style') === 'none', 'Bubble outer border disabled');
         check(css(bubbleSurface, 'background-color') === color(v['ha-card-glass-tint']), 'Bubble native tint');
-        check(css(bubbleSurface, 'box-shadow', lite ? undefined : '::before').includes('inset'), 'Bubble has glass highlights on its rendered layer');
+        check(css(bubbleSurface, 'box-shadow', '::after').includes('inset'), 'Bubble reflections sit above state colors');
+        check(css(bubbleSurface, 'pointer-events', '::after') === 'none', 'Bubble reflections leave controls interactive');
         check(css(bubbleSurface, 'backdrop-filter') === 'none', 'Bubble surface must not trap fixed menus');
         check((css(bubbleSurface, 'backdrop-filter', '::before') === 'none') === lite, 'Bubble glass/Lite filter');
         check(css(bubbleIcon, 'animation-name') === 'none', 'Bubble fan on animation');
+        const bubbleIconContainer = bubble.shadowRoot.querySelector('.bubble-icon-container');
+        const bubbleSubButton = bubble.shadowRoot.querySelector('.bubble-sub-button');
+        check(css(bubbleIconContainer, 'border-top-left-radius') === '50%', 'Bubble main icon stays circular');
+        check(css(bubbleSubButton, 'border-top-left-radius') === '18px', 'Bubble 36px sub-button stays circular');
+        bubble.style.setProperty('--bubble-icon-border-radius', '6px');
+        bubble.style.setProperty('--bubble-sub-button-border-radius', '5px');
+        check(css(bubbleIconContainer, 'border-top-left-radius') === '6px', 'Bubble custom icon radius wins');
+        check(css(bubbleSubButton, 'border-top-left-radius') === '5px', 'Bubble custom sub-button radius wins');
+        bubble.style.setProperty('--bubble-main-background-color', 'rgba(12,34,56,.4)');
+        check(css(bubbleSurface, 'background-color') === 'rgba(12, 34, 56, 0.4)', 'Bubble public main background variable wins');
+        bubble.style.setProperty('--bubble-button-main-background-color', 'rgba(78,90,123,.4)');
+        check(css(bubbleSurface, 'background-color') === 'rgba(78, 90, 123, 0.4)', 'Bubble card-type background variable wins');
+        bubble.style.setProperty('--bubble-button-box-shadow', '0 2px 4px rgb(12,34,56)');
+        check(css(bubbleSurface, 'box-shadow') === 'rgb(12, 34, 56) 0px 2px 4px 0px', 'Bubble card-type shadow variable wins');
 
         bubbleCard.className = 'is-off';
         check(css(bubbleIcon, 'animation-name') === 'none', 'Bubble fan off must stop');
         bubbleCard.className = 'is-on';
-        const bubbleLight = card('bubble-card', '<ha-card class="is-on"><div class="bubble-container"><div class="bubble-wrapper"><div class="bubble-background" style="--bubble-button-background-color:orange;background:var(--bubble-button-background-color)"></div><ha-icon class="bubble-main-icon" icon="mdi:lightbulb">☀</ha-icon></div></div></ha-card>', bubbleNative);
+        const bubbleLight = card('bubble-card', '<ha-card class="is-on"><div class="bubble-container"><div class="bubble-wrapper"><div class="bubble-background bubble-button-background" style="--bubble-button-background-color:orange"></div><ha-icon class="bubble-main-icon" icon="mdi:lightbulb">☀</ha-icon></div></div></ha-card>', bubbleNative);
         const bubbleLightSurface = bubbleLight.shadowRoot.querySelector('.bubble-container');
         bubbleLightSurface.style.transition = 'none';
-        check(css(bubbleLight.shadowRoot.querySelector('.bubble-background'), 'background-color') === 'rgba(0, 0, 0, 0)', 'Bubble native active background stays transparent');
-        check(css(bubbleLight.shadowRoot.querySelector('.bubble-background'), 'transition-property') === 'none', 'Bubble background transition cannot override transparency');
+        const bubbleBackground = bubbleLight.shadowRoot.querySelector('.bubble-background');
+        check(css(bubbleBackground, 'background-color') === 'rgb(255, 165, 0)', 'Bubble native active background color remains visible');
+        check(css(bubbleBackground, 'transition-property') === 'background-color', 'Bubble native color transition remains enabled');
+        const stateColorStyle = document.createElement('style');
+        // Reproduce #148: user styles precede the theme and use one class.
+        stateColorStyle.textContent = '.bubble-button-background{background-color:rgba(196,118,118,.4)!important;opacity:1!important}';
+        bubbleLight.shadowRoot.insertBefore(stateColorStyle, bubbleLight.frostedStyle);
+        bubbleBackground.style.transition = 'none';
+        check(css(bubbleBackground, 'background-color') === 'rgba(196, 118, 118, 0.4)', 'Bubble custom on-state color survives later theme CSS');
+        stateColorStyle.textContent = '.bubble-button-background{background-color:rgba(118,196,126,.4)!important;opacity:1!important}';
+        check(css(bubbleBackground, 'background-color') === 'rgba(118, 196, 126, 0.4)', 'Bubble custom off-state color survives later theme CSS');
+        stateColorStyle.textContent = '.bubble-container{background:rgba(12,34,56,.4)}';
+        check(css(bubbleLightSurface, 'background-color') === 'rgba(12, 34, 56, 0.4)', 'Bubble normal custom surface CSS survives later theme CSS');
+        stateColorStyle.remove();
+        bubbleBackground.style.setProperty('--bubble-button-background-color', 'transparent');
+        check(css(bubbleBackground, 'background-color') === 'rgba(0, 0, 0, 0)', 'Bubble native off-state background clears');
         const onBubbleShadow = css(bubbleLightSurface, 'box-shadow');
         bubbleLight.shadowRoot.querySelector('ha-card').className = 'is-off';
         check(css(bubbleLightSurface, 'box-shadow') === onBubbleShadow, 'Bubble light has no theme state shadow');
@@ -169,6 +213,23 @@ async function run() {
         addStyle(bubble.shadowRoot, '.bubble-pop-up{backdrop-filter:var(--custom-popup-filter)}.bubble-pop-up-background{background:var(--bubble-pop-up-main-background-color,var(--bubble-pop-up-background-color))}');
         check(css(bubblePopup.firstElementChild, 'background-color') === color(v['frosted-glass-popup-surface']), 'Bubble popup uses the Full translucent / Lite opaque surface');
         check((css(bubblePopup, 'backdrop-filter') === 'none') === lite, 'Bubble native popup blur obeys Full/Lite');
+
+        const separatorNative = '.bubble-container{position:relative;background:none;border:var(--bubble-separator-border,none);border-radius:var(--bubble-separator-border-radius,var(--bubble-border-radius));box-shadow:var(--bubble-separator-box-shadow,var(--bubble-box-shadow))}.bubble-line{height:6px;background:var(--secondary-text-color)}';
+        const separator = card('bubble-card', '<ha-card><div class="bubble-container bubble-separator"><ha-icon>✣</ha-icon><span>Rooms</span><div class="bubble-line"></div></div></ha-card>', separatorNative);
+        const separatorSurface = separator.shadowRoot.querySelector('.bubble-container');
+        check(css(separatorSurface, 'content', '::before') === 'none', 'Bubble separator has no glass blur layer');
+        check(css(separatorSurface, 'content', '::after') === 'none', 'Bubble separator has no glass reflections');
+        check(css(separatorSurface, 'box-shadow') === 'none', 'Bubble separator has no panel shadow');
+        check(css(separatorSurface, 'border-top-left-radius') === '0px', 'Bubble separator stays flat');
+        check(css(separatorSurface, 'background-color') === 'rgba(0, 0, 0, 0)', 'Bubble separator stays transparent');
+        check(css(separator.shadowRoot.querySelector('.bubble-line'), 'background-color') === color(v['secondary-text-color']), 'Bubble separator line remains visible');
+        separator.classList.add('bubble-separator');
+        separatorSurface.classList.remove('bubble-separator');
+        check(css(separatorSurface, 'content', '::after') === 'none', 'Bubble separator host class also disables glass');
+        const separatorCustomStyle = document.createElement('style');
+        separatorCustomStyle.textContent = '.bubble-container::after{content:"";background:rgba(255,149,0,.2);box-shadow:none}';
+        separator.shadowRoot.insertBefore(separatorCustomStyle, separator.frostedStyle);
+        check(css(separatorSurface, 'content', '::after') !== 'none', 'Bubble separator custom module artwork remains available');
 
         const navbarNative = ':host{--navbar-background-color:var(--card-background-color);--navbar-border-radius:var(--ha-card-border-radius,12px);--navbar-primary-color:var(--primary-color);--navbar-box-shadow:0 -1px 4px #0002;--navbar-box-shadow-mobile-floating:var(--material-shadow-elevation-2dp)}ha-card{background:var(--navbar-background-color)}.navbar{position:fixed;bottom:18px;left:260px;right:24px}.navbar-card{display:flex;gap:30px;min-height:60px}.navbar-card.mobile.floating{box-shadow:var(--navbar-box-shadow-mobile-floating)!important;border-radius:var(--navbar-border-radius)!important}.navbar-popup{position:fixed;top:110px;left:310px;z-index:901}.popup-item .button{background:var(--navbar-background-color)}';
         const navbar = card('navbar-card', '<div class="navbar"><ha-card class="navbar-card mobile floating">Home　　Lights　　Climate</ha-card><ha-card class="media-player">Media player</ha-card></div><div class="navbar-popup"><div class="popup-item"><div class="button">Popup</div></div></div>', navbarNative);
@@ -189,9 +250,11 @@ async function run() {
         const slider = card('slider-button-card', '<ha-card><div class="button off">Slider button</div><div class="track"></div></ha-card>', ':host{--btn-bg-color-off:#2b374e;--btn-bg-color-on:#20293c;--slider-track-color:#2b374e}.button.off{background:var(--btn-bg-color-off)}.track{background:var(--slider-track-color);height:4px}');
         check(css(slider.shadowRoot.querySelector('.button'), 'background-color') === color(v['btn-bg-color-off']), 'Slider host button defaults overridden');
         check(css(slider.shadowRoot.querySelector('.track'), 'background-color') === color(v['slider-track-color']), 'Slider track defaults overridden');
-        const hue = card('hue-like-light-card', '<ha-card style="--hue-background:rgb(230,196,85);color:rgb(20,20,20)">Hue light</ha-card>', 'ha-card{background:var(--hue-background)}');
-        check(css(hue.shadowRoot.querySelector('ha-card'), 'background-color') === 'rgba(0, 0, 0, 0)', 'Hue card remains transparent');
-        check(css(hue.shadowRoot.querySelector('ha-card'), 'color') === color(v['primary-text-color']), 'transparent Hue uses the theme foreground');
+        const hue = card('hue-like-light-card', '<ha-card>Hue light</ha-card>', 'ha-card{background:var(--hue-background);color:var(--hue-text-color)}');
+        hue.style.setProperty('--hue-background', 'rgb(230,196,85)');
+        hue.style.setProperty('--hue-text-color', 'rgb(20,20,20)');
+        check(css(hue.shadowRoot.querySelector('ha-card'), 'background-color') === 'rgb(230, 196, 85)', 'Hue native light-color background survives theme');
+        check(css(hue.shadowRoot.querySelector('ha-card'), 'color') === 'rgb(20, 20, 20)', 'Hue keeps its native contrasting foreground');
         check((css(hue.shadowRoot.querySelector('ha-card'), 'backdrop-filter', '::before') === 'none') === lite, 'Hue glass/Lite layer');
 
         const art = card('mushroom-template-card', '<ha-card>Template artwork</ha-card>');
@@ -201,6 +264,11 @@ async function run() {
         check(css(artCard, 'backdrop-filter', '::before') === 'none', 'Mushroom artwork must not acquire blur');
         check(css(artCard, 'background-color') === 'rgba(0, 0, 0, 0)', 'Mushroom template remains transparent');
         check(css(artCard, 'box-shadow').includes('inset'), 'Mushroom template keeps glass highlights');
+        const mushroomStateStyle = document.createElement('style');
+        mushroomStateStyle.textContent = 'ha-card{background:rgba(255,149,0,.4)}';
+        art.shadowRoot.insertBefore(mushroomStateStyle, art.frostedStyle);
+        check(css(artCard, 'background-color') === 'rgba(255, 149, 0, 0.4)', 'Mushroom template custom state background survives later theme CSS');
+        check((css(artCard, 'backdrop-filter') === 'none') === lite, 'Mushroom custom colored background retains Full blur');
 
         const room = card('room-summary-card', '<ha-card>Room summary</ha-card>', ':host([frosted-glass]) ha-card::before{content:"";position:absolute;inset:0;background:var(--ha-card-glass-tint);backdrop-filter:var(--ha-card-backdrop-filter);box-shadow:var(--ha-card-glass-inset-shadow);border-radius:inherit}');
         room.setAttribute('frosted-glass', '');
@@ -213,6 +281,16 @@ async function run() {
         check(css(child.shadowRoot.querySelector('ha-card'), 'content', '::before') === 'none', 'stack child has no duplicate overlay');
         check(css(child.shadowRoot.querySelector('ha-card'), 'border-top-style') === 'none', 'stack child has no duplicate border');
         check(css(kept.shadowRoot.querySelector('ha-card'), 'content', '::before') !== 'none', 'stack keep-background remains supported');
+        const stackArt = card('mushroom-template-card', '<ha-card style="background: transparent;box-shadow:none">Flattened template</ha-card>');
+        stack.shadowRoot.querySelector('ha-card > div').append(stackArt);
+        check(css(stackArt.shadowRoot.querySelector('ha-card'), 'backdrop-filter') === 'none', 'stack transparent Mushroom child has no duplicate direct blur');
+        const gradient = 'center / cover no-repeat fixed radial-gradient(ellipse at top right, #0099aa 0%, #1a3535 40%, transparent 70%), radial-gradient(ellipse at bottom left, #e85a00 0%, #cc4400 30%, transparent 60%), radial-gradient(ellipse at bottom right, #aa2244 0%, transparent 50%), #0d1a1a';
+        document.documentElement.style.setProperty('--background-image', gradient);
+        const gradientView = document.createElement('div');
+        gradientView.style.background = 'var(--lovelace-background)'; grid.append(gradientView);
+        check(css(gradientView, 'background-image').split('radial-gradient').length === 4, 'theme background accepts the reported three CSS gradients');
+        check(css(gradientView, 'background-color') === 'rgb(13, 26, 26)', 'gradient background keeps its base color');
+        document.documentElement.style.setProperty('--background-image', v['background-image']);
         const wrapper = document.createElement('config-template-card'); wrapper.attachShadow({mode:'open'}).append(bubble); grid.append(wrapper);
         check(css(bubbleCard, 'content', '::before') === 'none', 'wrapped Bubble detection');
 

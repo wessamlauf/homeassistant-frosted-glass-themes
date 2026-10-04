@@ -166,6 +166,19 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               }
             },
           );
+          customElements.define("qa-state-card", class extends HTMLElement {
+            setConfig(config) {
+              this._config = config;
+              this.attachShadow({ mode: "open" }).innerHTML = '<style>ha-card{height:80px;background-color:var(--custom-state-color);transition:none}</style><ha-card>State-colored custom card</ha-card>';
+            }
+            set hass(hass) {
+              const active = hass.states[this._config.entity].state === "on";
+              const surface = this.shadowRoot.querySelector("ha-card");
+              surface.style.setProperty("--custom-state-color", "rgba(255,149,0,.4)");
+              if (active) surface.style.removeProperty("background");
+              else surface.style.background = "transparent";
+            }
+          });
           const home = document.createElement("home-assistant");
           home.hass = window.qaHass;
           document.body.append(home);
@@ -205,6 +218,8 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
         await page.addScriptTag({
           path: process.env.FROSTED_GLASS_NAVBAR_BUNDLE,
         });
+        if (process.env.FROSTED_GLASS_BUBBLE_BUNDLE)
+          await page.addScriptTag({ path: process.env.FROSTED_GLASS_BUBBLE_BUNDLE });
         if (process.env.FROSTED_GLASS_MDC_BUNDLE)
           await page.addScriptTag({
             path: process.env.FROSTED_GLASS_MDC_BUNDLE,
@@ -263,6 +278,7 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               vertical: false,
               name: "Moodlight",
             });
+            add("stateCard", "qa-state-card", { type: "custom:qa-state-card", entity: "light.lsc_moodlight" });
             add("badge", "hui-entity-badge", {
               type: "entity", entity: "light.lsc_moodlight",
             }, "hui-badge");
@@ -302,6 +318,25 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               layout: { auto_padding: { enabled: false } },
               styles: ":host {--navbar-background-color:rgb(23,45,67)}",
             });
+            if (customElements.get("bubble-card")) {
+              add("nativeBubble", "bubble-card", {
+                type: "custom:bubble-card",
+                card_type: "button",
+                button_type: "switch",
+                entity: "light.lsc_moodlight",
+                icon: "mdi:lightbulb",
+                use_accent_color: true,
+              });
+              add("bubble", "bubble-card", {
+                type: "custom:bubble-card",
+                card_type: "button",
+                button_type: "state",
+                entity: "light.lsc_moodlight",
+                icon: "mdi:lightbulb",
+                sub_button: [{ entity: "light.lsc_moodlight", icon: "mdi:lightbulb" }],
+                styles: ".bubble-button-background{opacity:1!important;background-color:${state === 'off' ? 'rgba(118,196,126,.4)' : 'rgba(196,118,118,.4)'}!important}",
+              });
+            }
           },
           { manualClear, manualGlow },
         );
@@ -352,6 +387,13 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
           });
         await page.waitForTimeout(350);
         await page.evaluate(() => {
+          for (const key of ["bubble", "nativeBubble"]) {
+            const background = window.qaCards[key]?.shadowRoot.querySelector(".bubble-button-background");
+            if (background) {
+              getComputedStyle(background).backgroundColor;
+              for (const animation of background.getAnimations()) animation.finish();
+            }
+          }
           const fallback = document.createElement("ha-tile-icon");
           fallback.dataset.domain = "fan";
           fallback.dataset.state = "on";
@@ -380,8 +422,25 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
             };
             const css = (e, p, pseudo) =>
               getComputedStyle(e, pseudo).getPropertyValue(p).trim();
+            if (window.qaCards.bubble) {
+              const accent = document.createElement("span");
+              accent.style.color = "var(--bubble-accent-color)";
+              document.body.append(accent);
+              check(css(window.qaCards.nativeBubble.shadowRoot.querySelector(".bubble-button-background"), "background-color") === css(accent, "color"), "Bubble native on-state uses the selected theme accent");
+              accent.remove();
+              const root = window.qaCards.bubble.shadowRoot;
+              const surface = root.querySelector(".bubble-container");
+              check(css(root.querySelector(".bubble-button-background"), "background-color") === "rgba(196, 118, 118, 0.4)", "Bubble custom on-state color survives engine injection");
+              check(css(surface, "box-shadow", "::after").includes("inset"), "Bubble state colors retain glass reflections with engine injection");
+              check((css(surface, "backdrop-filter", "::before") === "none") === lite, "Bubble Full/Lite filter survives engine injection");
+              check(css(root.querySelector(".bubble-icon-container"), "border-top-left-radius") === "50%", "Bubble circular icon survives engine injection");
+              check(css(root.querySelector(".bubble-sub-button"), "border-top-left-radius") === "18px", "Bubble circular sub-button survives engine injection");
+            }
             const card = (key) =>
               window.qaCards[key].shadowRoot.querySelector("ha-card");
+            check(css(card("stateCard"), "background-color") === "rgba(255, 149, 0, 0.4)", "custom card native CSS background survives engine injection");
+            check((css(card("stateCard"), "backdrop-filter", "::before") === "none") === lite, "custom colored card keeps Full blur / Lite no blur through engine");
+            check(css(card("stateCard"), "box-shadow", lite ? undefined : "::before").includes("inset"), "custom colored card keeps glass reflections through engine");
             const glow = css(card("light"), "box-shadow");
             check(
               !glow.includes("255, 165, 0"),
@@ -599,6 +658,29 @@ print(Environment(undefined=StrictUndefined).from_string(m['template']).render(*
               });
         });
         await page.waitForTimeout(350);
+        const stateOff = await page.evaluate((lite) => {
+          const surface = window.qaCards.stateCard.shadowRoot.querySelector("ha-card");
+          const css = getComputedStyle(surface);
+          const layer = getComputedStyle(surface, "::before");
+          return { background: css.backgroundColor, content: layer.content, filter: layer.backdropFilter, reflection: (lite ? css : layer).boxShadow };
+        }, section.name.includes("Lite"));
+        assert.equal(stateOff.background, "rgba(0, 0, 0, 0)", `${engine} custom card transparent off state survives`);
+        assert.notEqual(stateOff.content, "none", `${engine} custom card transparent off state retains glass`);
+        assert.equal(stateOff.filter === "none", section.name.includes("Lite"), `${engine} custom card transparent off state retains Full blur / Lite no blur`);
+        assert(stateOff.reflection.includes("inset"), `${engine} custom card transparent off state retains reflections`);
+        checks += 4;
+        if (process.env.FROSTED_GLASS_BUBBLE_BUNDLE) {
+          const offColors = await page.evaluate(() => {
+            return ["bubble", "nativeBubble"].map((key) => {
+              const background = window.qaCards[key].shadowRoot.querySelector(".bubble-button-background");
+              getComputedStyle(background).backgroundColor;
+              for (const animation of background.getAnimations()) animation.finish();
+              return getComputedStyle(background).backgroundColor;
+            });
+          });
+          assert.deepEqual(offColors, ["rgba(118, 196, 126, 0.4)", "rgba(0, 0, 0, 0)"], `${engine} Bubble custom and native off-state colors survive engine injection`);
+          checks += 2;
+        }
         assert(
           await page.evaluate(
             () =>

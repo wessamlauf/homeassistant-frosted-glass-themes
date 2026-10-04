@@ -41,12 +41,14 @@ Frosted Glass Dark:
   # =========================
   # Bubble Card: official global theme variables.
   bubble-border-radius: '18px'
+  bubble-separator-border-radius: '0px'
+  bubble-separator-box-shadow: 'none'
   bubble-main-background-color: 'transparent'
   bubble-secondary-background-color: 'rgba(255, 255, 255, 0.09)'
   bubble-accent-color: 'rgb(122, 162, 190)'
-  bubble-icon-border-radius: '14px'
+  bubble-icon-border-radius: '50%'
   bubble-icon-background-color: 'rgba(255, 255, 255, 0.11)'
-  bubble-sub-button-border-radius: '12px'
+  bubble-sub-button-border-radius: '18px'
   bubble-sub-button-background-color: 'rgba(255, 255, 255, 0.10)'
   bubble-box-shadow: 'var(--frosted-glass-card-depth-shadow)'
   bubble-border: '0.5px solid rgba(255, 255, 255, 0.12)'
@@ -84,7 +86,6 @@ Frosted Glass Dark:
   card-mod-card: |
     /* Keep fixed-position menus in the viewport coordinate system. */
     ha-card {
-      background: transparent;
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
       position: relative;
@@ -105,8 +106,8 @@ Frosted Glass Dark:
       background: var(--ha-card-glass-tint);
       /* Paint the reflection on the filtered layer so blur cannot erase it. */
       box-shadow: var(--ha-card-glass-inset-shadow);
-      backdrop-filter: var(--ha-card-backdrop-filter);
-      -webkit-backdrop-filter: var(--ha-card-backdrop-filter);
+      backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
+      -webkit-backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
       z-index: -1;
       pointer-events: none;
       border-radius: inherit;
@@ -155,31 +156,31 @@ Frosted Glass Dark:
       box-shadow: none;
       border: none;
     }
-    .bubble-container {
-      background: transparent !important;
-      box-shadow: var(--bubble-box-shadow);
+    /* Separators remain icon, text and line rather than glass panels. */
+    :where(.bubble-container.bubble-separator, :host(.bubble-separator) .bubble-container) {
+      --frosted-glass-card-layer-content: none;
     }
-    .bubble-background {
-      background: transparent !important;
-      transition: none;
-    }
-    .bubble-container::before {
-      content: '';
+
+    /* Bubble owns all surface/state colors and their transitions. */
+    :where(.bubble-container)::before {
+      content: var(--frosted-glass-card-layer-content, '');
       position: absolute;
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      box-shadow: var(--ha-card-glass-inset-shadow);
-      backdrop-filter: var(--ha-card-backdrop-filter);
-      -webkit-backdrop-filter: var(--ha-card-backdrop-filter);
+      backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
+      -webkit-backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
     }
-
-    /* Transparent Hue surfaces need the theme's matching foreground. */
-    :host(hue-like-light-card) ha-card,
-    :host(.type-custom-hue-like-light-card) ha-card {
-      --hue-text-color: var(--primary-text-color);
-      background: transparent !important;
-      color: var(--primary-text-color) !important;
+    /* Paint reflections above the state fill; leave native/module CSS free
+       to override either pseudo-element with its own artwork. */
+    :where(.bubble-container)::after {
+      content: var(--frosted-glass-card-layer-content, '');
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+      box-shadow: var(--ha-card-glass-inset-shadow);
     }
 
     /* Navbar resolves its native background against card-background-color.
@@ -219,22 +220,21 @@ Frosted Glass Dark:
 
     /* Leave both pseudo-elements available for Mushroom template artwork. */
     :host(mushroom-template-card) ha-card {
-      background: transparent !important;
-      backdrop-filter: var(--ha-card-backdrop-filter);
-      -webkit-backdrop-filter: var(--ha-card-backdrop-filter);
+      backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
+      -webkit-backdrop-filter: var(--frosted-glass-card-filter, var(--ha-card-backdrop-filter));
     }
 
-    /* stack-in-card writes this inline only when keep.background is false and
-       --keep-background is not true. Honor that decision instead of hiding every
-       descendant, including those whose background was explicitly kept. */
-    ha-card[style*="background: transparent"] {
-      --ha-card-backdrop-filter: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      border: none;
+    /* Only a real stack-in-card can flatten its transparent children.
+       Other cards may use an inline transparent background for an off state. */
+    :where(:host(stack-in-card), :host(.type-custom-stack-in-card)) ha-card {
+      --frosted-glass-stack-child-layer-content: none;
+      --frosted-glass-stack-child-border: none;
+      --frosted-glass-stack-child-filter: none;
     }
-    ha-card[style*="background: transparent"]::before {
-      content: none !important;
+    :where(ha-card[style*="background: transparent"]) {
+      --frosted-glass-card-layer-content: var(--frosted-glass-stack-child-layer-content, '');
+      --frosted-glass-card-filter: var(--frosted-glass-stack-child-filter, var(--ha-card-backdrop-filter));
+      border: var(--frosted-glass-stack-child-border, var(--ha-card-border, none));
     }
 
     .mdc-data-table {
